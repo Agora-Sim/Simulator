@@ -22,7 +22,7 @@ class Simulation(Properties, Run):
         self.citizens_history = [deepcopy(self.citizens)]
 
     @classmethod
-    def random(cls, nr_of_citizens: int):
+    def random(cls, nr_of_citizens: int) -> "Simulation":
         citizens = np.array([Citizen.random(citizen_id=i) for i in range(nr_of_citizens)])
         connectivity = initiate_connectivity_matrix(nr_of_citizens)
         return cls(citizens, connectivity)
