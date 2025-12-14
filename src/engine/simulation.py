@@ -1,84 +1,60 @@
 # ================================================================
 # 0. Section: Imports
 # ================================================================
+import pickle
+
 import numpy as np
 from copy import deepcopy
 
-from ..plots.plot_summary import plot_summary
+from ..logger import logger
 from ..components import Citizen
-from ..hyperparameters import INCLUDE_PLOTS
+from .utils import initiate_connectivity_matrix
+from .engine_pieces import Properties, Run
+from ..time import iterations_to_simtime
 
-from .connectivity_matrix_utils import initiate_connectivity_matrix
-from .citizens_utils import age_citizens
 
-class Simulation:
+class Simulation(Properties, Run):
+    # ================================================================
+    # 1. Section: Initializers
+    # ================================================================
     def __init__(self, citizens: np.ndarray, connectivity_matrix: np.ndarray):
         self.citizens = citizens
         self.connectivity_matrix = connectivity_matrix
 
-        self.nr_of_citizens = len(citizens)
         self.iterations = 0
+
         self.citizens_history = [deepcopy(self.citizens)]
+        self.connectivity_matrix_history = [deepcopy(self.connectivity_matrix)]
 
-
-
-    # ================================================================
-    # 1. Section: Initializers
-    # ================================================================
     @classmethod
-    def random(cls, nr_of_citizens: int):
+    def random(cls, nr_of_citizens: int) -> "Simulation":
         citizens = np.array([Citizen.random(citizen_id=i) for i in range(nr_of_citizens)])
         connectivity = initiate_connectivity_matrix(nr_of_citizens)
+
+        logger.info(f"Initialized random simulation with {nr_of_citizens} citizens.")
+        logger.debug(f"Citizens:\n{citizens}")
+        logger.debug(f"Connectivity Matrix:\n{connectivity}")
+
         return cls(citizens, connectivity)
     
+    @classmethod
+    def load(cls, filepath: str) -> "Simulation":
+        with open(filepath, 'rb') as f:
+            citizens_history, connectivity_history = pickle.load(f)
 
+        last_citizens = citizens_history[-1]
+        last_connectivity = connectivity_history[-1]
 
-    # ================================================================
-    # 2. Section: Methods
-    # ================================================================
-    def run_step(self):
-        age_citizens(self.citizens)
+        logger.info(f"Loaded simulation from {filepath}")
+        logger.info(f"Simulation had {len(last_citizens)} citizens")
+        logger.info(f"Simulation lasted for {len(citizens_history) - 1} iterations")
+        logger.info(f"Simulation lasted {iterations_to_simtime(len(citizens_history) - 1).years} years and {iterations_to_simtime(len(citizens_history) - 1).months} months")
+        logger.debug(f"Citizens:\n{last_citizens}")
+        logger.debug(f"Connectivity Matrix:\n{last_connectivity}")
 
-    def run(self):
-        while any(citizen.state == "alive" for citizen in self.citizens): 
-            self.run_step()
-            self.iterations += 1
-            self.citizens_history.append(deepcopy(self.citizens))
+        recover_simulation = cls(last_citizens, last_connectivity)
+        recover_simulation.citizens_history = citizens_history
+        recover_simulation.connectivity_matrix_history = connectivity_history
+        recover_simulation.iterations = len(citizens_history) - 1
 
-        self.summary()
-
-    def summary(self):
-        print(f"Simulation ran for {self.iterations} iterations.")
-        alive_count = sum(citizen.state == "alive" for citizen in self.citizens)
-        dead_count = sum(citizen.state == "dead" for citizen in self.citizens)
-        print(f"Final counts - Alive: {alive_count}, Dead: {dead_count}")
-
-        plot_summary(self.citizens_history, include=INCLUDE_PLOTS)
-
-
-
-    # ================================================================
-    # 3. Section: Properties
-    # ================================================================
-    @property
-    def nr_of_citizens(self):
-        return self._nr_of_citizens
-    @nr_of_citizens.setter
-    def nr_of_citizens(self, value: int):
-        if value <= 0:
-            raise ValueError("Number of citizens must be positive.")
-        self._nr_of_citizens = value
-
-    @property
-    def connectivity_matrix(self):
-        return self._connectivity_matrix
-    @connectivity_matrix.setter
-    def connectivity_matrix(self, value: np.ndarray):
-        self._connectivity_matrix = value
-
-    @property
-    def citizens(self):
-        return self._citizens
-    @citizens.setter
-    def citizens(self, value: np.ndarray):
-        self._citizens = value
+        return recover_simulation

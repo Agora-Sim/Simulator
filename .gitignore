@@ -212,3 +212,5 @@ __marimo__/
 verbose.txt
 .vscode/
 .vscode
+runs/
+logs/
