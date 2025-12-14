@@ -1,0 +1,1 @@
+INCLUDE_PLOTS = ('alive', 'money', 'age')
