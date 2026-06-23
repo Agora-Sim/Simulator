@@ -32,19 +32,186 @@ endlegend
 !$SHOW_DEPENDENCIES = 0
 
 
-package "service layer" #E8F5E9 {
+'=============================================================================='
+'Service Layer'
+'=============================================================================='
+package "Service Layer" #E8F5E9 {
+    class Simulation <<planned>> {
+        + engine: SimulationEngine
+        - _current_step: int
+        - _history: list[SimulationState]
+
+        + run_simulation():
+    }
+}
+
+
+
+'=============================================================================='
+'Model Domain'
+'=============================================================================='
+package "Model Domain Layer" #FFF8E1 {
+
+    package "Modules"{
+        interface NodeModule <<planned>> {
+            + name: str
+        }
+
+        class HealthModule <<planned>> {
+            + health: float
+            + age: float
+        }
+        HealthModule ..|> NodeModule
+
+
+        class MoneyModule <<planned>> {
+            + balance: float
+            + income_rate: float
+        }
+        MoneyModule ..|> NodeModule
+
+        class ResourcesModule <<planned>> {
+            + resources: list[Resource]
+        }
+        ResourcesModule ..|> NodeModule
+        ResourcesModule o-- Resource
+
+        class Resource <<planned>> {
+            + name: str
+            + sell_value: float
+            + target_value: float
+            + consume_rate: float
+            + production_rate: float
+            + properties: list[ResourceProperty]
+        }
+        Resource o-- ResourceProperty
+
+        interface ResourceProperty <<planned>> {
+            name: str
+
+            + apply(): None
+        }
+    }
+
+
+    class Node <<planned>> {
+        + id: int
+        + node_type: str
+        + modules: dict[str, NodeModule]
+    }
+    Node o-- NodeModule
+
+
+    class SimulationEngine <<planned>> {
+        + nodes: list[Node]
+        + connectivity_matrix: ConnectivityMatrix
+        - simulation_specs: SimulationSpecs
+
+        + step(): SimulationState
+    }
+    SimulationEngine o-- Node
+    SimulationEngine --> ConnectivityMatrix
+    SimulationEngine ..> SimulationState
+
+
+    class ConnectivityMatrix <<planned>> {
+        + data: NDArray
+
+        + get_most_connected(): int
+    }
+
+
+    class SimulationState <<planned>> {
+        + nodes: list[Node]
+        + connectivity_matrix: ConnectivityMatrix
+        + state: dict
+    }
+    SimulationState o-- Node
+    SimulationState --> ConnectivityMatrix
+
+
+    package "Instantiation"{
+        class SimulationBlueprint <<planned>> {
+            + data: dict
+            + node_blueprint: NodeBlueprint
+            + simulation_specs: SimulationSpecs
+        }
+        SimulationBlueprint --> NodeBlueprint
+        SimulationBlueprint --> SimulationSpecs
+
+
+        class NodeBlueprint <<planned>> {
+            + data: dict
+            + type_names: list[str]
+
+            + get_node_type_properties(name: str): NodeProperty
+        }
+        NodeBlueprint ..> NodeProperty
+
+
+        class SimulationSpecs <<planned>> {
+            + step_size: StepType
+            + max_duration: int
+            + re_connection: bool
+            + seed: int
+        }
+        SimulationSpecs --> StepType
+
+
+        class StepType <<planned>> {
+            + factor: float
+            + unit: str
+        }
+
+
+        class NodeProperty <<planned>> {
+            + modules: list[str]
+            + initial_numbers: int
+            + connectivity: int
+        }
+
+
+        class SimulationFactory <<planned>> {
+            - _node_factory: NodeFactory
+
+            + build_simulation(blueprint: SimulationBlueprint): Simulation
+        }
+        SimulationFactory --> NodeFactory
+        SimulationFactory ..> SimulationBlueprint
+        SimulationFactory ..> SimulationEngine
+
+        class NodeFactory <<planned>> {
+            + build_nodes(node_blueprint: NodeBlueprint): list[Node]
+            + build_connectivity(node_blueprint: NodeBlueprint): ConnectivityMatrix
+        }
+        NodeFactory ..> NodeBlueprint
+        NodeFactory ..> Node
+        NodeFactory ..> ConnectivityMatrix
+    }
 
 }
 
-package "model domain layer" #FFF8E1 {
+
+
+'=============================================================================='
+'Adapter Layer'
+'=============================================================================='
+package "Adapter Layer" #E3F2FD {
 
 }
 
-package "adapter layer" #E3F2FD {
 
-}
+
+'=============================================================================='
+'Broken Links'
+'=============================================================================='
+SimulationEngine --> SimulationSpecs
+Simulation --> SimulationEngine
+Simulation o-- SimulationState
+
 
 @enduml
 
 
-'!if ($SHOW_DEPENDENCIES == 1)
+
+'!if ($SHOW_DEPENDENCIES == 1)'
