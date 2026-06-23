@@ -60,12 +60,29 @@ if (Configurations valid?) then (yes)
         :Start simulation run {run_idx}; <<#D5F5E3>>
         :Produce simulation run summary; <<#D5F5E3>>
 
+        note right
+        a bunch of plots and
+        stats at stats.hdf5
+        end note
+
+        :Save simulation history; <<#D5F5E3>>
+
+        note right
+        simulation.hdf5
+        end note
+
         :run_idx = run_idx + 1; <<#D5F5E3>>
 
     repeat while (run_idx <= nr_of_runs?) is (yes)
     -> no;
 
     :Produce global simulation summary; <<#D5F5E3>>
+
+    note right
+    a bunch of plots and
+    stats at stats.hdf5
+    end note
+
     stop
 
 else (no)
