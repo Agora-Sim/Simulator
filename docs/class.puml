@@ -114,7 +114,7 @@ package "Model Domain Layer" #FFF8E1 {
     SimulationEngine ..> SimulationState
 
 
-    class ConnectivityMatrix <<planned>> {
+    class ConnectivityMatrix <<partial>> {
         + data: NDArray
 
         + get_most_connected(): int
