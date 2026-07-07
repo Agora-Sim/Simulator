@@ -164,7 +164,7 @@ package "Model Domain Layer" #FFF8E1 {
         }
 
 
-        class NodeProperty <<planned>> {
+        class NodeProperty <<implemented>> {
             + name: str
             + modules: list[str]
             + initial_numbers: int
