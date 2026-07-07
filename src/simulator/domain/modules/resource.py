@@ -6,7 +6,6 @@ from dataclasses import dataclass
 from .resource_property import ResourceProperty
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================

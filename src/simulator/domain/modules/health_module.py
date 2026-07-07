@@ -11,7 +11,7 @@ from .node_module import NodeModule
 # 1. Section: Functions
 # ================================================================
 @dataclass
-class HeathModule(NodeModule):
+class HealthModule(NodeModule):
     name: ClassVar[str] = "health_module"
 
     heath: float
