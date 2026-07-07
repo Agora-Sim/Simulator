@@ -70,13 +70,13 @@ package "Model Domain Layer" #FFF8E1 {
         }
         MoneyModule ..|> NodeModule
 
-        class ResourcesModule <<planned>> {
+        class ResourcesModule <<partial>> {
             + resources: list[Resource]
         }
         ResourcesModule ..|> NodeModule
         ResourcesModule o-- Resource
 
-        class Resource <<planned>> {
+        class Resource <<implemented>> {
             + name: str
             + sell_value: float
             + target_value: float
@@ -86,7 +86,7 @@ package "Model Domain Layer" #FFF8E1 {
         }
         Resource o-- ResourceProperty
 
-        interface ResourceProperty <<planned>> {
+        interface ResourceProperty <<implemented>> {
             name: str
 
             + apply(): None
