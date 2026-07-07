@@ -27,7 +27,8 @@ dev = [
     "pytest (>=9.1.1,<10.0.0)",
     "bandit (>=1.9.4,<2.0.0)",
     "coverage (>=7.15.0,<8.0.0)",
-    "pytest-cov (>=7.1.0,<8.0.0)"
+    "pytest-cov (>=7.1.0,<8.0.0)",
+    "docformatter (>=1.7.8,<2.0.0)"
 ]
 
 [tool.pytest.ini_options]
