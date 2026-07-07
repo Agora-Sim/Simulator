@@ -54,7 +54,7 @@ package "Model Domain Layer" #FFF8E1 {
 
     package "Modules"{
         interface NodeModule <<implemented>> {
-            + name: str
+            + name: ClassVar[str]
         }
 
         class HealthModule <<partial>> {
