@@ -19,3 +19,10 @@ packages = [{include = "simulator", from = "src"}]
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "black (>=26.5.1,<27.0.0)",
+    "pylint (>=4.0.6,<5.0.0)",
+    "pytest (>=9.1.1,<10.0.0)"
+]
