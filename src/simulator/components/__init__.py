@@ -1,1 +1,0 @@
-from .citizen import Citizen

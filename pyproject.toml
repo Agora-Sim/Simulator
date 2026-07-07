@@ -6,7 +6,7 @@ authors = [
     {name = "GuilhermeCF",email = "guicostaferreira.2003@gmail.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.13, <3.14"
 dependencies = [
     "numpy (>=2.3.5,<3.0.0)",
     "ipykernel (>=7.1.0,<8.0.0)",
@@ -19,3 +19,34 @@ packages = [{include = "simulator", from = "src"}]
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "black (>=26.5.1,<27.0.0)",
+    "pylint (>=4.0.6,<5.0.0)",
+    "pytest (>=9.1.1,<10.0.0)",
+    "bandit (>=1.9.4,<2.0.0)",
+    "coverage (>=7.15.0,<8.0.0)",
+    "pytest-cov (>=7.1.0,<8.0.0)"
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--tb=short",
+]
+
+markers = [
+    "unit: fast isolated tests",
+    "integration: tests involving multiple modules or adapters",
+    "e2e: end-to-end pipeline tests",
+    "slow: tests that take noticeable time",
+    "regression: tests for previously fixed bugs",
+    "requires_data: tests that require external/local datasets",
+]

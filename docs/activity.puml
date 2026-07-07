@@ -1,0 +1,92 @@
+@startuml
+skinparam backgroundColor #FFFFFF
+skinparam activity {
+    BackgroundColor #F8F8F8
+    BorderColor #333333
+    FontColor #111111
+}
+skinparam note {
+    BackgroundColor #FFF8DC
+    BorderColor #999999
+}
+
+legend right
+|= Colour |= Meaning |
+|<#D6EAF8> | User command / function call |
+|<#FADBD8> | User manual edit or file placement |
+|<#D5F5E3> | System action |
+|<#F5B7B1> | Error / failed validation |
+|<#FFF8DC> | Artefact note |
+endlegend
+
+|#E8F1FF|User|
+start
+:Run init_project(); <<#D6EAF8>>
+
+|#EAF7EA|System|
+:Create project file system; <<#D5F5E3>>
+
+note right
+Created artefacts:
+- config.yaml
+- runs/
+end note
+
+|#E8F1FF|User|
+:Edit config.yaml with simulation parameters; <<#FADBD8>>
+:Call start_simulation(); <<#D6EAF8>>
+
+|#EAF7EA|System|
+:Read config.yaml; <<#D5F5E3>>
+:Validate configurations; <<#D5F5E3>>
+
+if (Configurations valid?) then (yes)
+
+    :Read nr_of_runs from config.yaml; <<#D5F5E3>>
+    :run_idx = 1; <<#D5F5E3>>
+
+    repeat
+
+        :Create folder for this run\nruns/run_{run_idx}; <<#D5F5E3>>
+
+        note right
+        Example:
+        runs/run_001/
+        runs/run_002/
+        ...
+        runs/run_{nr_of_runs}/
+        end note
+
+        :Start simulation run {run_idx}; <<#D5F5E3>>
+        :Produce simulation run summary; <<#D5F5E3>>
+
+        note right
+        a bunch of plots and
+        stats at stats.hdf5
+        end note
+
+        :Save simulation history; <<#D5F5E3>>
+
+        note right
+        simulation.hdf5
+        end note
+
+        :run_idx = run_idx + 1; <<#D5F5E3>>
+
+    repeat while (run_idx <= nr_of_runs?) is (yes)
+    -> no;
+
+    :Produce global simulation summary; <<#D5F5E3>>
+
+    note right
+    a bunch of plots and
+    stats at stats.hdf5
+    end note
+
+    stop
+
+else (no)
+    :Raise validation error; <<#F5B7B1>>
+    stop
+endif
+@enduml

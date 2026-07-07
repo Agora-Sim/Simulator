@@ -1,0 +1,270 @@
+@startuml
+left to right direction
+skinparam linetype ortho
+skinparam class {
+    BackgroundColor<<implemented>> #D5F5D5
+    BorderColor<<implemented>> #2E7D32
+    FontColor<<implemented>> #1B5E20
+
+    BackgroundColor<<partial>> #FFF3CD
+    BorderColor<<partial>> #B8860B
+    FontColor<<partial>> #7A5600
+
+    BackgroundColor<<planned>> #F8D7DA
+    BorderColor<<planned>> #B02A37
+    FontColor<<planned>> #842029
+
+    BackgroundColor<<external>> #E3F2FD
+    BorderColor<<external>> #1565C0
+    FontColor<<external>> #0D47A1
+}
+
+legend right
+|= Colour |
+|<#D5F5D5> Implemented |
+|<#FFF3CD> Partially implemented |
+|<#F8D7DA> Planned / not implemented |
+|<#E3F2FD> External dependency |
+endlegend
+
+' 0 = hide dependency lines
+' 1 = show dependency lines
+!$SHOW_DEPENDENCIES = 0
+
+
+'=============================================================================='
+'Service Layer'
+'=============================================================================='
+package "Service Layer" #E8F5E9 {
+    class Simulation <<planned>> {
+        + engine: SimulationEngine
+        - _current_step: int
+        - _history: list[SimulationState]
+
+        + run_simulation():
+    }
+}
+
+
+
+'=============================================================================='
+'Model Domain'
+'=============================================================================='
+package "Model Domain Layer" #FFF8E1 {
+
+    package "Modules"{
+        interface NodeModule <<planned>> {
+            + name: str
+        }
+
+        class HealthModule <<planned>> {
+            + health: float
+            + age: float
+        }
+        HealthModule ..|> NodeModule
+
+
+        class MoneyModule <<planned>> {
+            + balance: float
+            + income_rate: float
+        }
+        MoneyModule ..|> NodeModule
+
+        class ResourcesModule <<planned>> {
+            + resources: list[Resource]
+        }
+        ResourcesModule ..|> NodeModule
+        ResourcesModule o-- Resource
+
+        class Resource <<planned>> {
+            + name: str
+            + sell_value: float
+            + target_value: float
+            + consume_rate: float
+            + production_rate: float
+            + properties: list[ResourceProperty]
+        }
+        Resource o-- ResourceProperty
+
+        interface ResourceProperty <<planned>> {
+            name: str
+
+            + apply(): None
+        }
+    }
+
+
+    class Node <<planned>> {
+        + id: int
+        + node_type: str
+        + modules: dict[str, NodeModule]
+    }
+    Node o-- NodeModule
+
+
+    class SimulationEngine <<planned>> {
+        + nodes: list[Node]
+        + connectivity_matrix: ConnectivityMatrix
+        - simulation_specs: SimulationSpecs
+
+        + step(): SimulationState
+    }
+    SimulationEngine o-- Node
+    SimulationEngine --> ConnectivityMatrix
+    SimulationEngine ..> SimulationState
+
+
+    class ConnectivityMatrix <<planned>> {
+        + data: NDArray
+
+        + get_most_connected(): int
+    }
+
+
+    class SimulationState <<planned>> {
+        + nodes: list[Node]
+        + connectivity_matrix: ConnectivityMatrix
+        + state: dict
+    }
+    SimulationState o-- Node
+    SimulationState --> ConnectivityMatrix
+
+
+    package "Instantiation"{
+        class SimulationBlueprint <<planned>> {
+            + data: dict
+            + node_blueprint: NodeBlueprint
+            + simulation_specs: SimulationSpecs
+        }
+        SimulationBlueprint --> NodeBlueprint
+        SimulationBlueprint --> SimulationSpecs
+
+
+        class NodeBlueprint <<planned>> {
+            + data: dict
+            + type_names: list[str]
+
+            + get_node_type_properties(name: str): NodeProperty
+        }
+        NodeBlueprint ..> NodeProperty
+
+
+        class SimulationSpecs <<planned>> {
+            + step_size: StepType
+            + max_duration: int
+            + re_connection: bool
+            + seed: int
+        }
+        SimulationSpecs --> StepType
+
+
+        class StepType <<planned>> {
+            + factor: float
+            + unit: str
+        }
+
+
+        class NodeProperty <<planned>> {
+            + name: str
+            + modules: list[str]
+            + initial_numbers: int
+            + connectivity: int
+        }
+
+
+        class SimulationFactory <<planned>> {
+            - _node_factory: NodeFactory
+
+            + build_simulation(blueprint: SimulationBlueprint): Simulation
+        }
+        SimulationFactory --> NodeFactory
+        SimulationFactory ..> SimulationBlueprint
+        SimulationFactory ..> SimulationEngine
+
+        class NodeFactory <<planned>> {
+            + build_nodes(node_blueprint: NodeBlueprint): list[Node]
+            + build_connectivity(node_blueprint: NodeBlueprint): ConnectivityMatrix
+        }
+        NodeFactory ..> NodeBlueprint
+        NodeFactory ..> Node
+        NodeFactory ..> ConnectivityMatrix
+    }
+
+}
+
+
+
+'=============================================================================='
+'Adapter Layer'
+'=============================================================================='
+package "Adapter Layer" #E3F2FD {
+    class Repository <<planned>> {
+        + source: Source
+
+        + init_simulation(): Path
+        + init_run(): Path
+    }
+    Repository --> Source
+
+
+    class Source <<planned>> {
+        + simulation_name: str
+        + simulation_description: str
+        + folder: Path
+
+        + runs_folder: Path
+
+        + get_run_folder(run_nr: int): Path
+    }
+
+
+    class ConfigLoader <<planned>> {
+        + source: Source
+
+        + load_config(): SimulationBlueprint
+    }
+    ConfigLoader ..> SimulationBlueprint
+
+
+    class Downloader <<planned>> {
+        + source: Source
+
+        + download_run(run_nr: int, out_file_type: str): Path
+    }
+    Downloader --> Source
+
+
+    class SimulationIO <<planned>> {
+        + source: Source
+
+        - _config_loader: ConfigLoader
+        - _downloader: Downloader
+        - _repository: Repository
+
+        + init_simulation(): Path
+        + init_run(): Path
+        + load_config(): Path
+        + download_run(run_nr: int, out_file_type: str): Path
+    }
+    SimulationIO --> Source
+    SimulationIO --> ConfigLoader
+    SimulationIO --> Downloader
+    SimulationIO --> Repository
+
+}
+
+
+
+'=============================================================================='
+'Broken Links'
+'=============================================================================='
+SimulationEngine --> SimulationSpecs
+Simulation --> SimulationEngine
+Simulation o-- SimulationState
+
+
+@enduml
+
+
+
+'!if ($SHOW_DEPENDENCIES == 1)'
