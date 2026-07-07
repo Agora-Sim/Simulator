@@ -149,7 +149,7 @@ package "Model Domain Layer" #FFF8E1 {
         NodeBlueprint ..> NodeProperty
 
 
-        class SimulationSpecs <<planned>> {
+        class SimulationSpecs <<implemented>> {
             + step_size: StepType
             + max_duration: int
             + re_connection: bool
