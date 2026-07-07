@@ -1,0 +1,21 @@
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
+from typing import ClassVar
+from dataclasses import dataclass
+
+from .node_module import NodeModule
+
+
+# ================================================================
+# 1. Section: Functions
+# ================================================================
+@dataclass
+class HeathModule(NodeModule):
+    name: ClassVar[str] = "health_module"
+
+    heath: float
+    age: float
+
+    def apply(self):
+        pass
