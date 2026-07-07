@@ -165,6 +165,7 @@ package "Model Domain Layer" #FFF8E1 {
 
 
         class NodeProperty <<planned>> {
+            + name: str
             + modules: list[str]
             + initial_numbers: int
             + connectivity: int
@@ -197,6 +198,58 @@ package "Model Domain Layer" #FFF8E1 {
 'Adapter Layer'
 '=============================================================================='
 package "Adapter Layer" #E3F2FD {
+    class Repository <<planned>> {
+        + source: Source
+
+        + init_simulation(): Path
+        + init_run(): Path
+    }
+    Repository --> Source
+
+
+    class Source <<planned>> {
+        + simulation_name: str
+        + simulation_description: str
+        + folder: Path
+
+        + runs_folder: Path
+
+        + get_run_folder(run_nr: int): Path
+    }
+
+
+    class ConfigLoader <<planned>> {
+        + source: Source
+
+        + load_config(): SimulationBlueprint
+    }
+    ConfigLoader ..> SimulationBlueprint
+
+
+    class Downloader <<planned>> {
+        + source: Source
+
+        + download_run(run_nr: int, out_file_type: str): Path
+    }
+    Downloader --> Source
+
+
+    class SimulationIO <<planned>> {
+        + source: Source
+
+        - _config_loader: ConfigLoader
+        - _downloader: Downloader
+        - _repository: Repository
+
+        + init_simulation(): Path
+        + init_run(): Path
+        + load_config(): Path
+        + download_run(run_nr: int, out_file_type: str): Path
+    }
+    SimulationIO --> Source
+    SimulationIO --> ConfigLoader
+    SimulationIO --> Downloader
+    SimulationIO --> Repository
 
 }
 
