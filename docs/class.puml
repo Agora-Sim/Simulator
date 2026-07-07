@@ -131,7 +131,7 @@ package "Model Domain Layer" #FFF8E1 {
 
 
     package "Instantiation"{
-        class SimulationBlueprint <<planned>> {
+        class SimulationBlueprint <<implemented>> {
             + data: dict
             + node_blueprint: NodeBlueprint
             + simulation_specs: SimulationSpecs
@@ -150,6 +150,8 @@ package "Model Domain Layer" #FFF8E1 {
 
 
         class SimulationSpecs <<implemented>> {
+            + data: dict
+
             + step_size: StepType
             + max_duration: int
             + re_connection: bool
@@ -161,6 +163,8 @@ package "Model Domain Layer" #FFF8E1 {
         class StepType <<implemented>> {
             + factor: float
             + unit: str
+
+            + from_str(str): StepType
         }
 
 
