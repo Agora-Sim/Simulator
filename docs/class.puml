@@ -158,7 +158,7 @@ package "Model Domain Layer" #FFF8E1 {
         SimulationSpecs --> StepType
 
 
-        class StepType <<planned>> {
+        class StepType <<implemented>> {
             + factor: float
             + unit: str
         }
