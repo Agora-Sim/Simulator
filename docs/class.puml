@@ -53,18 +53,18 @@ package "Service Layer" #E8F5E9 {
 package "Model Domain Layer" #FFF8E1 {
 
     package "Modules"{
-        interface NodeModule <<planned>> {
+        interface NodeModule <<implemented>> {
             + name: str
         }
 
-        class HealthModule <<planned>> {
+        class HealthModule <<partial>> {
             + health: float
             + age: float
         }
         HealthModule ..|> NodeModule
 
 
-        class MoneyModule <<planned>> {
+        class MoneyModule <<partial>> {
             + balance: float
             + income_rate: float
         }
