@@ -17,3 +17,8 @@ from dataclasses import dataclass
 class StepType:
     factor: float
     unit: str
+
+    @classmethod
+    def from_str(cls, step_type_str: str) -> "StepType":
+        factor, unit = step_type_str.split()
+        return cls(factor=float(factor), unit=unit)
