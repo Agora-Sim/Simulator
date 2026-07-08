@@ -1,11 +1,14 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
+
 from dataclasses import dataclass
 
 from ..node import Node
 from .node_blueprint import NodeBlueprint
 from .module_property import ModuleProperty
+from ..connectivity_matrix import ConnectivityMatrix
 from ..modules import NodeModule, HealthModule, MoneyModule
 
 # ================================================================
@@ -35,7 +38,26 @@ class NodeFactory:
 
         return nodes
 
+    def build_connectivity_matrix(
+        self, nodes: list[Node], node_blueprint: NodeBlueprint
+    ) -> ConnectivityMatrix:
+        n = node_blueprint.nr_nodes
+        matrix = np.zeros((n, n))
 
+        for node in nodes:
+            type = node.node_type
+            connectivity = node_blueprint.get_node_type_properties(type).connectivity
+            id = node.id
+
+            row = matrix[id]
+            matrix[id] = connectivity.build(id, row)
+
+        return ConnectivityMatrix(matrix)
+
+
+# ──────────────────────────────────────────────────────
+# 1.1 Subsection: Helper Functions
+# ──────────────────────────────────────────────────────
 def _build_specific_node_type(
     node_blueprint: NodeBlueprint, type_name: str, start_id: int
 ) -> tuple[list[Node], int]:
