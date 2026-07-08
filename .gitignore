@@ -216,3 +216,4 @@ runs/
 logs/
 figures/
 claude/
+.claude/
