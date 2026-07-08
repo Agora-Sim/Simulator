@@ -7,7 +7,6 @@ from dataclasses import dataclass
 from .abstract_distribution import AbstractDistribution
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================

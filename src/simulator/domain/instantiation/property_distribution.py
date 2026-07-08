@@ -7,7 +7,6 @@ from dataclasses import dataclass
 from .distributions import AbstractDistribution, NormalDistribution
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
@@ -22,8 +21,6 @@ class PropertyDistribution:
             return NormalDistribution(**self.data)
         else:
             raise ValueError(f"Unknown distribution: {self.name}")
-
-
 
     # ================================================================
     # 2. Section: Methods

@@ -3,6 +3,8 @@
 # ================================================================
 from dataclasses import dataclass
 
+from .module_property import ModuleProperty
+
 
 # ================================================================
 # 1. Section: Functions
@@ -18,8 +20,8 @@ class NodeProperty:
     ----------
         name: str
             The name of the node type (e.g citizen)
-        modules: list[str]
-            A list of module names to be used by this node type.
+        modules: list[ModuleProperty]
+            A list of module properties to be used by this node type.
         initial_numbers: int
             The initial number of nodes of this type (e.g 1000).
         connectivity: int
@@ -27,6 +29,6 @@ class NodeProperty:
     """
 
     name: str
-    modules: list[str]
+    modules: list[ModuleProperty]
     initial_numbers: int
     connectivity: int

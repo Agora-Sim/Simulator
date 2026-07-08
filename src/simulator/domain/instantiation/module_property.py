@@ -8,7 +8,6 @@ from .property_range import PropertyRange
 from .property_distribution import PropertyDistribution
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
