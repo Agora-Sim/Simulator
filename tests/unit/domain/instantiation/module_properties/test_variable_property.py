@@ -3,12 +3,6 @@
 VariableProperty is a view over a single variable's config. It exposes a
 PropertyRange (from "range") and a PropertyDistribution (dispatched by
 "distribution.type"), and samples a value via that distribution.
-
-NOTE: the normal-distribution path is currently broken (see the xfail tests):
-`distribution` builds ``NormalDistribution(**data["distribution"])``, spreading
-``type``/``mean``/``std`` as keyword arguments, but the dataclass only accepts a
-single ``data`` field. These tests encode the *intended* contract so they start
-passing automatically once the constructor call is fixed.
 """
 
 # ================================================================
@@ -59,11 +53,6 @@ def test_distribution_unknown_type_raises_value_error() -> None:
         _ = prop.distribution
 
 
-@pytest.mark.xfail(
-    reason="distribution builds NormalDistribution(**dict) with extra kwargs; "
-    "the dataclass only accepts `data`.",
-    strict=True,
-)
 @pytest.mark.unit
 def test_distribution_normal_returns_normal_distribution() -> None:
     prop = VariableProperty(data=_variable_data(mean=3.0, std=1.0))
@@ -75,10 +64,6 @@ def test_distribution_normal_returns_normal_distribution() -> None:
     assert distribution.std == 1.0
 
 
-@pytest.mark.xfail(
-    reason="sample() delegates to the broken distribution property.",
-    strict=True,
-)
 @pytest.mark.unit
 def test_sample_returns_float_from_distribution() -> None:
     prop = VariableProperty(data=_variable_data(mean=0.0, std=1.0))

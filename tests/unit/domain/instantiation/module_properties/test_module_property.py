@@ -1,12 +1,7 @@
 """Contract tests for ModuleProperty.
 
 ModuleProperty is a view over a single module's config. Its `variables` property
-is meant to map each variable name to a VariableProperty.
-
-NOTE: `variables` currently returns the raw config dicts unchanged rather than
-wrapping them in VariableProperty (its declared return type). The key mapping is
-stable and tested directly; the wrapping contract is captured as an xfail so it
-flips to passing once the wrapping is added.
+maps each variable name to a VariableProperty wrapping that variable's config.
 """
 
 # ================================================================
@@ -63,11 +58,6 @@ def test_variables_is_empty_for_module_without_variables() -> None:
     assert prop.variables == {}
 
 
-@pytest.mark.xfail(
-    reason="variables returns raw config dicts instead of wrapping them in "
-    "VariableProperty (its declared return type).",
-    strict=True,
-)
 @pytest.mark.unit
 def test_variables_values_are_variable_properties() -> None:
     prop = ModuleProperty(name="health_module", data=_module_data())

@@ -3,14 +3,8 @@
 NodeFactory turns a NodeBlueprint into a list of Node objects and a
 ConnectivityMatrix.
 
-Two behaviours are currently blocked by upstream bugs in the sampling chain and
-in NormalConnectivity.build; the intended contracts are captured as xfail tests
-so they announce themselves when fixed:
-
-  * build_nodes() -> AttributeError, because ModuleProperty.variables yields raw
-    dicts (no .sample()) and VariableProperty.distribution mis-constructs the
-    distribution.
-  * build_connectivity_matrix() -> NotImplementedError from NormalConnectivity.build.
+build_connectivity_matrix() still raises NotImplementedError, since
+NormalConnectivity.build has no real implementation yet.
 """
 
 # ================================================================
@@ -50,12 +44,6 @@ def test_build_connectivity_matrix_propagates_not_implemented() -> None:
         NodeFactory().build_connectivity_matrix(nodes, blueprint)
 
 
-@pytest.mark.xfail(
-    reason="Sampling chain is broken: ModuleProperty.variables returns raw dicts "
-    "and VariableProperty.distribution mis-constructs NormalDistribution.",
-    strict=True,
-    raises=AttributeError,
-)
 @pytest.mark.unit
 def test_build_nodes_creates_one_node_per_initial_number() -> None:
     blueprint = NodeBlueprint(build_nodes_data())  # 3 citizens + 2 companies
