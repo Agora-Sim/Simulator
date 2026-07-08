@@ -1,0 +1,121 @@
+@startuml
+'left to right direction'
+'skinparam linetype ortho'
+
+skinparam object {
+    BackgroundColor #F8F8F8
+    BorderColor #333333
+    FontColor #111111
+}
+
+title Node Blueprint Object Diagram
+
+legend right
+|= Level |= Meaning |= Colour |
+|<#E3F2FD> | Level 0 | Root blueprint |
+|<#FFF8E1> | Level 1 | Node type properties |
+|<#E8F5E9> | Level 2 | Module properties |
+|<#F3E5F5> | Level 2 | Connectivity rules |
+|<#FCE4EC> | Level 3 | Variable properties |
+|<#E0F2F1> | Level 4 | Ranges / distributions |
+endlegend
+
+
+object "blueprint : NodeBlueprint" as blueprint #E3F2FD {
+    type_names = ["citizen", "governament"]
+    nr_nodes: 100 001
+    node_properties = [citizen_prop, governament_prop]
+
+    data = ...
+}
+
+
+object "citizen_prop : NodeProperty" as node_prop0 #FFF8E1 {
+    name = "citizen"
+    initial_numbers = 100 000
+    connectivity = citizen_conectivity
+
+    modules = [citizen_health_module, citizen_money_module]
+}
+node_prop0 --o blueprint : node_properties
+
+
+object "governament_prop : NodeProperty" as node_prop1 #FFF8E1 {
+    name = "governament"
+    initial_numbers = 1
+    connectivity = governament_connectivity
+
+    modules = [governament_money_module]
+}
+node_prop1 --o blueprint : node_properties
+
+
+object "citizen_conectivity : ConnectivityRule" as node_conect0 #F3E5F5 {
+    name = "normal"
+    mean = 0.6
+    std = 0.2
+
+    data = ...
+}
+node_conect0 --> node_prop0 : connectivity
+
+
+object "governament_conectivity : ConnectivityRule" as node_conect1 #F3E5F5 {
+    name = "complete"
+
+    data = ...
+}
+node_conect1 --> node_prop1 : connectivity
+
+
+object "citizen_health_module : ModuleProperty" as node0_mod0 #E8F5E9 {
+    name = "health"
+
+    variables = [citizen_age_var, citizen_health_var]
+    data = ...
+}
+node0_mod0 --o node_prop0 : modules
+
+
+object "citizen_money_module : ModuleProperty" as node0_mod1 #E8F5E9 {
+    name = "money"
+
+    variables = ...
+    data = ...
+}
+node0_mod1 --o node_prop0 : modules
+
+
+object "governament_money_module : ModuleProperty" as node1_mod0 #E8F5E9 {
+    name = "money"
+
+    variables = ...
+    data = ...
+}
+node1_mod0 --o node_prop1 : modules
+
+
+object "citizen_age_var : VariableProperty" as node0_mod0_var0 #FCE4EC {
+    name = "age"
+
+    range = citizen_age_var_range
+    distribution = citizen_age_var_dist
+}
+node0_mod0_var0 --o node0_mod0 : variables
+
+
+object "citizen_age_var_range : PropertyRange" as node0_mod0_var0_range #E0F2F1 {
+    min = 18
+    max = 80
+}
+node0_mod0_var0_range --o node0_mod0_var0 : range
+
+
+object "citizen_age_var_dist : PropertyDistribution" as node0_mod0_var0_dist #E0F2F1 {
+    name = "normal"
+    mean = 35
+    std = 10
+}
+node0_mod0_var0_dist --o node0_mod0_var0 : distribution
+
+@enduml
