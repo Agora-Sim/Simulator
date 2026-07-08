@@ -1,6 +1,7 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+from typing import Any
 from dataclasses import dataclass
 
 from .step_type import StepType
@@ -11,7 +12,7 @@ from .step_type import StepType
 # ================================================================
 @dataclass
 class SimulationSpecs:
-    data: dict
+    data: dict[str, Any]
 
     @property
     def max_duration(self) -> int:

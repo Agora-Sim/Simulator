@@ -1,19 +1,23 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-import random
 
+import numpy as np
+
+from typing import ClassVar, Any
+from numpy.typing import NDArray
 from dataclasses import dataclass
-from .abstract_distribution import AbstractDistribution
+from abc import ABC, abstractmethod
 
 
 # ================================================================
-# 1. Section: Functions
+# 1. Section: Abstract Connectivity Rule
 # ================================================================
 @dataclass
-class NormalDistribution(AbstractDistribution):
-    mean: float
-    std: float
+class ConnectivityRule(ABC):
+    data: dict[str, Any]
+    type: ClassVar[str]
 
-    def sample(self) -> float:
-        return random.normalvariate(self.mean, self.std)
+    @abstractmethod
+    def build(self, id: int, node_row: NDArray) -> np.ndarray:
+        pass

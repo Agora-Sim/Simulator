@@ -1,7 +1,8 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from abc import ABC
+from abc import ABC, abstractmethod
+from typing import Any, ClassVar
 from dataclasses import dataclass
 
 
@@ -9,6 +10,10 @@ from dataclasses import dataclass
 # 1. Section: Functions
 # ================================================================
 @dataclass
-class AbstractDistribution(ABC):
+class PropertyDistribution(ABC):
+    type: ClassVar[str]
+    data: dict[str, Any]
+
+    @abstractmethod
     def sample(self) -> float:
-        raise NotImplementedError("sample method must be implemented")
+        pass
