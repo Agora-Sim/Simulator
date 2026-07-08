@@ -1,4 +1,4 @@
-.PHONY: format diagram dev
+.PHONY: format diagram dev coverage-badge install-hooks
 
 diagram:
 	plantuml -tpng docs/class.puml
@@ -8,3 +8,10 @@ format:
 	black src/simulator/
 
 dev: diagram format
+
+coverage-badge:
+	poetry run python scripts/update_coverage_badge.py
+
+install-hooks:
+	cp .githooks/pre-commit .git/hooks/pre-commit
+	chmod +x .git/hooks/pre-commit

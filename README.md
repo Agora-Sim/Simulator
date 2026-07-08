@@ -15,6 +15,9 @@
     <img src="https://shields.io/badge/Package_Manager-poetry-green?logo=poetry&style=flat" alt="Poetry">
     <img src="https://shields.io/badge/code_style-black-black?&style=flat" alt="Formatter">
     <img src="https://shields.io/badge/linting-pylint-yellow?&style=flat" alt="Linter">
+    <!-- coverage-badge:start -->
+    <img src="https://shields.io/badge/coverage-99%25-brightgreen?style=flat" alt="Coverage">
+    <!-- coverage-badge:end -->
 </div>
 
 ---

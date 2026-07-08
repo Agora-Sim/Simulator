@@ -1,0 +1,13 @@
+#!/bin/sh
+# Refreshes the coverage badge in README.md before each commit and
+# re-stages the file if it changed. Installed via `make install-hooks`.
+
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+poetry run python "$REPO_ROOT/scripts/update_coverage_badge.py"
+
+if ! git diff --quiet -- "$REPO_ROOT/README.md"; then
+    git add "$REPO_ROOT/README.md"
+fi
