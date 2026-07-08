@@ -25,5 +25,5 @@ class PropertyDistribution:
     # ================================================================
     # 2. Section: Methods
     # ================================================================
-    def sample(self, amount: int) -> list[float]:
-        return self.generator.sample(amount)
+    def sample(self) -> float:
+        return self.generator.sample()

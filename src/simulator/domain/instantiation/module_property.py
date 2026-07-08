@@ -1,6 +1,8 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
+
 from typing import Any, cast
 from dataclasses import dataclass
 
@@ -17,15 +19,26 @@ class ModuleProperty:
     data: dict[str, Any]
 
     @property
-    def range(self) -> PropertyRange:
-        range_list = cast(list, self.data.get("range"))
-        return PropertyRange.from_list(range_list)
+    def variables(self) -> list[str]:
+        return list(self.data.keys())
 
-    @property
-    def distribution(self) -> PropertyDistribution:
-        data = cast(dict, self.data.get("distribution"))
+    # ================================================================
+    # 2. Section: Methods
+    # ================================================================
+    def get_range(self, variable: str) -> PropertyRange:
+        range_list = cast(dict, self.data[variable]["range"])
+        return PropertyRange.from_list(range_list[variable])
+
+    def distribution(self, variable: str) -> PropertyDistribution:
+        data = cast(dict, self.data[variable]["distribution"])
 
         return PropertyDistribution(
             name=data["type"],
-            data=data["params"],
+            data={key: value for key, value in data.items() if key != "type"},
         )
+
+    def sample(self, variable: str) -> float:
+        sampled = self.distribution(variable).sample()
+        range = self.get_range(variable)
+
+        return np.clip(sampled, range.min, range.max)

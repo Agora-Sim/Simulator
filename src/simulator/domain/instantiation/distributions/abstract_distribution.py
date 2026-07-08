@@ -10,5 +10,5 @@ from dataclasses import dataclass
 # ================================================================
 @dataclass
 class AbstractDistribution(ABC):
-    def sample(self, amount: int) -> list[float]:
+    def sample(self) -> float:
         raise NotImplementedError("sample method must be implemented")

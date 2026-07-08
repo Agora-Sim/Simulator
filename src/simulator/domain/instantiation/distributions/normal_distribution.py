@@ -15,5 +15,5 @@ class NormalDistribution(AbstractDistribution):
     mean: float
     std: float
 
-    def sample(self, amount: int) -> list[float]:
-        return [random.normalvariate(self.mean, self.std) for _ in range(amount)]
+    def sample(self) -> float:
+        return random.normalvariate(self.mean, self.std)
