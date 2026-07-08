@@ -19,5 +19,5 @@ class ConnectivityRule(ABC):
     type: ClassVar[str]
 
     @abstractmethod
-    def build(self, id: int, node_row: NDArray) -> np.ndarray:
+    def build(self, node_id: int, node_row: NDArray) -> np.ndarray:
         pass

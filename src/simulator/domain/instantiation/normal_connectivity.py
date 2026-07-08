@@ -25,5 +25,5 @@ class NormalConnectivity(ConnectivityRule):
     def std(self) -> float:
         return self.data["std"]
 
-    def build(self, id: int, node_row: NDArray) -> np.ndarray:
-        return super().build(id, node_row)
+    def build(self, node_id: int, node_row: NDArray) -> np.ndarray:
+        raise NotImplementedError("build method not implemented")

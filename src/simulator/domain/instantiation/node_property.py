@@ -40,11 +40,11 @@ class NodeProperty:
 
     @property
     def connectivity(self) -> ConnectivityRule:
-        type = self.data["connectivity"]["type"]
-        if type == "normal":
+        con_type = self.data["connectivity"]["type"]
+        if con_type == "normal":
             return NormalConnectivity(self.data["connectivity"])
 
-        raise ValueError(f"Unknown connectivity type: {type}")
+        raise ValueError(f"Unknown connectivity type: {con_type}")
 
     @property
     def modules(self) -> list[ModuleProperty]:

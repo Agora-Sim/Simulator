@@ -27,13 +27,13 @@ MODULE_REGISTRY: dict[str, type[NodeModule]] = {
 class NodeFactory:
     def build_nodes(self, node_blueprint: NodeBlueprint) -> list[Node]:
         nodes = []
-        id = 0
+        node_id = 0
         for node_type_name in node_blueprint.type_names:
             new_nodes, next_id = _build_specific_node_type(
-                node_blueprint, node_type_name, id
+                node_blueprint, node_type_name, node_id
             )
 
-            id = next_id
+            node_id = next_id
             nodes.extend(new_nodes)
 
         return nodes
@@ -45,12 +45,12 @@ class NodeFactory:
         matrix = np.zeros((n, n))
 
         for node in nodes:
-            type = node.node_type
-            connectivity = node_blueprint.get_node_type_properties(type).connectivity
-            id = node.id
+            node_type = node.node_type
+            connectivity = node_blueprint.get_node_type_properties(node_type).connectivity
+            node_id = node.id
 
-            row = matrix[id]
-            matrix[id] = connectivity.build(id, row)
+            row = matrix[node_id]
+            matrix[node_id] = connectivity.build(node_id, row)
 
         return ConnectivityMatrix(matrix)
 
