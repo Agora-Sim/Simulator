@@ -36,7 +36,7 @@ endlegend
 'Service Layer'
 '=============================================================================='
 package "Service Layer" #E8F5E9 {
-    class Simulation <<planned>> {
+    class Simulation <<implemented>> {
         + engine: SimulationEngine
         - _current_step: int
         - _history: list[SimulationState]
@@ -102,10 +102,10 @@ package "Model Domain Layer" #FFF8E1 {
     Node o-- NodeModule
 
 
-    class SimulationEngine <<planned>> {
+    class SimulationEngine <<partial>> {
         + nodes: list[Node]
         + connectivity_matrix: ConnectivityMatrix
-        - simulation_specs: SimulationSpecs
+        + simulation_specs: SimulationSpecs
 
         + step(): SimulationState
     }
@@ -236,7 +236,7 @@ package "Model Domain Layer" #FFF8E1 {
         NormalConnectivity ..|> ConnectivityRule
 
 
-        class SimulationFactory <<planned>> {
+        class SimulationFactory <<implemented>> {
             - _node_factory: NodeFactory
 
             + build_simulation(blueprint: SimulationBlueprint): Simulation
@@ -244,6 +244,7 @@ package "Model Domain Layer" #FFF8E1 {
         SimulationFactory --> NodeFactory
         SimulationFactory ..> SimulationBlueprint
         SimulationFactory ..> SimulationEngine
+        SimulationFactory ..> Simulation
 
         class NodeFactory <<implemented>> {
             + build_nodes(node_blueprint: NodeBlueprint): list[Node]
