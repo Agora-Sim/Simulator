@@ -1,0 +1,31 @@
+"""Contract tests for NormalConnectivity.
+
+NormalConnectivity exposes the mean/std of its config dict and declares the
+class-level connectivity type "normal". Its build() logic is not implemented yet.
+"""
+
+import numpy as np
+import pytest
+
+from simulator.domain.instantiation.normal_connectivity import NormalConnectivity
+
+
+@pytest.mark.unit
+def test_type_is_normal() -> None:
+    assert NormalConnectivity.type == "normal"
+
+
+@pytest.mark.unit
+def test_mean_and_std_read_from_data() -> None:
+    rule = NormalConnectivity(data={"type": "normal", "mean": 3.0, "std": 0.5})
+
+    assert rule.mean == 3.0
+    assert rule.std == 0.5
+
+
+@pytest.mark.unit
+def test_build_raises_not_implemented() -> None:
+    rule = NormalConnectivity(data={"type": "normal", "mean": 1.0, "std": 1.0})
+
+    with pytest.raises(NotImplementedError, match="build method not implemented"):
+        rule.build(node_id=0, node_row=np.zeros(3))

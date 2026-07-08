@@ -1,0 +1,57 @@
+"""Contract tests for Node.
+
+Node is a plain data holder: an id, a node_type label and a list of modules.
+"""
+
+import pytest
+
+from simulator.domain.node import Node
+from simulator.domain.modules import HealthModule, MoneyModule
+
+
+@pytest.mark.unit
+def test_node_stores_its_fields() -> None:
+    modules = [HealthModule(health=80.0, age=25.0)]
+
+    node = Node(id=7, node_type="citizen", modules=modules)
+
+    assert node.id == 7
+    assert node.node_type == "citizen"
+    assert node.modules == modules
+
+
+@pytest.mark.unit
+def test_node_accepts_multiple_modules() -> None:
+    health = HealthModule(health=50.0, age=30.0)
+    money = MoneyModule(balance=100.0, income=10.0)
+
+    node = Node(id=0, node_type="citizen", modules=[health, money])
+
+    assert node.modules == [health, money]
+
+
+@pytest.mark.unit
+def test_node_accepts_empty_module_list() -> None:
+    node = Node(id=0, node_type="citizen", modules=[])
+
+    assert node.modules == []
+
+
+@pytest.mark.unit
+def test_nodes_with_equal_fields_are_equal() -> None:
+    modules = [HealthModule(health=50.0, age=30.0)]
+
+    a = Node(id=1, node_type="citizen", modules=modules)
+    b = Node(id=1, node_type="citizen", modules=modules)
+
+    assert a == b
+
+
+@pytest.mark.unit
+def test_nodes_with_different_ids_are_not_equal() -> None:
+    modules = [HealthModule(health=50.0, age=30.0)]
+
+    a = Node(id=1, node_type="citizen", modules=modules)
+    b = Node(id=2, node_type="citizen", modules=modules)
+
+    assert a != b
