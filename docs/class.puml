@@ -181,8 +181,8 @@ package "Model Domain Layer" #FFF8E1 {
             + name: str
             + data: dict[str, Any]
 
-            + range: PropertyRange
-            + distribution: PropertyDistribution
+            + get_range(variable: str): PropertyRange
+            + distribution(variable: str): PropertyDistribution
         }
         ModuleProperty --> PropertyRange
         ModuleProperty --> PropertyDistribution
@@ -199,21 +199,19 @@ package "Model Domain Layer" #FFF8E1 {
             + data: dict[str, Any]
             + generator: AbstractDistribution
 
-            + sample(amount: int): list[float]
+            + sample(): float
         }
         PropertyDistribution --> AbstractDistribution
 
 
         abstract class AbstractDistribution <<implemented>> {
-            + sample(amount: int): list[float]
+            + sample(): float
         }
 
 
         class NormalDistribution <<implemented>> {
             + min: float
             + max: float
-
-            + method(input): out_type
         }
         NormalDistribution ..|> AbstractDistribution
 
@@ -227,7 +225,7 @@ package "Model Domain Layer" #FFF8E1 {
         SimulationFactory ..> SimulationBlueprint
         SimulationFactory ..> SimulationEngine
 
-        class NodeFactory <<planned>> {
+        class NodeFactory <<partial>> {
             + build_nodes(node_blueprint: NodeBlueprint): list[Node]
             + build_connectivity(node_blueprint: NodeBlueprint): ConnectivityMatrix
         }
