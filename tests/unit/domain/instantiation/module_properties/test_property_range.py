@@ -4,6 +4,9 @@ PropertyRange is a frozen value object holding a [min, max] pair. It can be buil
 from a two-element list and rejects ranges where min > max.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import dataclasses
 
 import pytest
@@ -13,6 +16,9 @@ from simulator.domain.instantiation.module_properties.property_range import (
 )
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_stores_min_and_max() -> None:
     prop_range = PropertyRange(min=0.0, max=10.0)

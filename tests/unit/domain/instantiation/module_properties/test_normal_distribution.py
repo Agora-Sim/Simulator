@@ -5,6 +5,9 @@ Gaussian via random.normalvariate. Sampling is made deterministic in tests by
 seeding the global random module.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import random
 import statistics
 
@@ -15,6 +18,9 @@ from simulator.domain.instantiation.module_properties.normal_distribution import
 )
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_mean_and_std_read_from_data() -> None:
     dist = NormalDistribution(data={"type": "normal", "mean": 4.0, "std": 2.0})

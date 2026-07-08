@@ -6,6 +6,9 @@ NodeFactory so the wiring contract can be tested independently of the (currently
 broken) real node-building logic.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import numpy as np
 import pytest
 
@@ -19,6 +22,9 @@ from simulator.domain.instantiation.simulation_blueprint import SimulationBluepr
 from tests.helpers.builders import build_blueprint_data
 
 
+# ================================================================
+# 1. Section: Fixtures
+# ================================================================
 class FakeNodeFactory:
     """Records the inputs it receives and returns canned nodes/connectivity."""
 
@@ -37,6 +43,9 @@ class FakeNodeFactory:
         return self.matrix
 
 
+# ================================================================
+# 2. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_build_simulation_returns_simulation_wired_with_engine() -> None:
     fake_factory = FakeNodeFactory()

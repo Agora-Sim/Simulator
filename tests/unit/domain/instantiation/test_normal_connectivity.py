@@ -4,12 +4,18 @@ NormalConnectivity exposes the mean/std of its config dict and declares the
 class-level connectivity type "normal". Its build() logic is not implemented yet.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import numpy as np
 import pytest
 
 from simulator.domain.instantiation.normal_connectivity import NormalConnectivity
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_type_is_normal() -> None:
     assert NormalConnectivity.type == "normal"

@@ -13,6 +13,9 @@ so they announce themselves when fixed:
   * build_connectivity_matrix() -> NotImplementedError from NormalConnectivity.build.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import numpy as np
 import pytest
 
@@ -27,6 +30,9 @@ from simulator.domain.modules import HealthModule, MoneyModule
 from tests.helpers.builders import build_nodes_data
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_module_registry_maps_names_to_classes() -> None:
     assert MODULE_REGISTRY[HealthModule.name] is HealthModule

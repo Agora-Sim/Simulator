@@ -4,6 +4,9 @@ SimulationSpecs is a typed read-only view over the raw "simulation" config dict.
 Each property exposes one config value; step_size is parsed into a StepType.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.instantiation.step_type import StepType
@@ -11,6 +14,9 @@ from simulator.domain.instantiation.simulation_specs import SimulationSpecs
 from tests.helpers.builders import build_simulation_data
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_exposes_scalar_specs() -> None:
     specs = SimulationSpecs(

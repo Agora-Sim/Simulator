@@ -5,6 +5,9 @@ specs). Its step() logic is not implemented yet, so the contract we can pin
 today is construction and the explicit NotImplementedError from step().
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import numpy as np
 import pytest
 
@@ -14,6 +17,9 @@ from simulator.domain.instantiation.simulation_specs import SimulationSpecs
 from tests.helpers.builders import build_node, build_simulation_data
 
 
+# ================================================================
+# 1. Section: Fixtures
+# ================================================================
 def _make_engine() -> SimulationEngine:
     return SimulationEngine(
         nodes=[build_node(node_id=0)],
@@ -22,6 +28,9 @@ def _make_engine() -> SimulationEngine:
     )
 
 
+# ================================================================
+# 2. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_simulation_engine_stores_its_fields() -> None:
     nodes = [build_node(node_id=0)]

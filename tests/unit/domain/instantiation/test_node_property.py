@@ -5,6 +5,9 @@ node count, the connectivity rule (dispatched by "type"), and the list of module
 properties for the type.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.instantiation.node_property import NodeProperty
@@ -13,6 +16,9 @@ from simulator.domain.instantiation.module_properties import ModuleProperty
 from tests.helpers.builders import build_health_node_type_data
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_initial_numbers_reads_config() -> None:
     prop = NodeProperty(

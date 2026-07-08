@@ -1,10 +1,16 @@
 """Contract tests for MoneyModule."""
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.modules import MoneyModule
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_money_module_name_is_class_level() -> None:
     assert MoneyModule.name == "money_module"

@@ -6,12 +6,18 @@ history. We use a RecordingEngine fake so the test is fast and independent of th
 (unimplemented) real engine step logic.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.service.simulation import Simulation
 from tests.helpers.fakes import RecordingEngine
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_run_simulation_steps_engine_max_duration_times() -> None:
     engine = RecordingEngine(max_duration=5)

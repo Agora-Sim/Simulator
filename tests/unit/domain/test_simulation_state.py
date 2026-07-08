@@ -4,6 +4,9 @@ SimulationState is a snapshot value object: the nodes, their connectivity and
 the time index at which the snapshot was taken.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import numpy as np
 import pytest
 
@@ -12,6 +15,9 @@ from simulator.domain.connectivity_matrix import ConnectivityMatrix
 from tests.helpers.builders import build_node
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_simulation_state_stores_its_fields() -> None:
     nodes = [build_node(node_id=0), build_node(node_id=1)]

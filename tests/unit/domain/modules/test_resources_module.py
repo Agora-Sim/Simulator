@@ -1,11 +1,17 @@
 """Contract tests for ResourcesModule."""
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.modules import ResourcesModule
 from simulator.domain.modules.resource import Resource
 
 
+# ================================================================
+# 1. Section: Fixtures
+# ================================================================
 def _resource(name: str = "wheat") -> Resource:
     return Resource(
         name=name,
@@ -17,6 +23,9 @@ def _resource(name: str = "wheat") -> Resource:
     )
 
 
+# ================================================================
+# 2. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_resources_module_name_is_class_level() -> None:
     assert ResourcesModule.name == "resources_module"

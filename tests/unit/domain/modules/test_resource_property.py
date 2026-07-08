@@ -4,11 +4,17 @@ ResourceProperty subclasses ABC but does not mark apply() as abstract; instead
 apply() raises NotImplementedError until a concrete property overrides it.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.modules.resource_property import ResourceProperty
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_resource_property_apply_raises_not_implemented() -> None:
     prop = ResourceProperty()

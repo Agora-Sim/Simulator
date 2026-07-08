@@ -5,6 +5,9 @@ names, exposes a NodeProperty per type, and reports the total initial node count
 (nr_nodes) as the sum of each type's initial_numbers.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.instantiation.node_property import NodeProperty
@@ -16,6 +19,9 @@ from tests.helpers.builders import (
 )
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_type_names_lists_every_node_type() -> None:
     blueprint = NodeBlueprint(build_nodes_data())

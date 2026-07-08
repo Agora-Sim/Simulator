@@ -5,11 +5,17 @@ abstract apply() method. The contract worth pinning is that it cannot be
 instantiated directly and that concrete subclasses must supply apply().
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.modules.node_module import NodeModule
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_node_module_cannot_be_instantiated_directly() -> None:
     with pytest.raises(TypeError):

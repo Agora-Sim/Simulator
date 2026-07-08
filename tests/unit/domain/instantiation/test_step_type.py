@@ -4,11 +4,17 @@ StepType parses a "<factor> <unit>" string into a numeric factor and a unit
 label, e.g. "1.0 months" -> StepType(factor=1.0, unit="months").
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.instantiation.step_type import StepType
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_step_type_stores_fields() -> None:
     step = StepType(factor=2.5, unit="days")

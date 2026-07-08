@@ -3,12 +3,18 @@
 Node is a plain data holder: an id, a node_type label and a list of modules.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.node import Node
 from simulator.domain.modules import HealthModule, MoneyModule
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_node_stores_its_fields() -> None:
     modules = [HealthModule(health=80.0, age=25.0)]

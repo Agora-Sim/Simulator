@@ -1,10 +1,16 @@
 """Contract tests for Resource."""
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.modules.resource import Resource
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_resource_stores_its_fields() -> None:
     resource = Resource(

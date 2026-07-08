@@ -1,11 +1,17 @@
 """Contract tests for the ConnectivityRule abstract base."""
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import numpy as np
 import pytest
 
 from simulator.domain.instantiation.connectivity_rule import ConnectivityRule
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_connectivity_rule_cannot_be_instantiated_directly() -> None:
     with pytest.raises(TypeError):

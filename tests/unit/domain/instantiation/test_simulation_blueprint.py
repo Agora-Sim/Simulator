@@ -5,6 +5,9 @@ a NodeBlueprint (from the "nodes" key) and a SimulationSpecs (from the
 "simulation" key), raising a clear ValueError when either key is absent.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.instantiation.node_blueprint import NodeBlueprint
@@ -17,6 +20,9 @@ from tests.helpers.builders import (
 )
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_node_blueprint_is_built_from_nodes_key() -> None:
     blueprint = SimulationBlueprint(build_blueprint_data())

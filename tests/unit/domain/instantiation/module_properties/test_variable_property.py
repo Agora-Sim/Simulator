@@ -11,6 +11,9 @@ single ``data`` field. These tests encode the *intended* contract so they start
 passing automatically once the constructor call is fixed.
 """
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import random
 
 import pytest
@@ -26,6 +29,9 @@ from simulator.domain.instantiation.module_properties.variable_property import (
 )
 
 
+# ================================================================
+# 1. Section: Fixtures
+# ================================================================
 def _variable_data(mean: float = 50.0, std: float = 5.0):
     return {
         "range": [0.0, 100.0],
@@ -33,6 +39,9 @@ def _variable_data(mean: float = 50.0, std: float = 5.0):
     }
 
 
+# ================================================================
+# 2. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_range_is_built_from_range_list() -> None:
     prop = VariableProperty(data=_variable_data())

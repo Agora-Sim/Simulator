@@ -1,5 +1,8 @@
 """Contract tests for the PropertyDistribution abstract base."""
 
+# ================================================================
+# 0. Section: IMPORTS
+# ================================================================
 import pytest
 
 from simulator.domain.instantiation.module_properties.property_distribution import (
@@ -7,6 +10,9 @@ from simulator.domain.instantiation.module_properties.property_distribution impo
 )
 
 
+# ================================================================
+# 1. Section: Unit Tests
+# ================================================================
 @pytest.mark.unit
 def test_property_distribution_cannot_be_instantiated_directly() -> None:
     with pytest.raises(TypeError):
