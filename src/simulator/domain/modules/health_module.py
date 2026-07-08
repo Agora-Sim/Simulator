@@ -14,7 +14,7 @@ from .node_module import NodeModule
 class HealthModule(NodeModule):
     name: ClassVar[str] = "health_module"
 
-    heath: float
+    health: float
     age: float
 
     def apply(self):

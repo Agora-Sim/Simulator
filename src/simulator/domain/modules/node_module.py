@@ -1,7 +1,7 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import ClassVar
 from dataclasses import dataclass
 
@@ -13,5 +13,6 @@ from dataclasses import dataclass
 class NodeModule(ABC):
     name: ClassVar[str]
 
+    @abstractmethod
     def apply(self):
-        raise NotImplementedError("apply method must be implemented")
+        pass
