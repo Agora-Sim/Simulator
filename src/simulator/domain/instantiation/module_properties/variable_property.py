@@ -25,7 +25,7 @@ class VariableProperty:
     def distribution(self) -> PropertyDistribution:
         dist_type = self.data["distribution"]["type"]
         if dist_type == "normal":
-            return NormalDistribution(**self.data["distribution"])
+            return NormalDistribution(data=self.data["distribution"])
 
         raise ValueError(f"Unknown distribution type: {dist_type}")
 

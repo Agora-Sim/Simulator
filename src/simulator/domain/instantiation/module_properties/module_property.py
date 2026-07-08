@@ -20,6 +20,6 @@ class ModuleProperty:
         variables = {}
 
         for variable_name, variable_data in self.data.items():
-            variables[variable_name] = variable_data
+            variables[variable_name] = VariableProperty(variable_data)
 
         return variables
