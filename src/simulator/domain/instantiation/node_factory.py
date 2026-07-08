@@ -46,7 +46,9 @@ class NodeFactory:
 
         for node in nodes:
             node_type = node.node_type
-            connectivity = node_blueprint.get_node_type_properties(node_type).connectivity
+            connectivity = node_blueprint.get_node_type_properties(
+                node_type
+            ).connectivity
             node_id = node.id
 
             row = matrix[node_id]
