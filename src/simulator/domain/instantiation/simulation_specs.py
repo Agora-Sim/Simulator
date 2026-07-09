@@ -26,6 +26,10 @@ class SimulationSpecs:
     def seed(self) -> int:
         return self.data["seed"]
 
+    @seed.setter
+    def seed(self, value: int) -> None:
+        self.data["seed"] = value
+
     @property
     def step_size(self) -> StepType:
         step_type_str = self.data["step_size"]

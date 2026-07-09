@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from .module_properties import ModuleProperty
 from .connectivity_rule import ConnectivityRule
 from .normal_connectivity import NormalConnectivity
+from .constant_connectivity import ConstantConnectivity
 
 
 # ================================================================
@@ -43,6 +44,9 @@ class NodeProperty:
         con_type = self.data["connectivity"]["type"]
         if con_type == "normal":
             return NormalConnectivity(self.data["connectivity"])
+        elif con_type == "constant":
+            return ConstantConnectivity(self.data["connectivity"])
+
 
         raise ValueError(f"Unknown connectivity type: {con_type}")
 
