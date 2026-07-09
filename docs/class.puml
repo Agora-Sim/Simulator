@@ -45,7 +45,7 @@ package "Service Layer" #E8F5E9 {
     }
 
 
-    class Simulation <<planned>> {
+    class Simulation <<partial>> {
         + simulation_name: str
         + simulation_description: str
         + base_folder: Path
