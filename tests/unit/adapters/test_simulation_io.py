@@ -107,9 +107,7 @@ def test_load_config_returns_blueprint_from_config_loader(
 ) -> None:
     sentinel_blueprint = object()
     config_loader = FakeConfigLoader(sentinel_blueprint)
-    monkeypatch.setattr(
-        simulation_io_module, "ConfigLoader", lambda src: config_loader
-    )
+    monkeypatch.setattr(simulation_io_module, "ConfigLoader", lambda src: config_loader)
     io = SimulationIO(source)
 
     result = io.load_config()

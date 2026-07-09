@@ -20,7 +20,9 @@ class Repository:
     def init_simulation(self) -> Path:
         if self.source.folder.exists():
             simulation_name = (
-                self.source.simulation_name + "_" + str(len(list(self.source.folder.iterdir())))
+                self.source.simulation_name
+                + "_"
+                + str(len(list(self.source.folder.iterdir())))
             )
             self.source.simulation_name = simulation_name
 

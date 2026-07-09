@@ -8,7 +8,6 @@ from simulator.adapters.source import Source
 from simulator.adapters.simulation_io import SimulationIO
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
@@ -23,14 +22,12 @@ class Simulation:
         return Source(
             simulation_name=self.simulation_name,
             simulation_description=self.simulation_description,
-            base_folder=self.base_folder
+            base_folder=self.base_folder,
         )
 
     @property
     def _io(self):
         return SimulationIO(self._source)
-
-
 
     # ================================================================
     # 2. Section: Methods
