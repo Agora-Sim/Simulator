@@ -9,7 +9,6 @@ from .source import Source
 from ..domain.instantiation.simulation_blueprint import SimulationBlueprint
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
