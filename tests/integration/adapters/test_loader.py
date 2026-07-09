@@ -54,8 +54,8 @@ def test_load_run_reconstructs_history_states(
 
     loaded = Loader(source).load_run(run_nr=1)
 
-    assert len(loaded._history) == 1
-    assert isinstance(loaded._history[0], SimulationState)
+    assert len(loaded.history) == 1
+    assert isinstance(loaded.history[0], SimulationState)
 
 
 @pytest.mark.integration
@@ -68,7 +68,7 @@ def test_load_run_coerces_hdf5_scalars_to_native_types(
 
     specs = loaded.engine.simulation_specs.data
     # h5py hands back numpy scalars / bytes; the loader must coerce them back.
-    assert isinstance(loaded._current_step, int)
+    assert isinstance(loaded.current_step, int)
     assert isinstance(specs["max_duration"], int)
     assert isinstance(specs["re_connection"], bool)
     assert isinstance(specs["step_size"], str)

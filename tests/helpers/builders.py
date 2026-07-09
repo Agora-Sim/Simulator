@@ -180,6 +180,6 @@ def build_simulation(
         history = [state]
 
     simulation = SimulationRun(engine=engine)
-    simulation._current_step = current_step
-    simulation._history = history
+    simulation.current_step = current_step
+    simulation.history = history
     return simulation

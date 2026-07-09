@@ -52,8 +52,8 @@ class Loader:
             current_step = self._decode(f["current_step"])
 
         simulation = SimulationRun(engine=engine)
-        simulation._current_step = current_step
-        simulation._history = history
+        simulation.current_step = current_step
+        simulation.history = history
 
         return simulation
 

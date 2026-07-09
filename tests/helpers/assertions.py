@@ -41,8 +41,8 @@ def assert_engine_equal(actual: SimulationEngine, expected: SimulationEngine) ->
 
 
 def assert_simulation_equal(actual: SimulationRun, expected: SimulationRun) -> None:
-    assert actual._current_step == expected._current_step
-    assert len(actual._history) == len(expected._history)
-    for actual_state, expected_state in zip(actual._history, expected._history):
+    assert actual.current_step == expected.current_step
+    assert len(actual.history) == len(expected.history)
+    for actual_state, expected_state in zip(actual.history, expected.history):
         assert_state_equal(actual_state, expected_state)
     assert_engine_equal(actual.engine, expected.engine)

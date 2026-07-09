@@ -32,8 +32,8 @@ class Downloader:
 
         with h5py.File(out_path, "w") as f:
             self._encode(f, "simulation_engine", simulation.engine)
-            self._encode(f, "history", simulation._history)
-            self._encode(f, "current_step", simulation._current_step)
+            self._encode(f, "history", simulation.history)
+            self._encode(f, "current_step", simulation.current_step)
 
         return out_path
 

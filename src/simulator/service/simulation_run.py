@@ -37,13 +37,13 @@ class SimulationRun:
 
     engine: SimulationEngine
 
-    _current_step: int = field(default=0, init=False)
-    _history: list[SimulationState] = field(default_factory=list, init=False)
+    current_step: int = field(default=0, init=False)
+    history: list[SimulationState] = field(default_factory=list, init=False)
 
     def run_simulation(self) -> None:
         max_duration = self.engine.simulation_specs.max_duration
 
-        while self._current_step < max_duration:
+        while self.current_step < max_duration:
             state = self.engine.step()
-            self._history.append(state)
-            self._current_step += 1
+            self.history.append(state)
+            self.current_step += 1

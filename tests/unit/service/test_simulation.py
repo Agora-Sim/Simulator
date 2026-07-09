@@ -36,7 +36,7 @@ def test_run_simulation_collects_one_state_per_step() -> None:
     simulation.run_simulation()
 
     # History is the documented output of a run: one state per step, in order.
-    assert simulation._history == ["state-0", "state-1", "state-2"]
+    assert simulation.history == ["state-0", "state-1", "state-2"]
 
 
 @pytest.mark.unit
@@ -46,7 +46,7 @@ def test_run_simulation_advances_current_step_to_max_duration() -> None:
 
     simulation.run_simulation()
 
-    assert simulation._current_step == 4
+    assert simulation.current_step == 4
 
 
 @pytest.mark.unit
@@ -57,12 +57,12 @@ def test_run_simulation_with_zero_duration_does_nothing() -> None:
     simulation.run_simulation()
 
     assert engine.step_calls == 0
-    assert simulation._history == []
+    assert simulation.history == []
 
 
 @pytest.mark.unit
 def test_simulation_starts_with_empty_history_before_running() -> None:
     simulation = SimulationRun(engine=RecordingEngine(max_duration=2))
 
-    assert simulation._history == []
-    assert simulation._current_step == 0
+    assert simulation.history == []
+    assert simulation.current_step == 0
