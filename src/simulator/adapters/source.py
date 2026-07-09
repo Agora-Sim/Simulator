@@ -14,12 +14,6 @@ class Source:
     simulation_description: str
     base_folder: Path = Path("data")
 
-    def __post_init__(self):
-        if self.folder.exists():
-            self.simulation_name = (
-                self.simulation_name + "_" + str(len(list(self.folder.iterdir())))
-            )
-
     @property
     def folder(self):
         return self.base_folder / self.simulation_name
@@ -27,6 +21,16 @@ class Source:
     @property
     def runs_folder(self):
         return self.folder / "runs"
+
+    @property
+    def config_path(self) -> Path:
+        return self.folder / "config.yaml"
+
+    def __post_init__(self):
+        if self.folder.exists():
+            self.simulation_name = (
+                self.simulation_name + "_" + str(len(list(self.folder.iterdir())))
+            )
 
     def get_run_folder(self, run_id: str) -> Path:
         return self.runs_folder / f"run_{run_id}"

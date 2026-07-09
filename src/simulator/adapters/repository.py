@@ -36,7 +36,7 @@ class Repository:
         config["simulation_description"] = self.source.simulation_description
 
         # 5. Saves the updated config to the pipeline folder
-        with open(self.source.folder / "config.yaml", "w") as f:
+        with open(self.source.config_path, "w") as f:
             yaml.dump(config, f)
 
         return self.source.folder
