@@ -299,7 +299,7 @@ package "Adapter Layer" #E3F2FD {
     Downloader --> Source
 
 
-    class Loader <<partial>> {
+    class Loader <<implemented>> {
         + source: Source
 
         + load_run(run_nr: int, out_file_type: str): Simulation
@@ -308,22 +308,27 @@ package "Adapter Layer" #E3F2FD {
     Loader ..> Simulation
 
 
-    class SimulationIO <<implemented>> {
+    class SimulationIO <<partial>> {
         + source: Source
 
         - _config_loader: ConfigLoader
         - _downloader: Downloader
         - _repository: Repository
+        - _loader: Loader
 
         + init_simulation(): Path
         + init_run(): Path
-        + load_config(): Path
+        + load_config(): SimulationBlueprint
         + download_run(run_nr: int, out_file_type: str): Path
+        + load_run(run_nr: int, out_file_type: str): Simulation
     }
     SimulationIO --> Source
     SimulationIO --> ConfigLoader
     SimulationIO --> Downloader
     SimulationIO --> Repository
+    SimulationIO --> Loader
+    SimulationIO ..> Simulation
+    SimulationIO ..> SimulationBlueprint
 
 }
 
