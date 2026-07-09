@@ -16,7 +16,9 @@ class Source:
 
     def __post_init__(self):
         if self.folder.exists():
-            self.simulation_name = self.simulation_name + "_" + str(len(list(self.folder.iterdir())))
+            self.simulation_name = (
+                self.simulation_name + "_" + str(len(list(self.folder.iterdir())))
+            )
 
     @property
     def folder(self):
