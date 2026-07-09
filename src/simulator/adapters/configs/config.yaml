@@ -43,3 +43,4 @@ simulation:
   max_duration: 48
   re_connection: False
   seed: 2026
+  nr_runs: 10

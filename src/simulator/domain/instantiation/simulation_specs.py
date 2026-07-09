@@ -30,3 +30,7 @@ class SimulationSpecs:
     def step_size(self) -> StepType:
         step_type_str = self.data["step_size"]
         return StepType.from_str(step_type_str)
+
+    @property
+    def nr_runs(self) -> int:
+        return self.data["nr_runs"]
