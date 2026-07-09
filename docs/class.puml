@@ -263,7 +263,7 @@ package "Model Domain Layer" #FFF8E1 {
 'Adapter Layer'
 '=============================================================================='
 package "Adapter Layer" #E3F2FD {
-    class Repository <<partial>> {
+    class Repository <<implemented>> {
         + source: Source
 
         + init_simulation(): Path
