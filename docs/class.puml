@@ -299,6 +299,15 @@ package "Adapter Layer" #E3F2FD {
     Downloader --> Source
 
 
+    class Loader <<partial>> {
+        + source: Source
+
+        + load_run(run_nr: int, out_file_type: str): Simulation
+    }
+    Loader --> Source
+    Loader ..> Simulation
+
+
     class SimulationIO <<implemented>> {
         + source: Source
 
