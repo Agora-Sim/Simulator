@@ -1,8 +1,6 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-import os
-
 from ruamel.yaml import YAML
 from dataclasses import dataclass
 from pathlib import Path

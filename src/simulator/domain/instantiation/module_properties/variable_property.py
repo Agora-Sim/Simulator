@@ -30,7 +30,6 @@ class VariableProperty:
         if dist_type == "constant":
             return ConstantDistribution(data=self.data["distribution"])
 
-
         raise ValueError(f"Unknown distribution type: {dist_type}")
 
     def sample(self) -> float:

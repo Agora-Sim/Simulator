@@ -44,9 +44,8 @@ class NodeProperty:
         con_type = self.data["connectivity"]["type"]
         if con_type == "normal":
             return NormalConnectivity(self.data["connectivity"])
-        elif con_type == "constant":
+        if con_type == "constant":
             return ConstantConnectivity(self.data["connectivity"])
-
 
         raise ValueError(f"Unknown connectivity type: {con_type}")
 
