@@ -1,4 +1,4 @@
-.PHONY: format diagram dev coverage-badge install-hooks
+.PHONY: format diagram lint dev coverage-badge install-hooks
 
 diagram:
 	plantuml -tpng docs/class.puml
@@ -8,7 +8,10 @@ format:
 	black src/simulator/
 	black tests/
 
-dev: diagram format
+lint:
+	poetry run pylint --disable=C src/
+
+dev: diagram format lint
 
 coverage-badge:
 	poetry run python scripts/update_coverage_badge.py
