@@ -12,7 +12,15 @@ from dataclasses import dataclass
 class Source:
     simulation_name: str
     simulation_description: str
-    folder: Path
+    base_folder: Path = Path("data")
+
+    def __post_init__(self):
+        if self.folder.exists():
+            self.simulation_name = self.simulation_name + "_" + str(len(list(self.folder.iterdir())))
+
+    @property
+    def folder(self):
+        return self.base_folder / self.simulation_name
 
     @property
     def runs_folder(self):
