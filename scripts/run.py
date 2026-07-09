@@ -27,9 +27,6 @@ if __name__ == '__main__':
 
     sim.init_simulation()
 
-    print(sim._source.folder)
-    print(sim._source.config_path)
-    print(sim._source.runs_folder)
-    print(sim._source.base_folder)
-    print(sim._source.simulation_name)
-    print(sim._source.simulation_description)
+    input("Update the config file")
+
+    sim.run_simulation()

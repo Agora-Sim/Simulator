@@ -3,11 +3,14 @@
 # ================================================================
 import re
 
+from tqdm import tqdm
 from pathlib import Path
 from dataclasses import dataclass
 
-from simulator.adapters.source import Source
-from simulator.adapters.simulation_io import SimulationIO
+from ..adapters.source import Source
+from ..adapters.simulation_io import SimulationIO
+from ..domain.instantiation.simulation_factory import SimulationFactory
+from ..domain.instantiation.node_factory import NodeFactory
 
 
 # ================================================================
@@ -37,6 +40,14 @@ class Simulation:
     def _io(self):
         return SimulationIO(self._source)
 
+    @property
+    def _node_factory(self):
+        return NodeFactory()
+
+    @property
+    def _sim_factory(self):
+        return SimulationFactory(self._node_factory)
+
     # ================================================================
     # 2. Section: Methods
     # ================================================================
@@ -46,6 +57,21 @@ class Simulation:
 
         run_folder = SimulationIO(self._source).init_simulation()
         return run_folder
+
+    def run_simulation(self) -> None:
+        blueprint = self._io.load_config()
+
+        nr_runs = blueprint.simulation_specs.nr_runs
+
+        for _ in tqdm(range(nr_runs)):
+            _, run_id = self._io.init_run()
+
+            simulation = self._sim_factory.build_simulation(blueprint)
+            simulation.run_simulation()
+
+            self._io.download_run(simulation, run_id)
+
+            blueprint.simulation_specs.seed += 1
 
 
 # ──────────────────────────────────────────────────────

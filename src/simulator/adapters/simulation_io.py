@@ -37,10 +37,10 @@ class SimulationIO:
 
         return sim_folder
 
-    def init_run(self) -> Path:
-        run_folder = self._repository.init_run()
+    def init_run(self) -> tuple[Path, int]:
+        run_folder, run_id = self._repository.init_run()
 
-        return run_folder
+        return run_folder, run_id
 
     def load_config(self) -> SimulationBlueprint:
         blueprint = self._config_loader.load_config()

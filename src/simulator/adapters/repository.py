@@ -43,11 +43,12 @@ class Repository:
 
         return self.source.folder
 
-    def init_run(self) -> Path:
+    def init_run(self) -> tuple[Path, int]:
         nr_of_runs = len(list(self.source.runs_folder.iterdir()))
-        run_id = str(nr_of_runs + 1)
+        run_id = nr_of_runs + 1
+        run_id_str = str(run_id)
 
-        run_folder = self.source.get_run_folder(run_id)
+        run_folder = self.source.get_run_folder(run_id_str)
         run_folder.mkdir(parents=True, exist_ok=True)
 
-        return run_folder
+        return run_folder, run_id
