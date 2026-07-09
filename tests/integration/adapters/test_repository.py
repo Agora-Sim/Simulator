@@ -1,11 +1,12 @@
 """Integration tests for Repository.
 
-Repository owns the on-disk lifecycle of a simulation: init_simulation lays out
-the folder tree and copies the default config (stamped with the Source's name and
-description), and init_run allocates the next sequentially numbered run folder.
-These tests run against a tmp_path Source so nothing is written into the real
-data/ tree. init_simulation reads the packaged default config
-(src/simulator/adapters/configs/config.yaml) relative to the repo root.
+Repository owns the on-disk lifecycle of a simulation: init_simulation
+disambiguates the Source's simulation_name if a folder with that name already
+exists, lays out the folder tree, and copies the default config (stamped with
+the Source's name and description); init_run allocates the next sequentially
+numbered run folder. These tests run against a tmp_path Source so nothing is
+written into the real data/ tree. init_simulation reads the packaged default
+config (src/simulator/adapters/configs/config.yaml) relative to the repo root.
 """
 
 # ================================================================
@@ -34,6 +35,23 @@ def test_init_simulation_returns_simulation_folder(source: Source) -> None:
     result = Repository(source).init_simulation()
 
     assert result == source.folder
+
+
+@pytest.mark.integration
+def test_init_simulation_disambiguates_name_when_folder_already_exists(
+    source: Source,
+) -> None:
+    # Arrange: an existing folder for the source's name containing two entries.
+    existing = source.base_folder / source.simulation_name
+    existing.mkdir()
+    (existing / "runs").mkdir()
+    (existing / "config.yaml").touch()
+
+    # Act
+    Repository(source).init_simulation()
+
+    # Assert: name gets suffixed with the number of entries in the folder.
+    assert source.simulation_name == "sim_2"
 
 
 @pytest.mark.integration

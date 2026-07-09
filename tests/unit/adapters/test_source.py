@@ -2,10 +2,10 @@
 
 Source is the path-logic value object shared by every adapter. It composes the
 folder layout for a simulation (folder / runs_folder / config_path / run
-folders) from a base_folder, and — in __post_init__ — disambiguates the
-simulation_name if a folder with that name already exists. These tests pin both
-the path composition and the naming behaviour, using tmp_path so nothing touches
-the real data/ tree.
+folders) from a base_folder. It does not rename itself: simulation_name
+disambiguation is Repository's responsibility (see
+tests/integration/adapters/test_repository.py). These tests pin the path
+composition, using tmp_path so nothing touches the real data/ tree.
 """
 
 # ================================================================
@@ -57,15 +57,12 @@ def test_source_keeps_name_when_folder_does_not_exist(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
-def test_source_disambiguates_name_when_folder_already_exists(tmp_path: Path) -> None:
-    # Arrange: an existing folder for "my_sim" containing two entries.
-    existing = tmp_path / "my_sim"
-    existing.mkdir()
-    (existing / "runs").mkdir()
-    (existing / "config.yaml").touch()
+def test_source_keeps_name_even_when_folder_already_exists(tmp_path: Path) -> None:
+    # Arrange: an existing folder for "my_sim".
+    (tmp_path / "my_sim").mkdir()
 
     # Act
     source = Source("my_sim", "desc", base_folder=tmp_path)
 
-    # Assert: name gets suffixed with the number of entries in the folder.
-    assert source.simulation_name == "my_sim_2"
+    # Assert: Source itself never renames; that's Repository's job.
+    assert source.simulation_name == "my_sim"
