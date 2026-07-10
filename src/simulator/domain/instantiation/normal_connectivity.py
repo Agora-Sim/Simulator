@@ -27,4 +27,9 @@ class NormalConnectivity(ConnectivityRule):
 
     # TODO: Make sure it works with already half-connected nodes
     def build(self, node_id: int, node_row: NDArray) -> np.ndarray:
-        return np.random.normal(self.mean, self.std, node_row.shape)
+        size = node_row.shape[0]
+        indices = np.random.normal(self.mean, self.std, size)
+        indices = np.clip(np.round(indices), 0, size - 1).astype(int)
+        row = np.zeros(size)
+        row[indices] = 1
+        return np.full(node_row.shape, row)

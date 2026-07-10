@@ -8,9 +8,10 @@ from pathlib import Path
 from dataclasses import dataclass
 
 from ..adapters.source import Source
+from .simulation_run import SimulationRun
 from ..adapters.simulation_io import SimulationIO
-from ..domain.instantiation.simulation_factory import SimulationFactory
 from ..domain.instantiation.node_factory import NodeFactory
+from ..domain.instantiation.simulation_factory import SimulationFactory
 
 
 # ================================================================
@@ -72,6 +73,9 @@ class Simulation:
             self._io.download_run(simulation, run_id)
 
             blueprint.simulation_specs.seed += 1
+
+    def load_run(self, run_nr: int) -> SimulationRun:
+        return self._io.load_run(run_nr)
 
 
 # ──────────────────────────────────────────────────────

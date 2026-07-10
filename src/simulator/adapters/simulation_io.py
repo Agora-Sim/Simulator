@@ -8,6 +8,7 @@ from simulator.domain.instantiation.simulation_blueprint import SimulationBluepr
 from simulator.service.simulation_run import SimulationRun
 
 from .source import Source
+from .loader import Loader
 from .repository import Repository
 from .downloader import Downloader
 from .config_loader import ConfigLoader
@@ -32,6 +33,13 @@ class SimulationIO:
     def _repository(self):
         return Repository(self.source)
 
+    @property
+    def _loader(self) -> Loader:
+        return Loader(self.source)
+
+    # ================================================================
+    # 2. Section: Methods
+    # ================================================================
     def init_simulation(self) -> Path:
         sim_folder = self._repository.init_simulation()
 
@@ -51,3 +59,6 @@ class SimulationIO:
     ) -> Path:
         out_path = self._downloader.download_run(simulation, run_nr, out_file_type)
         return out_path
+
+    def load_run(self, run_nr: int) -> SimulationRun:
+        return self._loader.load_run(run_nr)

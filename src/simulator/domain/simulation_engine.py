@@ -54,7 +54,7 @@ class SimulationEngine:
         simulation_state = SimulationState(
             nodes=nodes,
             connectivity_matrix=self.connectivity_matrix,
-            time_idx=current_step
+            time_idx=current_step,
         )
 
         return simulation_state
