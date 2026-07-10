@@ -12,7 +12,7 @@ from .node_module import NodeModule
 # ================================================================
 @dataclass
 class MoneyModule(NodeModule):
-    name: ClassVar[str] = "money_module"
+    name: ClassVar[str] = "money"
 
     balance: float
     income: float

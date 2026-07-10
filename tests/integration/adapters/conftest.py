@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 from simulator.adapters.source import Source
-from simulator.service.simulation import Simulation
+from simulator.service.simulation_run import SimulationRun
 from tests.helpers import builders
 
 
@@ -22,5 +22,5 @@ def source(tmp_path: Path) -> Source:
 
 
 @pytest.fixture
-def simulation() -> Simulation:
+def simulation() -> SimulationRun:
     return builders.build_simulation(current_step=1)

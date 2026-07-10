@@ -1,7 +1,7 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from simulator.adapters import Repository, Source
+from simulator import Simulation
 
 
 # ================================================================
@@ -20,11 +20,17 @@ from simulator.adapters import Repository, Source
 # 3. Section: MAIN
 # ================================================================
 if __name__ == '__main__':
-    source = Source(
-        simulation_name="test_simulation",
+    sim = Simulation(
+        simulation_name="test_simulation_2",
         simulation_description="the simulation to test",
     )
 
-    repository = Repository(source)
-    run_id = repository.init_simulation()
-    run_folder = repository.init_run()
+    #sim.init_simulation()
+
+    #input("Update the config file")
+
+    #sim.run_simulation()
+    for i in range(5):
+        sim_run = sim.load_run(i+1)
+
+        print(sim_run.history[-1])

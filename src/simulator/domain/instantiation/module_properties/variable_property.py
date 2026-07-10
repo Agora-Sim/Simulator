@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from .property_range import PropertyRange
 from .normal_distribution import NormalDistribution
 from .property_distribution import PropertyDistribution
+from .constant_distribution import ConstantDistribution
 
 
 # ================================================================
@@ -26,6 +27,8 @@ class VariableProperty:
         dist_type = self.data["distribution"]["type"]
         if dist_type == "normal":
             return NormalDistribution(data=self.data["distribution"])
+        if dist_type == "constant":
+            return ConstantDistribution(data=self.data["distribution"])
 
         raise ValueError(f"Unknown distribution type: {dist_type}")
 

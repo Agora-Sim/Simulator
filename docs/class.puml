@@ -36,12 +36,25 @@ endlegend
 'Service Layer'
 '=============================================================================='
 package "Service Layer" #E8F5E9 {
-    class Simulation <<implemented>> {
+    class SimulationRun <<implemented>> {
         + engine: SimulationEngine
-        - _current_step: int
-        - _history: list[SimulationState]
+        + current_step: int
+        + history: list[SimulationState]
 
         + run_simulation():
+    }
+
+
+    class Simulation <<partial>> {
+        + simulation_name: str
+        + simulation_description: str
+        + base_folder: Path
+
+        - _source: Source
+        - _io: SimulationIO
+
+        + init_simulation(): Path
+        + run_simulations(): None
     }
 }
 
@@ -338,8 +351,13 @@ package "Adapter Layer" #E3F2FD {
 'Broken Links'
 '=============================================================================='
 SimulationEngine --> SimulationSpecs
-Simulation --> SimulationEngine
-Simulation o-- SimulationState
+
+SimulationRun --> SimulationEngine
+SimulationRun o-- SimulationState
+
+Simulation --> SimulationIO
+Simulation --> Source
+
 NodeProperty --> ModuleProperty
 
 

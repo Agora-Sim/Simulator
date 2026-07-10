@@ -12,7 +12,7 @@ broken) real node-building logic.
 import numpy as np
 import pytest
 
-from simulator.service.simulation import Simulation
+from simulator.service.simulation_run import SimulationRun
 from simulator.domain.node import Node
 from simulator.domain.connectivity_matrix import ConnectivityMatrix
 from simulator.domain.instantiation.simulation_specs import SimulationSpecs
@@ -54,7 +54,7 @@ def test_build_simulation_returns_simulation_wired_with_engine() -> None:
 
     simulation = factory.build_simulation(blueprint)
 
-    assert isinstance(simulation, Simulation)
+    assert isinstance(simulation, SimulationRun)
     assert simulation.engine.nodes is fake_factory.nodes
     assert simulation.engine.connectivity_matrix is fake_factory.matrix
     assert isinstance(simulation.engine.simulation_specs, SimulationSpecs)

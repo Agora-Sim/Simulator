@@ -16,7 +16,7 @@ from simulator.adapters.downloader import Downloader
 from simulator.adapters.loader import Loader
 from simulator.adapters.source import Source
 from simulator.domain.instantiation import SimulationSpecs
-from simulator.service.simulation import Simulation
+from simulator.service.simulation_run import SimulationRun
 from tests.helpers import builders
 from tests.helpers.assertions import assert_simulation_equal
 
@@ -72,7 +72,7 @@ def test_roundtrip_preserves_none_entries(source: Source) -> None:
     Downloader(source).download_run(simulation, run_nr=1)
     loaded = Loader(source).load_run(run_nr=1)
 
-    assert loaded._history == [None]
+    assert loaded.history == [None]
 
 
 @pytest.mark.integration
@@ -82,5 +82,5 @@ def test_roundtrip_preserves_empty_history(source: Source) -> None:
     Downloader(source).download_run(simulation, run_nr=1)
     loaded = Loader(source).load_run(run_nr=1)
 
-    assert loaded._history == []
-    assert loaded._current_step == 0
+    assert loaded.history == []
+    assert loaded.current_step == 0

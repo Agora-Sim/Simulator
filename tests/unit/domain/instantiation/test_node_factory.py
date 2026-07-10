@@ -2,9 +2,6 @@
 
 NodeFactory turns a NodeBlueprint into a list of Node objects and a
 ConnectivityMatrix.
-
-build_connectivity_matrix() still raises NotImplementedError, since
-NormalConnectivity.build has no real implementation yet.
 """
 
 # ================================================================
@@ -34,14 +31,14 @@ def test_module_registry_maps_names_to_classes() -> None:
 
 
 @pytest.mark.unit
-def test_build_connectivity_matrix_propagates_not_implemented() -> None:
-    # build() on NormalConnectivity is not implemented, so wiring the matrix
-    # currently raises through NodeFactory.
+def test_build_connectivity_matrix_is_square_over_all_nodes() -> None:
     nodes = [Node(id=0, node_type="citizen", modules=[])]
-    blueprint = NodeBlueprint(build_nodes_data())
+    blueprint = NodeBlueprint(build_nodes_data())  # 3 citizens + 2 companies
 
-    with pytest.raises(NotImplementedError, match="build method not implemented"):
-        NodeFactory().build_connectivity_matrix(nodes, blueprint)
+    matrix = NodeFactory().build_connectivity_matrix(nodes, blueprint)
+
+    assert isinstance(matrix, ConnectivityMatrix)
+    assert matrix.data.shape == (blueprint.nr_nodes, blueprint.nr_nodes)
 
 
 @pytest.mark.unit

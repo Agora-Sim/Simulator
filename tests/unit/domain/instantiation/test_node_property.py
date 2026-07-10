@@ -59,4 +59,4 @@ def test_modules_returns_one_module_property_per_module() -> None:
 
     assert len(modules) == 1
     assert all(isinstance(m, ModuleProperty) for m in modules)
-    assert modules[0].name == "health_module"
+    assert modules[0].name == "health"

@@ -19,7 +19,7 @@ class ConfigLoader:
     def load_config(self) -> SimulationBlueprint:
         path = self.source.config_path
 
-        with open(path, "r") as f:
+        with open(path, "r", encoding="utf-8") as f:
             payload = yaml.safe_load(f)
 
         return SimulationBlueprint(payload)

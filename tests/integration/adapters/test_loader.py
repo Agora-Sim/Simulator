@@ -17,25 +17,25 @@ from simulator.adapters.loader import Loader
 from simulator.adapters.source import Source
 from simulator.domain import SimulationEngine, SimulationState
 from simulator.domain.modules import HealthModule, MoneyModule
-from simulator.service.simulation import Simulation
+from simulator.service.simulation_run import SimulationRun
 
 
 # ================================================================
 # 1. Section: Integration Tests
 # ================================================================
 @pytest.mark.integration
-def test_load_run_returns_simulation(source: Source, simulation: Simulation) -> None:
+def test_load_run_returns_simulation(source: Source, simulation: SimulationRun) -> None:
     Downloader(source).download_run(simulation, run_nr=1)
 
     loaded = Loader(source).load_run(run_nr=1)
 
-    assert isinstance(loaded, Simulation)
+    assert isinstance(loaded, SimulationRun)
     assert isinstance(loaded.engine, SimulationEngine)
 
 
 @pytest.mark.integration
 def test_load_run_reconstructs_concrete_module_types(
-    source: Source, simulation: Simulation
+    source: Source, simulation: SimulationRun
 ) -> None:
     Downloader(source).download_run(simulation, run_nr=1)
 
@@ -48,19 +48,19 @@ def test_load_run_reconstructs_concrete_module_types(
 
 @pytest.mark.integration
 def test_load_run_reconstructs_history_states(
-    source: Source, simulation: Simulation
+    source: Source, simulation: SimulationRun
 ) -> None:
     Downloader(source).download_run(simulation, run_nr=1)
 
     loaded = Loader(source).load_run(run_nr=1)
 
-    assert len(loaded._history) == 1
-    assert isinstance(loaded._history[0], SimulationState)
+    assert len(loaded.history) == 1
+    assert isinstance(loaded.history[0], SimulationState)
 
 
 @pytest.mark.integration
 def test_load_run_coerces_hdf5_scalars_to_native_types(
-    source: Source, simulation: Simulation
+    source: Source, simulation: SimulationRun
 ) -> None:
     Downloader(source).download_run(simulation, run_nr=1)
 
@@ -68,7 +68,7 @@ def test_load_run_coerces_hdf5_scalars_to_native_types(
 
     specs = loaded.engine.simulation_specs.data
     # h5py hands back numpy scalars / bytes; the loader must coerce them back.
-    assert isinstance(loaded._current_step, int)
+    assert isinstance(loaded.current_step, int)
     assert isinstance(specs["max_duration"], int)
     assert isinstance(specs["re_connection"], bool)
     assert isinstance(specs["step_size"], str)

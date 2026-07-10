@@ -1,11 +1,12 @@
 """Integration tests for Repository.
 
-Repository owns the on-disk lifecycle of a simulation: init_simulation lays out
-the folder tree and copies the default config (stamped with the Source's name and
-description), and init_run allocates the next sequentially numbered run folder.
-These tests run against a tmp_path Source so nothing is written into the real
-data/ tree. init_simulation reads the packaged default config
-(src/simulator/adapters/configs/config.yaml) relative to the repo root.
+Repository owns the on-disk lifecycle of a simulation: init_simulation lays
+out the folder tree and copies the default config (stamped with the Source's
+name and description); init_run allocates the next sequentially numbered run
+folder. Name disambiguation lives in the Simulation service, not here. These
+tests run against a tmp_path Source so nothing is
+written into the real data/ tree. init_simulation reads the packaged default
+config (src/simulator/adapters/configs/config.yaml) relative to the repo root.
 """
 
 # ================================================================
@@ -52,7 +53,7 @@ def test_init_run_creates_first_run_folder(source: Source) -> None:
     repository = Repository(source)
     repository.init_simulation()
 
-    run_folder = repository.init_run()
+    run_folder, _ = repository.init_run()
 
     assert run_folder == source.get_run_folder("1")
     assert run_folder.is_dir()
@@ -63,8 +64,8 @@ def test_init_run_increments_run_number(source: Source) -> None:
     repository = Repository(source)
     repository.init_simulation()
 
-    first = repository.init_run()
-    second = repository.init_run()
+    first, _ = repository.init_run()
+    second, _ = repository.init_run()
 
     assert first == source.get_run_folder("1")
     assert second == source.get_run_folder("2")

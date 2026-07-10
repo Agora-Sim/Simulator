@@ -15,7 +15,7 @@ import pytest
 
 from simulator.adapters.downloader import Downloader
 from simulator.adapters.source import Source
-from simulator.service.simulation import Simulation
+from simulator.service.simulation_run import SimulationRun
 
 
 # ================================================================
@@ -23,7 +23,7 @@ from simulator.service.simulation import Simulation
 # ================================================================
 @pytest.mark.integration
 def test_download_run_writes_file_at_expected_path(
-    source: Source, simulation: Simulation
+    source: Source, simulation: SimulationRun
 ) -> None:
     downloader = Downloader(source)
 
@@ -36,7 +36,7 @@ def test_download_run_writes_file_at_expected_path(
 
 @pytest.mark.integration
 def test_download_run_creates_run_folder_when_missing(
-    source: Source, simulation: Simulation
+    source: Source, simulation: SimulationRun
 ) -> None:
     assert not source.get_run_folder("1").exists()
 
@@ -47,7 +47,7 @@ def test_download_run_creates_run_folder_when_missing(
 
 @pytest.mark.integration
 def test_download_run_writes_top_level_keys(
-    source: Source, simulation: Simulation
+    source: Source, simulation: SimulationRun
 ) -> None:
     out_path = Downloader(source).download_run(simulation, run_nr=1)
 
@@ -57,7 +57,7 @@ def test_download_run_writes_top_level_keys(
 
 @pytest.mark.integration
 def test_download_run_returns_non_empty_file(
-    source: Source, simulation: Simulation
+    source: Source, simulation: SimulationRun
 ) -> None:
     out_path = Downloader(source).download_run(simulation, run_nr=1)
 
@@ -66,7 +66,7 @@ def test_download_run_returns_non_empty_file(
 
 @pytest.mark.integration
 def test_download_run_rejects_unsupported_file_type(
-    source: Source, simulation: Simulation
+    source: Source, simulation: SimulationRun
 ) -> None:
     with pytest.raises(ValueError, match="Unsupported out_file_type"):
         Downloader(source).download_run(simulation, run_nr=1, out_file_type="json")

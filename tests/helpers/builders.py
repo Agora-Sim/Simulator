@@ -19,7 +19,7 @@ from simulator.domain.simulation_state import SimulationState
 from simulator.domain.simulation_engine import SimulationEngine
 from simulator.domain.instantiation import SimulationSpecs
 from simulator.domain.modules import HealthModule, MoneyModule
-from simulator.service.simulation import Simulation
+from simulator.service.simulation_run import SimulationRun
 
 
 # ──────────────────────────────────────────────────────
@@ -52,7 +52,7 @@ def build_health_node_type_data(
         "initial_numbers": initial_numbers,
         "connectivity": build_normal_connectivity_data(mean=mean, std=std),
         "modules": {
-            "health_module": {
+            "health": {
                 "health": build_variable_data(mean=50.0, std=5.0),
                 "age": build_variable_data(mean=30.0, std=2.0),
             }
@@ -65,7 +65,7 @@ def build_money_node_type_data(initial_numbers: int = 2) -> dict[str, Any]:
         "initial_numbers": initial_numbers,
         "connectivity": build_normal_connectivity_data(mean=1.0, std=0.5),
         "modules": {
-            "money_module": {
+            "money": {
                 "balance": build_variable_data(range_max=1000.0, mean=500.0, std=50.0),
                 "income": build_variable_data(mean=20.0, std=3.0),
             }
@@ -163,7 +163,7 @@ def build_simulation(
     engine: SimulationEngine | None = None,
     history: list[SimulationState] | None = None,
     current_step: int = 0,
-) -> Simulation:
+) -> SimulationRun:
     """A Simulation service object with a populated engine, history and step.
 
     The engine's step() is unimplemented, so history is injected directly
@@ -179,7 +179,7 @@ def build_simulation(
         )
         history = [state]
 
-    simulation = Simulation(engine=engine)
-    simulation._current_step = current_step
-    simulation._history = history
+    simulation = SimulationRun(engine=engine)
+    simulation.current_step = current_step
+    simulation.history = history
     return simulation

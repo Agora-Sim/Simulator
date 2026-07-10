@@ -14,6 +14,7 @@ Main components:
 from dataclasses import dataclass
 
 from .node import Node
+from .modules import NodeModule
 from .connectivity_matrix import ConnectivityMatrix
 from .simulation_state import SimulationState
 from .instantiation.simulation_specs import SimulationSpecs
@@ -44,5 +45,28 @@ class SimulationEngine:
     connectivity_matrix: ConnectivityMatrix
     simulation_specs: SimulationSpecs
 
-    def step(self) -> SimulationState:
-        raise NotImplementedError("step is not implemented")
+    def step(self, current_step: float) -> SimulationState:
+        nodes = []
+        for node in self.nodes:
+            node = self.step_node(node)
+            nodes.append(node)
+
+        simulation_state = SimulationState(
+            nodes=nodes,
+            connectivity_matrix=self.connectivity_matrix,
+            time_idx=current_step,
+        )
+
+        return simulation_state
+
+    def step_node(self, node: Node) -> Node:
+        for idx, module in enumerate(node.modules):
+            module = self.step_module(module)
+            node.modules[idx] = module
+
+        return node
+
+    def step_module(self, module: NodeModule) -> NodeModule:
+        module.apply()
+
+        return module

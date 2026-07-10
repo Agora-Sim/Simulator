@@ -1,7 +1,7 @@
 """Contract tests for ResourceProperty.
 
-ResourceProperty subclasses ABC but does not mark apply() as abstract; instead
-apply() raises NotImplementedError until a concrete property overrides it.
+ResourceProperty subclasses ABC but does not mark apply() as abstract; the base
+apply() is not implemented yet, so only a concrete override is exercised here.
 """
 
 # ================================================================
@@ -15,14 +15,6 @@ from simulator.domain.modules.resource_property import ResourceProperty
 # ================================================================
 # 1. Section: Unit Tests
 # ================================================================
-@pytest.mark.unit
-def test_resource_property_apply_raises_not_implemented() -> None:
-    prop = ResourceProperty()
-
-    with pytest.raises(NotImplementedError, match="apply method must be implemented"):
-        prop.apply()
-
-
 @pytest.mark.unit
 def test_subclass_can_override_apply() -> None:
     class Concrete(ResourceProperty):

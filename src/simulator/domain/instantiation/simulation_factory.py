@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from .node_factory import NodeFactory
 from .simulation_blueprint import SimulationBlueprint
 from ..simulation_engine import SimulationEngine
-from ...service.simulation import Simulation
+from ...service.simulation_run import SimulationRun
 
 
 # ================================================================
@@ -37,7 +37,7 @@ class SimulationFactory:
 
     _node_factory: NodeFactory = field(default_factory=NodeFactory)
 
-    def build_simulation(self, blueprint: SimulationBlueprint) -> Simulation:
+    def build_simulation(self, blueprint: SimulationBlueprint) -> SimulationRun:
         node_blueprint = blueprint.node_blueprint
         simulation_specs = blueprint.simulation_specs
 
@@ -52,4 +52,4 @@ class SimulationFactory:
             simulation_specs=simulation_specs,
         )
 
-        return Simulation(engine=engine)
+        return SimulationRun(engine=engine)

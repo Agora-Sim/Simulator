@@ -38,15 +38,15 @@ def _module_data():
 # ================================================================
 @pytest.mark.unit
 def test_stores_name_and_data() -> None:
-    prop = ModuleProperty(name="health_module", data=_module_data())
+    prop = ModuleProperty(name="health", data=_module_data())
 
-    assert prop.name == "health_module"
+    assert prop.name == "health"
     assert prop.data == _module_data()
 
 
 @pytest.mark.unit
 def test_variables_keys_match_variable_names() -> None:
-    prop = ModuleProperty(name="health_module", data=_module_data())
+    prop = ModuleProperty(name="health", data=_module_data())
 
     assert set(prop.variables.keys()) == {"health", "age"}
 
@@ -60,6 +60,6 @@ def test_variables_is_empty_for_module_without_variables() -> None:
 
 @pytest.mark.unit
 def test_variables_values_are_variable_properties() -> None:
-    prop = ModuleProperty(name="health_module", data=_module_data())
+    prop = ModuleProperty(name="health", data=_module_data())
 
     assert all(isinstance(v, VariableProperty) for v in prop.variables.values())

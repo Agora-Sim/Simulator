@@ -1,20 +1,17 @@
-"""Simulation runner for executing a full simulation.
-
-This module defines Simulation, the service-layer entry point that drives a
-simulation run to completion. It is used by client code to execute a
-configured SimulationEngine and collect the resulting history.
-
-Main components:
-    Simulation: runs a SimulationEngine until the configured duration ends.
-"""
-
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from dataclasses import dataclass, field
+import re
 
-from ..domain.simulation_engine import SimulationEngine
-from ..domain.simulation_state import SimulationState
+from tqdm import tqdm
+from pathlib import Path
+from dataclasses import dataclass
+
+from ..adapters.source import Source
+from .simulation_run import SimulationRun
+from ..adapters.simulation_io import SimulationIO
+from ..domain.instantiation.node_factory import NodeFactory
+from ..domain.instantiation.simulation_factory import SimulationFactory
 
 
 # ================================================================
@@ -22,28 +19,86 @@ from ..domain.simulation_state import SimulationState
 # ================================================================
 @dataclass
 class Simulation:
-    """Run a SimulationEngine to completion and collect its history.
+    simulation_name: str
+    simulation_description: str
+    base_folder: Path = Path("data")
 
-    Simulation is responsible for repeatedly stepping a SimulationEngine
-    until the configured max duration is reached. It should be used as the
-    main entry point to execute a simulation run. It should not be
-    responsible for building the engine or its nodes, that responsibility
-    belongs to SimulationFactory.
+    @property
+    def _source(self):
+        return Source(
+            simulation_name=self.simulation_name,
+            simulation_description=self.simulation_description,
+            base_folder=self.base_folder,
+        )
 
-    Attributes:
-        engine: SimulationEngine
-            The engine driving the simulation.
-    """
+    @_source.setter
+    def _source(self, value: Source):
+        self.simulation_name = value.simulation_name
+        self.simulation_description = value.simulation_description
+        self.base_folder = value.base_folder
 
-    engine: SimulationEngine
+    @property
+    def _io(self):
+        return SimulationIO(self._source)
 
-    _current_step: int = field(default=0, init=False)
-    _history: list[SimulationState] = field(default_factory=list, init=False)
+    @property
+    def _node_factory(self):
+        return NodeFactory()
+
+    @property
+    def _sim_factory(self):
+        return SimulationFactory(self._node_factory)
+
+    # ================================================================
+    # 2. Section: Methods
+    # ================================================================
+    def init_simulation(self) -> Path:
+        self._source = _updated_simulation_name(self._source)
+        self._io.source = self._source
+
+        run_folder = SimulationIO(self._source).init_simulation()
+        return run_folder
 
     def run_simulation(self) -> None:
-        max_duration = self.engine.simulation_specs.max_duration
+        blueprint = self._io.load_config()
 
-        while self._current_step < max_duration:
-            state = self.engine.step()
-            self._history.append(state)
-            self._current_step += 1
+        nr_runs = blueprint.simulation_specs.nr_runs
+
+        for _ in tqdm(range(nr_runs)):
+            _, run_id = self._io.init_run()
+
+            simulation = self._sim_factory.build_simulation(blueprint)
+            simulation.run_simulation()
+
+            self._io.download_run(simulation, run_id)
+
+            blueprint.simulation_specs.seed += 1
+
+    def load_run(self, run_nr: int) -> SimulationRun:
+        return self._io.load_run(run_nr)
+
+
+# ──────────────────────────────────────────────────────
+# 1.1 Subsection: Helper Functions
+# ──────────────────────────────────────────────────────
+def _updated_simulation_name(source: Source) -> Source:
+    simulation_name = source.simulation_name
+
+    if not source.base_folder.exists():
+        return source
+
+    pattern = re.compile(rf"{re.escape(simulation_name)}(_\d+)?$")
+    nr_copies = len(
+        [
+            p
+            for p in source.base_folder.iterdir()
+            if p.is_dir() and pattern.fullmatch(p.name)
+        ]
+    )
+
+    if nr_copies > 0:
+        simulation_name = source.simulation_name + "_" + str(nr_copies + 1)
+
+    source.simulation_name = simulation_name
+
+    return source

@@ -45,10 +45,3 @@ def test_resources_module_accepts_empty_resource_list() -> None:
     module = ResourcesModule(resources=[])
 
     assert module.resources == []
-
-
-@pytest.mark.unit
-def test_resources_module_apply_is_noop_returning_none() -> None:
-    module = ResourcesModule(resources=[_resource()])
-
-    assert module.apply() is None

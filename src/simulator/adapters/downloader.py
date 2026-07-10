@@ -9,7 +9,7 @@ from pathlib import Path
 from dataclasses import dataclass, is_dataclass, fields
 
 from .source import Source
-from ..service.simulation import Simulation
+from ..service.simulation_run import SimulationRun
 
 
 # ================================================================
@@ -20,7 +20,7 @@ class Downloader:
     source: Source
 
     def download_run(
-        self, simulation: Simulation, run_nr: int, out_file_type: str = "hdf5"
+        self, simulation: SimulationRun, run_nr: int, out_file_type: str = "hdf5"
     ) -> Path:
         if out_file_type != "hdf5":
             raise ValueError(f"Unsupported out_file_type: {out_file_type}")
@@ -32,8 +32,8 @@ class Downloader:
 
         with h5py.File(out_path, "w") as f:
             self._encode(f, "simulation_engine", simulation.engine)
-            self._encode(f, "history", simulation._history)
-            self._encode(f, "current_step", simulation._current_step)
+            self._encode(f, "history", simulation.history)
+            self._encode(f, "current_step", simulation.current_step)
 
         return out_path
 

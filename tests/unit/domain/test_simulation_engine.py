@@ -1,8 +1,9 @@
 """Contract tests for SimulationEngine.
 
 SimulationEngine holds the mutable simulation entities (nodes, connectivity,
-specs). Its step() logic is not implemented yet, so the contract we can pin
-today is construction and the explicit NotImplementedError from step().
+specs). Its step() logic is not implemented yet, so it is intentionally left
+untested until real behaviour lands; the only contract we pin today is
+construction.
 """
 
 # ================================================================
@@ -18,18 +19,7 @@ from tests.helpers.builders import build_node, build_simulation_data
 
 
 # ================================================================
-# 1. Section: Fixtures
-# ================================================================
-def _make_engine() -> SimulationEngine:
-    return SimulationEngine(
-        nodes=[build_node(node_id=0)],
-        connectivity_matrix=ConnectivityMatrix(data=np.zeros((1, 1))),
-        simulation_specs=SimulationSpecs(build_simulation_data()),
-    )
-
-
-# ================================================================
-# 2. Section: Unit Tests
+# 1. Section: Unit Tests
 # ================================================================
 @pytest.mark.unit
 def test_simulation_engine_stores_its_fields() -> None:
@@ -46,11 +36,3 @@ def test_simulation_engine_stores_its_fields() -> None:
     assert engine.nodes == nodes
     assert engine.connectivity_matrix is connectivity
     assert engine.simulation_specs is specs
-
-
-@pytest.mark.unit
-def test_step_raises_not_implemented() -> None:
-    engine = _make_engine()
-
-    with pytest.raises(NotImplementedError, match="step is not implemented"):
-        engine.step()

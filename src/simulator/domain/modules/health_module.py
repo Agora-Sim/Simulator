@@ -12,7 +12,7 @@ from .node_module import NodeModule
 # ================================================================
 @dataclass
 class HealthModule(NodeModule):
-    name: ClassVar[str] = "health_module"
+    name: ClassVar[str] = "health"
 
     health: float
     age: float

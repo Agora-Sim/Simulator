@@ -26,11 +26,5 @@ class Source:
     def config_path(self) -> Path:
         return self.folder / "config.yaml"
 
-    def __post_init__(self):
-        if self.folder.exists():
-            self.simulation_name = (
-                self.simulation_name + "_" + str(len(list(self.folder.iterdir())))
-            )
-
     def get_run_folder(self, run_id: str) -> Path:
         return self.runs_folder / f"run_{run_id}"

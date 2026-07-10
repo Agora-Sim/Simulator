@@ -28,7 +28,7 @@ class Repository:
         yaml.indent(mapping=2, sequence=4, offset=2)
 
         # 3. Loads the default yaml
-        with open(self._config_path, "r") as f:
+        with open(self._config_path, "r", encoding="utf-8") as f:
             config = yaml.load(f)
 
         # 4. Updates the config with source information
@@ -36,16 +36,17 @@ class Repository:
         config["simulation_description"] = self.source.simulation_description
 
         # 5. Saves the updated config to the pipeline folder
-        with open(self.source.config_path, "w") as f:
+        with open(self.source.config_path, "w", encoding="utf-8") as f:
             yaml.dump(config, f)
 
         return self.source.folder
 
-    def init_run(self) -> Path:
+    def init_run(self) -> tuple[Path, int]:
         nr_of_runs = len(list(self.source.runs_folder.iterdir()))
-        run_id = str(nr_of_runs + 1)
+        run_id = nr_of_runs + 1
+        run_id_str = str(run_id)
 
-        run_folder = self.source.get_run_folder(run_id)
+        run_folder = self.source.get_run_folder(run_id_str)
         run_folder.mkdir(parents=True, exist_ok=True)
 
-        return run_folder
+        return run_folder, run_id

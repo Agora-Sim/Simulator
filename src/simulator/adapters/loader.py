@@ -8,7 +8,7 @@ from typing import Any
 from dataclasses import dataclass
 
 from .source import Source
-from ..service.simulation import Simulation
+from ..service.simulation_run import SimulationRun
 from ..domain import Node, ConnectivityMatrix, SimulationState, SimulationEngine
 from ..domain.instantiation import SimulationSpecs
 from ..domain.modules import Resource, HealthModule, MoneyModule, ResourcesModule
@@ -39,7 +39,7 @@ _CLASS_REGISTRY: dict[str, type] = {
 class Loader:
     source: Source
 
-    def load_run(self, run_nr: int, out_file_type: str = "hdf5") -> Simulation:
+    def load_run(self, run_nr: int, out_file_type: str = "hdf5") -> SimulationRun:
         if out_file_type != "hdf5":
             raise ValueError(f"Unsupported out_file_type: {out_file_type}")
 
@@ -51,9 +51,9 @@ class Loader:
             history = self._decode(f["history"])
             current_step = self._decode(f["current_step"])
 
-        simulation = Simulation(engine=engine)
-        simulation._current_step = current_step
-        simulation._history = history
+        simulation = SimulationRun(engine=engine)
+        simulation.current_step = current_step
+        simulation.history = history
 
         return simulation
 

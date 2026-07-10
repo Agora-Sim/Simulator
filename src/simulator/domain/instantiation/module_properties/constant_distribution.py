@@ -1,17 +1,21 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+from typing import ClassVar
 from dataclasses import dataclass
-
-from .node import Node
-from .connectivity_matrix import ConnectivityMatrix
+from .property_distribution import PropertyDistribution
 
 
 # ================================================================
 # 1. Section: Functions
 # ================================================================
 @dataclass
-class SimulationState:
-    nodes: list[Node]
-    connectivity_matrix: ConnectivityMatrix
-    time_idx: float
+class ConstantDistribution(PropertyDistribution):
+    name: ClassVar[str] = "constant"
+
+    @property
+    def value(self) -> float:
+        return self.data["value"]
+
+    def sample(self) -> float:
+        return self.value
