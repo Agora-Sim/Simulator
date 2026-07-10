@@ -14,4 +14,4 @@ from .connectivity_matrix import ConnectivityMatrix
 class SimulationState:
     nodes: list[Node]
     connectivity_matrix: ConnectivityMatrix
-    time_idx: int
+    time_idx: float
