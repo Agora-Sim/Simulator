@@ -5,7 +5,6 @@
 import numpy as np
 
 from typing import ClassVar, Any
-from numpy.typing import NDArray
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
@@ -19,5 +18,5 @@ class ConnectivityRule(ABC):
     type: ClassVar[str]
 
     @abstractmethod
-    def build(self, node_id: int, node_row: NDArray) -> np.ndarray:
+    def build(self, node_id: int, connection_dict: dict[str, list]) -> np.ndarray:
         pass
