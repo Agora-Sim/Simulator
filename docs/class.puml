@@ -173,15 +173,15 @@ package "Model Domain Layer" #FFF8E1 {
             + compute(state: SimulationState): float
         }
 
-        class AggregateMetric <<planned>> {
-            + module_name: str
-            + variable: str
-            + aggregation: str
-            + node_type: str
-
+        class GDPMetric <<planned>> {
             + compute(state: SimulationState): float
         }
-        AggregateMetric ..|> Metric
+        GDPMetric ..|> Metric
+
+        class PopulationMetric <<planned>> {
+            + compute(state: SimulationState): float
+        }
+        PopulationMetric ..|> Metric
 
         class MetricSeries <<planned>> {
             + name: str
