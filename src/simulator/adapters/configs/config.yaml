@@ -2,11 +2,10 @@ simulation_name: ""
 simulation_description: ""
 nodes:
   citizen:
-    initial_numbers: 100_000
+    initial_numbers: 10
     connectivity:
-      type: normal
-      mean: 0.6
-      std: 0.2
+      type: percentage
+      percentage: 0.6
     modules:
       health:
         age:
