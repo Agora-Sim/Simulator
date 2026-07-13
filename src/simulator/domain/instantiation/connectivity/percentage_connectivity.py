@@ -26,20 +26,28 @@ class PercentageConnectivity(ConnectivityRule):
         # 1. Extract the data from the connection_dict
         candidates = np.asarray(connection_dict["candidates"])
         current_connections = np.asarray(connection_dict["already_connected"])
-        already_checked_nodes = np.arange(node_id)
-        candidates = candidates[~np.isin(candidates, already_checked_nodes)]
 
+        # 2. Universe is every other node (n - 1), not just forward ones
         total_possible_connections = len(current_connections) + len(candidates)
 
-        # 2. Calculate the target number of connections and extra connections
-        target_nr_connections = int(self.percentage * total_possible_connections)
+        # 3. Only forward nodes are eligible; earlier ones had their turn
+        already_checked_nodes = np.arange(node_id)
+        forward_candidates = candidates[~np.isin(candidates, already_checked_nodes)]
+
+        # 4. Round (not truncate) so the mean degree stays on target
+        target_nr_connections = int(round(self.percentage * total_possible_connections))
         nr_extra_connections = target_nr_connections - len(current_connections)
 
-        # 3. Ignore if already very connected
-        if nr_extra_connections <= 0:
+        # 5. Skip if already connected enough or nothing left to reach
+        if nr_extra_connections <= 0 or len(forward_candidates) == 0:
             return np.asarray([])
 
-        # 4. Sample nr_extra_connections random candidates
-        sampled_candidates = np.random.choice(candidates, nr_extra_connections, replace=False)
+        # 6. Never ask for more than the candidates available
+        nr_extra_connections = min(nr_extra_connections, len(forward_candidates))
+
+        # 7. Sample the extra forward connections at random
+        sampled_candidates = np.random.choice(
+            forward_candidates, nr_extra_connections, replace=False
+        )
 
         return sampled_candidates
