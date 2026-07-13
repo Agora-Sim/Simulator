@@ -1,7 +1,7 @@
 .PHONY: format diagram lint dev coverage-badge install-hooks
 
 diagram:
-	plantuml -tpng docs/class.puml
+	PLANTUML_LIMIT_SIZE=16384 plantuml -tpng docs/*.puml
 
 format:
 	docformatter --in-place --recursive --wrap-summaries 88 --wrap-descriptions 88 src/simulator
