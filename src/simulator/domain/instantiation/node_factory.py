@@ -56,12 +56,6 @@ class NodeFactory:
             to_connect = connectivity.build(node_id, connection_dict)
             matrix = _update_matrix(matrix, node_id, to_connect)
 
-        print(matrix)
-        connections = np.sum(matrix, axis=1)
-        percentage = connections / (n-1)
-        overall = np.sum(percentage) / (n-1)
-
-
         return ConnectivityMatrix(matrix)
 
 
