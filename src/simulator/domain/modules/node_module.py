@@ -1,11 +1,16 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+from __future__ import annotations
+
 import numpy as np
 
-from abc import ABC, abstractmethod
-from typing import ClassVar
+from typing import ClassVar, TYPE_CHECKING
 from dataclasses import dataclass
+from abc import ABC, abstractmethod
+
+if TYPE_CHECKING:
+    from ..simulation_state import SimulationState
 
 
 # ================================================================
@@ -16,5 +21,5 @@ class NodeModule(ABC):
     name: ClassVar[str]
 
     @abstractmethod
-    def apply(self, rng: np.random.Generator):
+    def apply(self, previous_state: SimulationState, rng: np.random.Generator):
         pass

@@ -14,3 +14,4 @@ class Node:
     id: int
     node_type: str
     modules: list[NodeModule]
+    status: bool = True

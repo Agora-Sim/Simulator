@@ -11,6 +11,7 @@ from .source import Source
 from ..service.simulation_run import SimulationRun
 from ..domain import Node, ConnectivityMatrix, SimulationState, SimulationEngine
 from ..domain.instantiation import SimulationSpecs
+from ..domain.instantiation.step_type import StepType
 from ..domain.modules import Resource, HealthModule, MoneyModule, ResourcesModule
 
 # ================================================================
@@ -24,6 +25,7 @@ _CLASS_REGISTRY: dict[str, type] = {
         ConnectivityMatrix,
         SimulationState,
         SimulationSpecs,
+        StepType,
         Resource,
         HealthModule,
         MoneyModule,
