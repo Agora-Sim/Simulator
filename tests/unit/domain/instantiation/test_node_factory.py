@@ -46,7 +46,7 @@ def test_build_connectivity_matrix_is_square_over_all_nodes() -> None:
 def test_build_nodes_creates_one_node_per_initial_number() -> None:
     blueprint = NodeBlueprint(build_nodes_data())  # 3 citizens + 2 companies
 
-    nodes = NodeFactory().build_nodes(blueprint)
+    nodes = NodeFactory().build_nodes(blueprint, np.random.default_rng(0))
 
     assert len(nodes) == 5
     # Sequential ids across all node types.

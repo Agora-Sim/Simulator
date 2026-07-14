@@ -33,7 +33,7 @@ def test_subclass_with_sample_can_be_instantiated() -> None:
     class Constant(PropertyDistribution):
         type = "constant"
 
-        def sample(self) -> float:
+        def sample(self, rng) -> float:
             return 1.5
 
-    assert Constant(data={}).sample() == 1.5
+    assert Constant(data={}).sample(None) == 1.5

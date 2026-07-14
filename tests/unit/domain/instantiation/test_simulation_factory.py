@@ -34,7 +34,7 @@ class FakeNodeFactory:
         self.build_nodes_arg = None
         self.build_connectivity_args = None
 
-    def build_nodes(self, node_blueprint):
+    def build_nodes(self, node_blueprint, rng):
         self.build_nodes_arg = node_blueprint
         return self.nodes
 

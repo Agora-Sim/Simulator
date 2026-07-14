@@ -47,7 +47,7 @@ def _build_matrix(
         build_homogeneous_percentage_nodes_data(n=n, percentage=percentage)
     )
     factory = NodeFactory()
-    nodes = factory.build_nodes(blueprint)
+    nodes = factory.build_nodes(blueprint, rng)
     return factory.build_connectivity_matrix(nodes, blueprint, rng).data
 
 

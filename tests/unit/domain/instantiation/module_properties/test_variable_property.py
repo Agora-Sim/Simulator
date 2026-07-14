@@ -8,8 +8,7 @@ PropertyRange (from "range") and a PropertyDistribution (dispatched by
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-import random
-
+import numpy as np
 import pytest
 
 from simulator.domain.instantiation.module_properties.property_range import (
@@ -68,7 +67,6 @@ def test_distribution_normal_returns_normal_distribution() -> None:
 def test_sample_returns_float_from_distribution() -> None:
     prop = VariableProperty(data=_variable_data(mean=0.0, std=1.0))
 
-    random.seed(0)
-    value = prop.sample()
+    value = prop.sample(np.random.default_rng(0))
 
     assert isinstance(value, float)
