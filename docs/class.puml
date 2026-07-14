@@ -93,7 +93,6 @@ package "Model Domain Layer" #FFF8E1 {
 
             + apply(previous_state: SimulationState, rng: Generator): list[Effect]
         }
-        NodeModule ..> Effect
 
         class HealthModule <<partial>> {
             + health: float
@@ -133,7 +132,7 @@ package "Model Domain Layer" #FFF8E1 {
 
 
     package "Effects"{
-        abstract class Effect <<planned>> {
+        abstract class Effect <<implemented>> {
             + name: ClassVar[str]
             + priority: ClassVar[int]
 
@@ -150,7 +149,7 @@ package "Model Domain Layer" #FFF8E1 {
         }
         TradeEffect ..|> Effect
 
-        class DeathEffect <<planned>> {
+        class DeathEffect <<implemented>> {
             + node_id: int
 
             + apply(state: SimulationState): None
@@ -178,8 +177,6 @@ package "Model Domain Layer" #FFF8E1 {
     SimulationEngine o-- Node
     SimulationEngine --> ConnectivityMatrix
     SimulationEngine ..> SimulationState
-    SimulationEngine ..> Effect
-    Effect ..> SimulationState
 
 
     class ConnectivityMatrix <<partial>> {
@@ -537,6 +534,10 @@ NetworkRenderer ..> Plotly
 FigureExporter --> Source
 FigureExporter ..> Figure
 Graph ..> NetworkX
+
+SimulationEngine ..> Effect
+Effect ..> SimulationState
+NodeModule ..> Effect
 
 
 @enduml

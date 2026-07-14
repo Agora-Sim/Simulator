@@ -70,7 +70,6 @@ class SimulationEngine:
 
         return simulation_state
 
-
     # ──────────────────────────────────────────────────────
     # 1.1 Subsection: Helper Functions
     # ──────────────────────────────────────────────────────
@@ -94,7 +93,6 @@ class SimulationEngine:
 
         return effects
 
-
     # ──────────────────────────────────────────────────────
     # 1.1 Subsection: Helper Functions
     # ──────────────────────────────────────────────────────
@@ -105,7 +103,6 @@ class SimulationEngine:
             time_idx=-1,
             time_step=self.simulation_specs.step_size,
         )
-
 
     # ──────────────────────────────────────────────────────
     # 1.1 Subsection: Helper Functions

@@ -8,7 +8,7 @@ import numpy as np
 from typing import ClassVar, TYPE_CHECKING
 from dataclasses import dataclass
 
-from ..effects import Effect, DeathEffect
+from ..effects import DeathEffect
 from .node_module import NodeModule
 
 if TYPE_CHECKING:
