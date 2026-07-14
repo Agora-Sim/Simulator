@@ -94,9 +94,11 @@ package "Model Domain Layer" #FFF8E1 {
             + apply(previous_state: SimulationState, rng: Generator): list[Effect]
         }
 
-        class HealthModule <<partial>> {
+        class HealthModule <<implemented>> {
             + health: float
             + age: float
+            + decay_rate: float
+            + max_age: float
         }
         HealthModule ..|> NodeModule
 
