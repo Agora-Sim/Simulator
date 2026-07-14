@@ -25,9 +25,7 @@ from simulator.service.simulation_run import SimulationRun
 # ──────────────────────────────────────────────────────
 # Raw config-dict builders (what the user file would contain)
 # ──────────────────────────────────────────────────────
-def build_percentage_connectivity_data(
-    percentage: float = 0.5
-) -> dict[str, Any]:
+def build_percentage_connectivity_data(percentage: float = 0.5) -> dict[str, Any]:
     return {"type": "percentage", "percentage": percentage}
 
 
@@ -44,8 +42,7 @@ def build_variable_data(
 
 
 def build_health_node_type_data(
-    initial_numbers: int = 3,
-    percentage: float = 0.5
+    initial_numbers: int = 3, percentage: float = 0.5
 ) -> dict[str, Any]:
     return {
         "initial_numbers": initial_numbers,

@@ -47,9 +47,7 @@ class SimulationEngine:
     connectivity_matrix: ConnectivityMatrix
     simulation_specs: SimulationSpecs
 
-    def step(
-        self, current_step: float, rng: np.random.Generator
-    ) -> SimulationState:
+    def step(self, current_step: float, rng: np.random.Generator) -> SimulationState:
         nodes = []
         for node in self.nodes:
             node = self.step_node(node, rng)
@@ -70,9 +68,7 @@ class SimulationEngine:
 
         return node
 
-    def step_module(
-        self, module: NodeModule, rng: np.random.Generator
-    ) -> NodeModule:
+    def step_module(self, module: NodeModule, rng: np.random.Generator) -> NodeModule:
         module.apply(rng)
 
         return module

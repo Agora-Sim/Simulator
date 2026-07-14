@@ -110,6 +110,7 @@ def _build_variables(
 
     return module_class(**kwargs)
 
+
 def _build_conection_dict(node_id: int, matrix: NDArray) -> dict[str, list]:
     row = matrix[node_id]
 
@@ -121,6 +122,7 @@ def _build_conection_dict(node_id: int, matrix: NDArray) -> dict[str, list]:
         "already_connected": already_connected.tolist(),
         "candidates": candidates.tolist(),
     }
+
 
 def _update_matrix(matrix: NDArray, node_id: int, to_connect: NDArray) -> NDArray:
     if len(to_connect) == 0:

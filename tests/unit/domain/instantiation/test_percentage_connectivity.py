@@ -39,9 +39,7 @@ def _make_rule(percentage: float) -> PercentageConnectivity:
     )
 
 
-def _build_matrix(
-    n: int, percentage: float, rng: np.random.Generator
-) -> np.ndarray:
+def _build_matrix(n: int, percentage: float, rng: np.random.Generator) -> np.ndarray:
     """Build one connectivity matrix for a homogeneous percentage population."""
     blueprint = NodeBlueprint(
         build_homogeneous_percentage_nodes_data(n=n, percentage=percentage)
@@ -196,9 +194,7 @@ def test_mean_connectivity_stays_within_ten_percent_of_target(
     runs = 30
 
     fractions = [
-        _mean_connectivity_fraction(
-            _build_matrix(n=n, percentage=percentage, rng=rng)
-        )
+        _mean_connectivity_fraction(_build_matrix(n=n, percentage=percentage, rng=rng))
         for _ in range(runs)
     ]
     mean_fraction = float(np.mean(fractions))

@@ -15,7 +15,6 @@ import pytest
 from simulator.service.simulation_run import SimulationRun
 from tests.helpers.fakes import RecordingEngine
 
-
 # A shared throwaway generator; these tests use a no-op RecordingEngine
 _RNG = np.random.default_rng(0)
 

@@ -56,9 +56,7 @@ def _fingerprint(simulation) -> tuple:
     """A comparable snapshot of everything randomness should have decided."""
     matrix = simulation.engine.connectivity_matrix.data
     modules = [
-        asdict(module)
-        for node in simulation.engine.nodes
-        for module in node.modules
+        asdict(module) for node in simulation.engine.nodes for module in node.modules
     ]
     return matrix, modules
 
