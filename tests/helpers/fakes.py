@@ -46,7 +46,7 @@ class RecordingEngine:
         self.step_calls = 0
         self.step_args: list[float] = []
 
-    def step(self, current_step: float) -> str:
+    def step(self, current_step: float, rng=None) -> str:
         self.step_args.append(current_step)
         state = f"state-{self.step_calls}"
         self.step_calls += 1

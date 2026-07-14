@@ -38,8 +38,8 @@ class FakeNodeFactory:
         self.build_nodes_arg = node_blueprint
         return self.nodes
 
-    def build_connectivity_matrix(self, nodes, node_blueprint):
-        self.build_connectivity_args = (nodes, node_blueprint)
+    def build_connectivity_matrix(self, nodes, node_blueprint, rng):
+        self.build_connectivity_args = (nodes, node_blueprint, rng)
         return self.matrix
 
 
@@ -52,7 +52,7 @@ def test_build_simulation_returns_simulation_wired_with_engine() -> None:
     factory = SimulationFactory(_node_factory=fake_factory)
     blueprint = SimulationBlueprint(build_blueprint_data())
 
-    simulation = factory.build_simulation(blueprint)
+    simulation = factory.build_simulation(blueprint, np.random.default_rng(0))
 
     assert isinstance(simulation, SimulationRun)
     assert simulation.engine.nodes is fake_factory.nodes
@@ -67,10 +67,10 @@ def test_build_simulation_passes_node_blueprint_to_factory() -> None:
     factory = SimulationFactory(_node_factory=fake_factory)
     blueprint = SimulationBlueprint(build_blueprint_data())
 
-    factory.build_simulation(blueprint)
+    factory.build_simulation(blueprint, np.random.default_rng(0))
 
     assert isinstance(fake_factory.build_nodes_arg, NodeBlueprint)
-    passed_nodes, passed_blueprint = fake_factory.build_connectivity_args
+    passed_nodes, passed_blueprint, _ = fake_factory.build_connectivity_args
     assert passed_nodes is fake_factory.nodes
     assert isinstance(passed_blueprint, NodeBlueprint)
 

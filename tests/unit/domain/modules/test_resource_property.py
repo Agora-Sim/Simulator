@@ -20,7 +20,7 @@ def test_subclass_can_override_apply() -> None:
     class Concrete(ResourceProperty):
         name = "concrete"
 
-        def apply(self) -> str:
+        def apply(self, rng) -> str:
             return "applied"
 
-    assert Concrete().apply() == "applied"
+    assert Concrete().apply(None) == "applied"

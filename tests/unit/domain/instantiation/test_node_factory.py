@@ -35,7 +35,8 @@ def test_build_connectivity_matrix_is_square_over_all_nodes() -> None:
     nodes = [Node(id=0, node_type="citizen", modules=[])]
     blueprint = NodeBlueprint(build_nodes_data())  # 3 citizens + 2 companies
 
-    matrix = NodeFactory().build_connectivity_matrix(nodes, blueprint)
+    rng = np.random.default_rng(0)
+    matrix = NodeFactory().build_connectivity_matrix(nodes, blueprint, rng)
 
     assert isinstance(matrix, ConnectivityMatrix)
     assert matrix.data.shape == (blueprint.nr_nodes, blueprint.nr_nodes)

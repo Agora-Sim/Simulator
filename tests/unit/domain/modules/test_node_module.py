@@ -36,9 +36,9 @@ def test_subclass_with_apply_can_be_instantiated() -> None:
     class Concrete(NodeModule):
         name = "concrete"
 
-        def apply(self) -> str:
+        def apply(self, rng) -> str:
             return "applied"
 
     module = Concrete()
 
-    assert module.apply() == "applied"
+    assert module.apply(None) == "applied"
