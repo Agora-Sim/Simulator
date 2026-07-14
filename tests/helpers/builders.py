@@ -51,6 +51,8 @@ def build_health_node_type_data(
             "health": {
                 "health": build_variable_data(mean=50.0, std=5.0),
                 "age": build_variable_data(mean=30.0, std=2.0),
+                "decay_factor": build_variable_data(mean=100_000.0, std=0.0),
+                "max_age": build_variable_data(mean=100.0, std=0.0),
             }
         },
     }
@@ -123,7 +125,9 @@ def build_node(
     modules: list | None = None,
 ) -> Node:
     if modules is None:
-        modules = [HealthModule(health=50.0, age=30.0)]
+        modules = [
+            HealthModule(health=50.0, age=30.0, decay_factor=100_000, max_age=100.0)
+        ]
     return Node(id=node_id, node_type=node_type, modules=modules)
 
 
@@ -151,7 +155,13 @@ def build_engine(
     if nodes is None:
         nodes = [
             Node(
-                id=0, node_type="citizen", modules=[HealthModule(health=80.0, age=25.0)]
+                id=0,
+                node_type="citizen",
+                modules=[
+                    HealthModule(
+                        health=80.0, age=25.0, decay_factor=100_000, max_age=100.0
+                    )
+                ],
             ),
             Node(
                 id=1,
@@ -187,6 +197,7 @@ def build_simulation(
             nodes=engine.nodes,
             connectivity_matrix=engine.connectivity_matrix,
             time_idx=0,
+            time_step=engine.simulation_specs.step_size,
         )
         history = [state]
 

@@ -7,6 +7,7 @@ apply() is not implemented yet, so only a concrete override is exercised here.
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
 import pytest
 
 from simulator.domain.modules.resource_property import ResourceProperty
@@ -23,4 +24,4 @@ def test_subclass_can_override_apply() -> None:
         def apply(self, rng) -> str:
             return "applied"
 
-    assert Concrete().apply(None) == "applied"
+    assert Concrete().apply(np.random.default_rng(0)) == "applied"

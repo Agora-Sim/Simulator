@@ -9,6 +9,8 @@ broken) real node-building logic.
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+from typing import cast
+
 import numpy as np
 import pytest
 
@@ -17,6 +19,7 @@ from simulator.domain.node import Node
 from simulator.domain.connectivity_matrix import ConnectivityMatrix
 from simulator.domain.instantiation.simulation_specs import SimulationSpecs
 from simulator.domain.instantiation.node_blueprint import NodeBlueprint
+from simulator.domain.instantiation.node_factory import NodeFactory
 from simulator.domain.instantiation.simulation_factory import SimulationFactory
 from simulator.domain.instantiation.simulation_blueprint import SimulationBlueprint
 from tests.helpers.builders import build_blueprint_data
@@ -32,7 +35,7 @@ class FakeNodeFactory:
         self.nodes = [Node(id=0, node_type="citizen", modules=[])]
         self.matrix = ConnectivityMatrix(data=np.zeros((1, 1)))
         self.build_nodes_arg = None
-        self.build_connectivity_args = None
+        self.build_connectivity_args: tuple | None = None
 
     def build_nodes(self, node_blueprint, rng):
         self.build_nodes_arg = node_blueprint
@@ -42,6 +45,10 @@ class FakeNodeFactory:
         self.build_connectivity_args = (nodes, node_blueprint, rng)
         return self.matrix
 
+    def as_node_factory(self) -> NodeFactory:
+        """Present the fake as the NodeFactory the SimulationFactory expects."""
+        return cast(NodeFactory, self)
+
 
 # ================================================================
 # 2. Section: Unit Tests
@@ -49,7 +56,7 @@ class FakeNodeFactory:
 @pytest.mark.unit
 def test_build_simulation_returns_simulation_wired_with_engine() -> None:
     fake_factory = FakeNodeFactory()
-    factory = SimulationFactory(_node_factory=fake_factory)
+    factory = SimulationFactory(_node_factory=fake_factory.as_node_factory())
     blueprint = SimulationBlueprint(build_blueprint_data())
 
     simulation = factory.build_simulation(blueprint, np.random.default_rng(0))
@@ -64,12 +71,13 @@ def test_build_simulation_returns_simulation_wired_with_engine() -> None:
 @pytest.mark.unit
 def test_build_simulation_passes_node_blueprint_to_factory() -> None:
     fake_factory = FakeNodeFactory()
-    factory = SimulationFactory(_node_factory=fake_factory)
+    factory = SimulationFactory(_node_factory=fake_factory.as_node_factory())
     blueprint = SimulationBlueprint(build_blueprint_data())
 
     factory.build_simulation(blueprint, np.random.default_rng(0))
 
     assert isinstance(fake_factory.build_nodes_arg, NodeBlueprint)
+    assert fake_factory.build_connectivity_args is not None
     passed_nodes, passed_blueprint, _ = fake_factory.build_connectivity_args
     assert passed_nodes is fake_factory.nodes
     assert isinstance(passed_blueprint, NodeBlueprint)
@@ -77,8 +85,6 @@ def test_build_simulation_passes_node_blueprint_to_factory() -> None:
 
 @pytest.mark.unit
 def test_default_node_factory_is_used_when_none_provided() -> None:
-    from simulator.domain.instantiation.node_factory import NodeFactory
-
     factory = SimulationFactory()
 
     assert isinstance(factory._node_factory, NodeFactory)

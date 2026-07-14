@@ -1,12 +1,17 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+from __future__ import annotations
+
 import numpy as np
 
-from typing import ClassVar
+from typing import ClassVar, TYPE_CHECKING
 from dataclasses import dataclass
 
 from .node_module import NodeModule
+
+if TYPE_CHECKING:
+    from ..simulation_state import SimulationState
 
 
 # ================================================================
@@ -19,5 +24,5 @@ class MoneyModule(NodeModule):
     balance: float
     income: float
 
-    def apply(self, rng: np.random.Generator):
-        pass
+    def apply(self, previous_state: SimulationState, rng: np.random.Generator) -> list:
+        return []

@@ -12,6 +12,7 @@ integration tests.
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+from typing import cast
 from pathlib import Path
 
 import pytest
@@ -19,6 +20,7 @@ import pytest
 from simulator.adapters import simulation_io as simulation_io_module
 from simulator.adapters.simulation_io import SimulationIO
 from simulator.adapters.source import Source
+from simulator.service.simulation_run import SimulationRun
 
 
 # ================================================================
@@ -124,7 +126,8 @@ def test_download_run_forwards_arguments_to_downloader(
     downloader = FakeDownloader(out_path)
     monkeypatch.setattr(simulation_io_module, "Downloader", lambda src: downloader)
     io = SimulationIO(source)
-    simulation = object()
+    # The facade forwards the run untouched, so an opaque sentinel suffices.
+    simulation = cast(SimulationRun, object())
 
     result = io.download_run(simulation, run_nr=7, out_file_type="hdf5")
 

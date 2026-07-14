@@ -3,6 +3,7 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
 import pytest
 
 from simulator.domain.instantiation.module_properties.property_distribution import (
@@ -36,4 +37,4 @@ def test_subclass_with_sample_can_be_instantiated() -> None:
         def sample(self, rng) -> float:
             return 1.5
 
-    assert Constant(data={}).sample(None) == 1.5
+    assert Constant(data={}).sample(np.random.default_rng(0)) == 1.5

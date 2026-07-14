@@ -20,6 +20,16 @@ nodes:
             type: normal
             mean: 80
             std: 10
+        decay_factor:
+          range: [100_000, 100_000]
+          distribution:
+            type: constant
+            value: 100_000
+        max_age:
+          range: [100, 100]
+          distribution:
+            type: constant
+            value: 100
   governament:
     initial_numbers: 1
     connectivity:

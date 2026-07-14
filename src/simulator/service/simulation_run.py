@@ -46,7 +46,10 @@ class SimulationRun:
         max_duration = self.engine.simulation_specs.max_duration
         step_value = self.engine.simulation_specs.step_size.factor
 
+        initial_state = self.engine.build_state()
+        self.history.append(initial_state)
+
         while self.current_step < max_duration:
-            state = self.engine.step(self.current_step, rng)
+            state = self.engine.step(self.current_step, self.history[-1], rng)
             self.history.append(state)
             self.current_step += step_value

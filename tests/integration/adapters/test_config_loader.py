@@ -10,7 +10,6 @@ config surfaces through the blueprint's own validation.
 # 0. Section: IMPORTS
 # ================================================================
 import textwrap
-from pathlib import Path
 
 import pytest
 import yaml

@@ -32,11 +32,11 @@ def test_subclass_with_build_can_be_instantiated() -> None:
     class Concrete(ConnectivityRule):
         type = "concrete"
 
-        def build(self, node_id: int, node_row, rng):
-            return node_row
+        def build(self, node_id: int, connection_dict: dict[str, list], rng):
+            return np.array(connection_dict["candidates"])
 
     rule = Concrete(data={})
-    row = np.array([1.0, 2.0])
+    connection_dict = {"already_connected": [], "candidates": [1, 2]}
     rng = np.random.default_rng(0)
 
-    np.testing.assert_array_equal(rule.build(0, row, rng), row)
+    np.testing.assert_array_equal(rule.build(0, connection_dict, rng), [1, 2])

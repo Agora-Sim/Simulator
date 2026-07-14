@@ -9,6 +9,8 @@ symmetry, the field-by-field assertions here fail and point at it.
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+from typing import cast
+
 import numpy as np
 import pytest
 
@@ -16,7 +18,7 @@ from simulator.adapters.downloader import Downloader
 from simulator.adapters.loader import Loader
 from simulator.adapters.source import Source
 from simulator.domain.instantiation import SimulationSpecs
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_state import SimulationState
 from tests.helpers import builders
 from tests.helpers.assertions import assert_simulation_equal
 
@@ -67,7 +69,8 @@ def test_roundtrip_preserves_specs_dict(source: Source) -> None:
 def test_roundtrip_preserves_none_entries(source: Source) -> None:
     # None is a documented, supported leaf in the encoder; a None history slot
     # must survive the round-trip as None rather than an empty group.
-    simulation = builders.build_simulation(history=[None], current_step=1)
+    none_slot = cast(SimulationState, None)
+    simulation = builders.build_simulation(history=[none_slot], current_step=1)
 
     Downloader(source).download_run(simulation, run_nr=1)
     loaded = Loader(source).load_run(run_nr=1)

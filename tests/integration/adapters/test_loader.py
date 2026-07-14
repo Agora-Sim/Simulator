@@ -72,7 +72,9 @@ def test_load_run_coerces_hdf5_scalars_to_native_types(
     assert isinstance(specs["max_duration"], int)
     assert isinstance(specs["re_connection"], bool)
     assert isinstance(specs["step_size"], str)
-    assert isinstance(loaded.engine.nodes[0].modules[0].health, float)
+    health_module = loaded.engine.nodes[0].modules[0]
+    assert isinstance(health_module, HealthModule)
+    assert isinstance(health_module.health, float)
 
 
 @pytest.mark.integration

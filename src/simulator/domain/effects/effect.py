@@ -1,21 +1,23 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from dataclasses import dataclass
+from __future__ import annotations
 
-from .modules import NodeModule
+from typing import ClassVar, TYPE_CHECKING
+from dataclasses import dataclass
+from abc import ABC, abstractmethod
+
+if TYPE_CHECKING:
+    from ..simulation_state import SimulationState
 
 
 # ================================================================
 # 1. Section: Functions
 # ================================================================
 @dataclass
-class Node:
-    id: int
-    node_type: str
-    modules: list[NodeModule]
-    status: bool = True
+class Effect(ABC):
+    name: ClassVar[str]
+    priority: ClassVar[int]
 
-    def __post_init__(self):
-        for module in self.modules:
-            module.node_id = self.id
+    @abstractmethod
+    def apply(self, state: SimulationState) -> None: ...

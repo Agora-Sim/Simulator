@@ -91,8 +91,9 @@ package "Model Domain Layer" #FFF8E1 {
         interface NodeModule <<implemented>> {
             + name: ClassVar[str]
 
-            + apply(rng: Generator): None
+            + apply(previous_state: SimulationState, rng: Generator): list[Effect]
         }
+        NodeModule ..> Effect
 
         class HealthModule <<partial>> {
             + health: float
@@ -131,10 +132,38 @@ package "Model Domain Layer" #FFF8E1 {
     }
 
 
+    package "Effects"{
+        abstract class Effect <<planned>> {
+            + name: ClassVar[str]
+            + priority: ClassVar[int]
+
+            + apply(state: SimulationState): None
+        }
+
+        class TradeEffect <<planned>> {
+            + from_id: int
+            + to_id: int
+            + resource: str
+            + amount: float
+
+            + apply(state: SimulationState): None
+        }
+        TradeEffect ..|> Effect
+
+        class DeathEffect <<planned>> {
+            + node_id: int
+
+            + apply(state: SimulationState): None
+        }
+        DeathEffect ..|> Effect
+    }
+
+
     class Node <<implemented>> {
         + id: int
         + node_type: str
         + modules: dict[str, NodeModule]
+        + status: bool
     }
     Node o-- NodeModule
 
@@ -144,11 +173,13 @@ package "Model Domain Layer" #FFF8E1 {
         + connectivity_matrix: ConnectivityMatrix
         + simulation_specs: SimulationSpecs
 
-        + step(rng: Generator): SimulationState
+        + step(current_step: float, previous_state: SimulationState, rng: Generator): SimulationState
     }
     SimulationEngine o-- Node
     SimulationEngine --> ConnectivityMatrix
     SimulationEngine ..> SimulationState
+    SimulationEngine ..> Effect
+    Effect ..> SimulationState
 
 
     class ConnectivityMatrix <<partial>> {

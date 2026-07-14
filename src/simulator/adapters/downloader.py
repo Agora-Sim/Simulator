@@ -42,6 +42,8 @@ class Downloader:
             sub = group.create_group(key)
             sub.attrs["__type__"] = type(value).__name__
             for f in fields(value):
+                if not f.init:
+                    continue
                 self._encode(sub, f.name, getattr(value, f.name))
 
         elif isinstance(value, dict):
