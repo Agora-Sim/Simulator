@@ -26,5 +26,15 @@ class Source:
     def config_path(self) -> Path:
         return self.folder / "config.yaml"
 
+    @property
+    def figures_folder(self) -> Path:
+        return self.folder / "figures"
+
     def get_run_folder(self, run_id: str) -> Path:
         return self.runs_folder / f"run_{run_id}"
+
+    def get_figure_path(self, name: str, fmt: str) -> Path:
+        return self.figures_folder / f"{name}.{fmt}"
+
+    def get_nr_runs_present(self) -> int:
+        return len(list(self.runs_folder.glob("run_*")))

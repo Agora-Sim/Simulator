@@ -81,3 +81,26 @@ def test_load_run_coerces_hdf5_scalars_to_native_types(
 def test_load_run_rejects_unsupported_file_type(source: Source) -> None:
     with pytest.raises(ValueError, match="Unsupported out_file_type"):
         Loader(source).load_run(run_nr=1, out_file_type="json")
+
+
+@pytest.mark.integration
+def test_load_all_runs_returns_every_downloaded_run(
+    source: Source, simulation: SimulationRun
+) -> None:
+    Downloader(source).download_run(simulation, run_nr=1)
+    Downloader(source).download_run(simulation, run_nr=2)
+    Downloader(source).download_run(simulation, run_nr=3)
+
+    loaded = Loader(source).load_all_runs(out_file_type="hdf5")
+
+    assert len(loaded) == 3
+    assert all(isinstance(run, SimulationRun) for run in loaded)
+
+
+@pytest.mark.integration
+def test_load_all_runs_is_empty_without_runs(source: Source) -> None:
+    source.runs_folder.mkdir(parents=True)
+
+    loaded = Loader(source).load_all_runs(out_file_type="hdf5")
+
+    assert loaded == []

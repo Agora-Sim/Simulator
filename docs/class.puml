@@ -94,9 +94,11 @@ package "Model Domain Layer" #FFF8E1 {
             + apply(previous_state: SimulationState, rng: Generator): list[Effect]
         }
 
-        class HealthModule <<partial>> {
+        class HealthModule <<implemented>> {
             + health: float
             + age: float
+            + decay_rate: float
+            + max_age: float
         }
         HealthModule ..|> NodeModule
 
@@ -392,16 +394,18 @@ package "Adapter Layer" #E3F2FD {
     Repository --> Source
 
 
-    class Source <<partial>> {
+    class Source <<implemented>> {
         + simulation_name: str
         + simulation_description: str
         + folder: Path
 
         + runs_folder: Path
+        + config_folder: Path
         + figures_folder: Path
 
         + get_run_folder(run_nr: int): Path
         + get_figure_path(name: str, fmt: str): Path
+        + get_nr_runs_present(): int
     }
 
 
@@ -421,11 +425,11 @@ package "Adapter Layer" #E3F2FD {
     Downloader --> Source
 
 
-    class Loader <<partial>> {
+    class Loader <<implemented>> {
         + source: Source
 
         + load_run(run_nr: int, out_file_type: str): Simulation
-        + load_all_runs(): list[SimulationRun]
+        + load_all_runs(out_file_type: str): list[SimulationRun]
     }
     Loader --> Source
     Loader ..> Simulation
