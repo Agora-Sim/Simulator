@@ -65,7 +65,6 @@ class Loader:
             runs.append(self.load_run(run_nr, out_file_type))
         return runs
 
-
     # ──────────────────────────────────────────────────────
     # 1.1 Subsection: Helper Functions
     # ──────────────────────────────────────────────────────
