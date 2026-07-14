@@ -25,7 +25,6 @@ class NormalConnectivity(ConnectivityRule):
     def std(self) -> float:
         return self.data["std"]
 
-    # TODO: Make sure it works with already half-connected nodes
     def build(
         self,
         node_id: int,
