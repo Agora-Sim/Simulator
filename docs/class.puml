@@ -394,12 +394,13 @@ package "Adapter Layer" #E3F2FD {
     Repository --> Source
 
 
-    class Source <<partial>> {
+    class Source <<implemented>> {
         + simulation_name: str
         + simulation_description: str
         + folder: Path
 
         + runs_folder: Path
+        + config_folder: Path
         + figures_folder: Path
 
         + get_run_folder(run_nr: int): Path
