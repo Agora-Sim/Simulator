@@ -48,7 +48,7 @@ package "Service Layer" #E8F5E9 {
         + current_step: int
         + history: list[SimulationState]
 
-        + run_simulation():
+        + run_simulation(rng: Generator):
     }
 
 
@@ -90,6 +90,8 @@ package "Model Domain Layer" #FFF8E1 {
     package "Modules"{
         interface NodeModule <<implemented>> {
             + name: ClassVar[str]
+
+            + apply(rng: Generator): None
         }
 
         class HealthModule <<partial>> {
@@ -124,7 +126,7 @@ package "Model Domain Layer" #FFF8E1 {
         interface ResourceProperty <<implemented>> {
             name: str
 
-            + apply(): None
+            + apply(rng: Generator): None
         }
     }
 
@@ -142,7 +144,7 @@ package "Model Domain Layer" #FFF8E1 {
         + connectivity_matrix: ConnectivityMatrix
         + simulation_specs: SimulationSpecs
 
-        + step(): SimulationState
+        + step(rng: Generator): SimulationState
     }
     SimulationEngine o-- Node
     SimulationEngine --> ConnectivityMatrix
@@ -283,7 +285,7 @@ package "Model Domain Layer" #FFF8E1 {
                 + range: PropertyRange
                 + distribution: PropertyDistribution
 
-                + sample(): float
+                + sample(rng: Generator): float
             }
             VariableProperty --> PropertyRange
             VariableProperty --> PropertyDistribution
@@ -299,7 +301,7 @@ package "Model Domain Layer" #FFF8E1 {
                 + type: ClassVar[str]
                 + data: dict[str, Any]
 
-                + sample(): float
+                + sample(rng: Generator): float
             }
 
 
@@ -315,7 +317,7 @@ package "Model Domain Layer" #FFF8E1 {
             + name: ClassVar[str]
             + data: dict
 
-            + build(id: int, node_row: NDArray): NDArray
+            + build(id: int, node_row: NDArray, rng: Generator): NDArray
         }
 
 
@@ -329,7 +331,7 @@ package "Model Domain Layer" #FFF8E1 {
         class SimulationFactory <<implemented>> {
             - _node_factory: NodeFactory
 
-            + build_simulation(blueprint: SimulationBlueprint): Simulation
+            + build_simulation(blueprint: SimulationBlueprint, rng: Generator): Simulation
         }
         SimulationFactory --> NodeFactory
         SimulationFactory ..> SimulationBlueprint
@@ -337,8 +339,8 @@ package "Model Domain Layer" #FFF8E1 {
         SimulationFactory ..> Simulation
 
         class NodeFactory <<implemented>> {
-            + build_nodes(node_blueprint: NodeBlueprint): list[Node]
-            + build_connectivity(node_blueprint: NodeBlueprint): ConnectivityMatrix
+            + build_nodes(node_blueprint: NodeBlueprint, rng: Generator): list[Node]
+            + build_connectivity(node_blueprint: NodeBlueprint, rng: Generator): ConnectivityMatrix
         }
         NodeFactory ..> NodeBlueprint
         NodeFactory ..> Node
