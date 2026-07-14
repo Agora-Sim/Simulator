@@ -25,10 +25,10 @@ from simulator.service.simulation_run import SimulationRun
 # ──────────────────────────────────────────────────────
 # Raw config-dict builders (what the user file would contain)
 # ──────────────────────────────────────────────────────
-def build_normal_connectivity_data(
-    mean: float = 2.0, std: float = 1.0
+def build_percentage_connectivity_data(
+    percentage: float = 0.5
 ) -> dict[str, Any]:
-    return {"type": "normal", "mean": mean, "std": std}
+    return {"type": "percentage", "percentage": percentage}
 
 
 def build_variable_data(
@@ -45,12 +45,11 @@ def build_variable_data(
 
 def build_health_node_type_data(
     initial_numbers: int = 3,
-    mean: float = 2.0,
-    std: float = 1.0,
+    percentage: float = 0.5
 ) -> dict[str, Any]:
     return {
         "initial_numbers": initial_numbers,
-        "connectivity": build_normal_connectivity_data(mean=mean, std=std),
+        "connectivity": build_percentage_connectivity_data(percentage=percentage),
         "modules": {
             "health": {
                 "health": build_variable_data(mean=50.0, std=5.0),
@@ -63,13 +62,28 @@ def build_health_node_type_data(
 def build_money_node_type_data(initial_numbers: int = 2) -> dict[str, Any]:
     return {
         "initial_numbers": initial_numbers,
-        "connectivity": build_normal_connectivity_data(mean=1.0, std=0.5),
+        "connectivity": build_percentage_connectivity_data(percentage=0.5),
         "modules": {
             "money": {
                 "balance": build_variable_data(range_max=1000.0, mean=500.0, std=50.0),
                 "income": build_variable_data(mean=20.0, std=3.0),
             }
         },
+    }
+
+
+def build_homogeneous_percentage_nodes_data(
+    n: int, percentage: float
+) -> dict[str, Any]:
+    """A single-type population of ``n`` nodes all sharing one percentage rule.
+
+    Useful for statistical tests on PercentageConnectivity: every node follows
+    the same rule, so the whole matrix should reflect that one distribution.
+    """
+    return {
+        "citizen": build_health_node_type_data(
+            initial_numbers=n, percentage=percentage
+        ),
     }
 
 

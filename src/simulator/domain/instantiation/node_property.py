@@ -5,9 +5,7 @@ from typing import Any
 from dataclasses import dataclass
 
 from .module_properties import ModuleProperty
-from .connectivity_rule import ConnectivityRule
-from .normal_connectivity import NormalConnectivity
-from .constant_connectivity import ConstantConnectivity
+from .connectivity import ConnectivityRule, ConstantConnectivity, PercentageConnectivity
 
 
 # ================================================================
@@ -42,8 +40,8 @@ class NodeProperty:
     @property
     def connectivity(self) -> ConnectivityRule:
         con_type = self.data["connectivity"]["type"]
-        if con_type == "normal":
-            return NormalConnectivity(self.data["connectivity"])
+        if con_type == "percentage":
+            return PercentageConnectivity(self.data["connectivity"])
         if con_type == "constant":
             return ConstantConnectivity(self.data["connectivity"])
 

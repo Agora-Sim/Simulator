@@ -6,7 +6,7 @@
 import numpy as np
 import pytest
 
-from simulator.domain.instantiation.connectivity_rule import ConnectivityRule
+from simulator.domain.instantiation.connectivity import ConnectivityRule
 
 
 # ================================================================

@@ -3,6 +3,7 @@
 # ================================================================
 import numpy as np
 
+from numpy.typing import NDArray
 from dataclasses import dataclass
 
 from ..node import Node
@@ -51,8 +52,9 @@ class NodeFactory:
             ).connectivity
             node_id = node.id
 
-            row = matrix[node_id]
-            matrix[node_id] = connectivity.build(node_id, row)
+            connection_dict = _build_conection_dict(node_id, matrix)
+            to_connect = connectivity.build(node_id, connection_dict)
+            matrix = _update_matrix(matrix, node_id, to_connect)
 
         return ConnectivityMatrix(matrix)
 
@@ -95,3 +97,23 @@ def _build_variables(module_type: ModuleProperty) -> NodeModule:
         kwargs[variable] = variable_prop.sample()
 
     return module_class(**kwargs)
+
+def _build_conection_dict(node_id: int, matrix: NDArray) -> dict[str, list]:
+    row = matrix[node_id]
+
+    already_connected = np.argwhere(row != 0).flatten()
+    candidates = np.argwhere(row == 0).flatten()
+    candidates = candidates[candidates != node_id]
+
+    return {
+        "already_connected": already_connected.tolist(),
+        "candidates": candidates.tolist(),
+    }
+
+def _update_matrix(matrix: NDArray, node_id: int, to_connect: NDArray) -> NDArray:
+    if len(to_connect) == 0:
+        return matrix
+
+    matrix[node_id, to_connect] = 1
+    matrix[to_connect, node_id] = 1
+    return matrix

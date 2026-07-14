@@ -11,7 +11,7 @@ properties for the type.
 import pytest
 
 from simulator.domain.instantiation.node_property import NodeProperty
-from simulator.domain.instantiation.normal_connectivity import NormalConnectivity
+from simulator.domain.instantiation.connectivity import PercentageConnectivity
 from simulator.domain.instantiation.module_properties import ModuleProperty
 from tests.helpers.builders import build_health_node_type_data
 
@@ -31,14 +31,13 @@ def test_initial_numbers_reads_config() -> None:
 @pytest.mark.unit
 def test_connectivity_normal_type_returns_normal_connectivity() -> None:
     prop = NodeProperty(
-        name="citizen", data=build_health_node_type_data(mean=2.0, std=1.0)
+        name="citizen", data=build_health_node_type_data(percentage=0.5)
     )
 
     connectivity = prop.connectivity
 
-    assert isinstance(connectivity, NormalConnectivity)
-    assert connectivity.mean == 2.0
-    assert connectivity.std == 1.0
+    assert isinstance(connectivity, PercentageConnectivity)
+    assert connectivity.percentage == 0.5
 
 
 @pytest.mark.unit
