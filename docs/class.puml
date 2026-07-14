@@ -405,6 +405,7 @@ package "Adapter Layer" #E3F2FD {
 
         + get_run_folder(run_nr: int): Path
         + get_figure_path(name: str, fmt: str): Path
+        + get_nr_runs_present(): int
     }
 
 
@@ -428,7 +429,7 @@ package "Adapter Layer" #E3F2FD {
         + source: Source
 
         + load_run(run_nr: int, out_file_type: str): Simulation
-        + load_all_runs(): list[SimulationRun]
+        + load_all_runs(out_file_type: str): list[SimulationRun]
     }
     Loader --> Source
     Loader ..> Simulation
