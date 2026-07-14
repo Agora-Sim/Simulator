@@ -35,3 +35,6 @@ class Source:
 
     def get_figure_path(self, name: str, fmt: str) -> Path:
         return self.figures_folder / f"{name}.{fmt}"
+
+    def get_nr_runs_present(self) -> int:
+        return len(list(self.runs_folder.glob("run_*")))
