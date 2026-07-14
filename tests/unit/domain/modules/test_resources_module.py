@@ -45,3 +45,12 @@ def test_resources_module_accepts_empty_resource_list() -> None:
     module = ResourcesModule(resources=[])
 
     assert module.resources == []
+
+
+@pytest.mark.unit
+def test_apply_returns_no_effects() -> None:
+    # The engine extends its effect list with apply()'s return value, so a
+    # passive module must return an empty list, never None.
+    module = ResourcesModule(resources=[_resource()])
+
+    assert module.apply(None, None) == []

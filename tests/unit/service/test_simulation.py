@@ -55,7 +55,7 @@ def test_run_simulation_advances_current_step_to_max_duration() -> None:
 
 
 @pytest.mark.unit
-def test_run_simulation_with_zero_duration_does_nothing() -> None:
+def test_run_simulation_with_zero_duration_takes_no_steps() -> None:
     engine = RecordingEngine(max_duration=0)
     simulation = SimulationRun(engine=engine)
 

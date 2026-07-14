@@ -1,6 +1,8 @@
 """Contract tests for Node.
 
-Node is a plain data holder: an id, a node_type label and a list of modules.
+Node holds an id, a node_type label, a list of modules and an alive status.
+On construction it stamps its id onto every module so effects the modules
+emit can name their owning node.
 """
 
 # ================================================================
@@ -51,6 +53,24 @@ def test_nodes_with_equal_fields_are_equal() -> None:
     b = Node(id=1, node_type="citizen", modules=modules)
 
     assert a == b
+
+
+@pytest.mark.unit
+def test_node_status_defaults_to_alive() -> None:
+    node = Node(id=0, node_type="citizen", modules=[])
+
+    assert node.status is True
+
+
+@pytest.mark.unit
+def test_node_stamps_its_id_on_every_module() -> None:
+    health = HealthModule(health=50.0, age=30.0, decay_factor=100_000, max_age=100.0)
+    money = MoneyModule(balance=100.0, income=10.0)
+
+    Node(id=9, node_type="citizen", modules=[health, money])
+
+    assert health.node_id == 9
+    assert money.node_id == 9
 
 
 @pytest.mark.unit
