@@ -50,6 +50,40 @@ def test_source_get_run_folder_composes_run_directory(tmp_path: Path) -> None:
 
 
 @pytest.mark.unit
+def test_source_figures_folder_is_inside_simulation_folder(tmp_path: Path) -> None:
+    source = Source("my_sim", "desc", base_folder=tmp_path)
+
+    assert source.figures_folder == tmp_path / "my_sim" / "figures"
+
+
+@pytest.mark.unit
+def test_source_get_figure_path_composes_named_figure(tmp_path: Path) -> None:
+    source = Source("my_sim", "desc", base_folder=tmp_path)
+
+    expected = tmp_path / "my_sim" / "figures" / "health.png"
+    assert source.get_figure_path("health", "png") == expected
+
+
+@pytest.mark.unit
+def test_source_get_nr_runs_present_is_zero_without_runs_folder(tmp_path: Path) -> None:
+    source = Source("my_sim", "desc", base_folder=tmp_path)
+
+    assert source.get_nr_runs_present() == 0
+
+
+@pytest.mark.unit
+def test_source_get_nr_runs_present_counts_only_run_directories(tmp_path: Path) -> None:
+    source = Source("my_sim", "desc", base_folder=tmp_path)
+    source.runs_folder.mkdir(parents=True)
+    (source.runs_folder / "run_1").mkdir()
+    (source.runs_folder / "run_2").mkdir()
+    # Non-run entries must not be counted.
+    (source.runs_folder / "notes.txt").touch()
+
+    assert source.get_nr_runs_present() == 2
+
+
+@pytest.mark.unit
 def test_source_keeps_name_when_folder_does_not_exist(tmp_path: Path) -> None:
     source = Source("my_sim", "desc", base_folder=tmp_path)
 
