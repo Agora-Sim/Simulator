@@ -17,9 +17,9 @@ from simulator.domain.modules import HealthModule, MoneyModule
 # ================================================================
 @pytest.mark.unit
 def test_node_stores_its_fields() -> None:
-    modules = [HealthModule(health=80.0, age=25.0)]
+    modules = [HealthModule(health=80.0, age=25.0, decay_factor=100_000, max_age=100.0)]
 
-    node = Node(id=7, node_type="citizen", modules=modules)
+    node = Node(id=7, node_type="citizen", modules=modules, status=True)
 
     assert node.id == 7
     assert node.node_type == "citizen"
@@ -28,7 +28,7 @@ def test_node_stores_its_fields() -> None:
 
 @pytest.mark.unit
 def test_node_accepts_multiple_modules() -> None:
-    health = HealthModule(health=50.0, age=30.0)
+    health = HealthModule(health=50.0, age=30.0, decay_factor=100_000, max_age=100.0)
     money = MoneyModule(balance=100.0, income=10.0)
 
     node = Node(id=0, node_type="citizen", modules=[health, money])
@@ -45,9 +45,9 @@ def test_node_accepts_empty_module_list() -> None:
 
 @pytest.mark.unit
 def test_nodes_with_equal_fields_are_equal() -> None:
-    modules = [HealthModule(health=50.0, age=30.0)]
+    modules = [HealthModule(health=50.0, age=30.0, decay_factor=100_000, max_age=100.0)]
 
-    a = Node(id=1, node_type="citizen", modules=modules)
+    a = Node(id=1, node_type="citizen", modules=modules, status=True)
     b = Node(id=1, node_type="citizen", modules=modules)
 
     assert a == b
@@ -55,9 +55,9 @@ def test_nodes_with_equal_fields_are_equal() -> None:
 
 @pytest.mark.unit
 def test_nodes_with_different_ids_are_not_equal() -> None:
-    modules = [HealthModule(health=50.0, age=30.0)]
+    modules = [HealthModule(health=50.0, age=30.0, decay_factor=100_000, max_age=100.0)]
 
-    a = Node(id=1, node_type="citizen", modules=modules)
+    a = Node(id=1, node_type="citizen", modules=modules, status=True)
     b = Node(id=2, node_type="citizen", modules=modules)
 
     assert a != b
