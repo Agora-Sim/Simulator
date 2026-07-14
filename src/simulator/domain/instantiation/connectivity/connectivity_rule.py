@@ -18,5 +18,10 @@ class ConnectivityRule(ABC):
     type: ClassVar[str]
 
     @abstractmethod
-    def build(self, node_id: int, connection_dict: dict[str, list]) -> np.ndarray:
+    def build(
+        self,
+        node_id: int,
+        connection_dict: dict[str, list],
+        rng: np.random.Generator,
+    ) -> np.ndarray:
         pass

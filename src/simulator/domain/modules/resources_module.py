@@ -1,6 +1,8 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
+
 from typing import ClassVar
 from dataclasses import dataclass
 
@@ -17,5 +19,5 @@ class ResourcesModule(NodeModule):
 
     resources: list[Resource]
 
-    def apply(self):
+    def apply(self, rng: np.random.Generator):
         pass

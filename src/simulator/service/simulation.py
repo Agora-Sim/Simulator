@@ -3,6 +3,8 @@
 # ================================================================
 import re
 
+import numpy as np
+
 from tqdm import tqdm
 from pathlib import Path
 from dataclasses import dataclass
@@ -64,15 +66,18 @@ class Simulation:
 
         nr_runs = blueprint.simulation_specs.nr_runs
 
-        for _ in tqdm(range(nr_runs)):
+        # Independent per-run streams derived from the master seed
+        seed_sequence = np.random.SeedSequence(blueprint.simulation_specs.seed)
+        run_seeds = seed_sequence.spawn(nr_runs)
+
+        for run_idx in tqdm(range(nr_runs)):
             _, run_id = self._io.init_run()
 
-            simulation = self._sim_factory.build_simulation(blueprint)
-            simulation.run_simulation()
+            rng = np.random.default_rng(run_seeds[run_idx])
+            simulation = self._sim_factory.build_simulation(blueprint, rng)
+            simulation.run_simulation(rng)
 
             self._io.download_run(simulation, run_id)
-
-            blueprint.simulation_specs.seed += 1
 
     def load_run(self, run_nr: int) -> SimulationRun:
         return self._io.load_run(run_nr)

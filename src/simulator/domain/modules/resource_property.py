@@ -1,6 +1,8 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
+
 from abc import ABC
 from typing import ClassVar
 from dataclasses import dataclass
@@ -13,5 +15,5 @@ from dataclasses import dataclass
 class ResourceProperty(ABC):
     name: ClassVar[str]
 
-    def apply(self):
+    def apply(self, rng: np.random.Generator):
         raise NotImplementedError("apply method must be implemented")

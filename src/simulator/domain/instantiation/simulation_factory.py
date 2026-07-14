@@ -10,6 +10,8 @@ Main components:
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
+
 from dataclasses import dataclass, field
 
 from .node_factory import NodeFactory
@@ -37,13 +39,15 @@ class SimulationFactory:
 
     _node_factory: NodeFactory = field(default_factory=NodeFactory)
 
-    def build_simulation(self, blueprint: SimulationBlueprint) -> SimulationRun:
+    def build_simulation(
+        self, blueprint: SimulationBlueprint, rng: np.random.Generator
+    ) -> SimulationRun:
         node_blueprint = blueprint.node_blueprint
         simulation_specs = blueprint.simulation_specs
 
         nodes = self._node_factory.build_nodes(node_blueprint)
         connectivity_matrix = self._node_factory.build_connectivity_matrix(
-            nodes, node_blueprint
+            nodes, node_blueprint, rng
         )
 
         engine = SimulationEngine(

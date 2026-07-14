@@ -11,6 +11,8 @@ Main components:
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
+
 from dataclasses import dataclass
 
 from .node import Node
@@ -45,10 +47,12 @@ class SimulationEngine:
     connectivity_matrix: ConnectivityMatrix
     simulation_specs: SimulationSpecs
 
-    def step(self, current_step: float) -> SimulationState:
+    def step(
+        self, current_step: float, rng: np.random.Generator
+    ) -> SimulationState:
         nodes = []
         for node in self.nodes:
-            node = self.step_node(node)
+            node = self.step_node(node, rng)
             nodes.append(node)
 
         simulation_state = SimulationState(
@@ -59,14 +63,16 @@ class SimulationEngine:
 
         return simulation_state
 
-    def step_node(self, node: Node) -> Node:
+    def step_node(self, node: Node, rng: np.random.Generator) -> Node:
         for idx, module in enumerate(node.modules):
-            module = self.step_module(module)
+            module = self.step_module(module, rng)
             node.modules[idx] = module
 
         return node
 
-    def step_module(self, module: NodeModule) -> NodeModule:
-        module.apply()
+    def step_module(
+        self, module: NodeModule, rng: np.random.Generator
+    ) -> NodeModule:
+        module.apply(rng)
 
         return module

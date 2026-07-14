@@ -21,7 +21,12 @@ class ConstantConnectivity(ConnectivityRule):
     def value(self) -> float:
         return self.data["value"]
 
-    def build(self, node_id: int, connection_dict: dict[str, list]) -> NDArray:
+    def build(
+        self,
+        node_id: int,
+        connection_dict: dict[str, list],
+        rng: np.random.Generator,
+    ) -> NDArray:
         # 1. Extract the data from the connection_dict
         candidates = np.asarray(connection_dict["candidates"])
 

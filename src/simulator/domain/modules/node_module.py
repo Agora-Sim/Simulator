@@ -1,6 +1,8 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
+
 from abc import ABC, abstractmethod
 from typing import ClassVar
 from dataclasses import dataclass
@@ -14,5 +16,5 @@ class NodeModule(ABC):
     name: ClassVar[str]
 
     @abstractmethod
-    def apply(self):
+    def apply(self, rng: np.random.Generator):
         pass

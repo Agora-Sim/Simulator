@@ -40,7 +40,10 @@ class NodeFactory:
         return nodes
 
     def build_connectivity_matrix(
-        self, nodes: list[Node], node_blueprint: NodeBlueprint
+        self,
+        nodes: list[Node],
+        node_blueprint: NodeBlueprint,
+        rng: np.random.Generator,
     ) -> ConnectivityMatrix:
         n = node_blueprint.nr_nodes
         matrix = np.zeros((n, n))
@@ -53,7 +56,7 @@ class NodeFactory:
             node_id = node.id
 
             connection_dict = _build_conection_dict(node_id, matrix)
-            to_connect = connectivity.build(node_id, connection_dict)
+            to_connect = connectivity.build(node_id, connection_dict, rng)
             matrix = _update_matrix(matrix, node_id, to_connect)
 
         return ConnectivityMatrix(matrix)

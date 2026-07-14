@@ -11,6 +11,8 @@ Main components:
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import numpy as np
+
 from dataclasses import dataclass, field
 
 from ..domain.simulation_engine import SimulationEngine
@@ -40,11 +42,11 @@ class SimulationRun:
     current_step: float = field(default=0, init=False)
     history: list[SimulationState] = field(default_factory=list, init=False)
 
-    def run_simulation(self) -> None:
+    def run_simulation(self, rng: np.random.Generator) -> None:
         max_duration = self.engine.simulation_specs.max_duration
         step_value = self.engine.simulation_specs.step_size.factor
 
         while self.current_step < max_duration:
-            state = self.engine.step(self.current_step)
+            state = self.engine.step(self.current_step, rng)
             self.history.append(state)
             self.current_step += step_value
