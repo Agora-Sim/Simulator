@@ -88,7 +88,7 @@ package "Model Domain Layer" #FFF8E1 {
         class HealthModule <<implemented>> {
             + health: float
             + age: float
-            + decay_rate: float
+            + decay_factor: float
             + max_age: float
         }
         HealthModule ..|> NodeModule
@@ -207,18 +207,18 @@ package "Model Domain Layer" #FFF8E1 {
             + name: ClassVar[str]
             + unit: str
 
-            + compute(state: SimulationState): float
+            + calculate(state: SimulationState): float
         }
 
 
         class GDPMetric <<planned>> {
-            + compute(state: SimulationState): float
+            + calculate(state: SimulationState): float
         }
         GDPMetric ..|> Metric
 
 
         class AgeMetric <<implemented>> {
-            + compute(state: SimulationState): float
+            + calculate(state: SimulationState): float
         }
         AgeMetric ..|> Metric
 
@@ -348,18 +348,20 @@ package "Model Domain Layer" #FFF8E1 {
 
 
             class NormalDistribution <<implemented>> {
-                + min: float
-                + max: float
+                + mean: float
+                + std: float
+
+                + sample(rng: Generator): float
             }
             NormalDistribution ..|> PropertyDistribution
         }
 
 
         abstract class ConnectivityRule <<implemented>> {
-            + name: ClassVar[str]
+            + type: ClassVar[str]
             + data: dict
 
-            + build(id: int, node_row: NDArray, rng: Generator): NDArray
+            + build(node_id: int, connection_dict: dict, rng: Generator): NDArray
         }
 
 
@@ -382,7 +384,7 @@ package "Model Domain Layer" #FFF8E1 {
 
         class NodeFactory <<implemented>> {
             + build_nodes(node_blueprint: NodeBlueprint, rng: Generator): list[Node]
-            + build_connectivity(node_blueprint: NodeBlueprint, rng: Generator): ConnectivityMatrix
+            + build_connectivity_matrix(node_blueprint: NodeBlueprint, rng: Generator): ConnectivityMatrix
         }
         NodeFactory ..> NodeBlueprint
         NodeFactory ..> Node
@@ -409,10 +411,11 @@ package "Adapter Layer" #E3F2FD {
     class Source <<implemented>> {
         + simulation_name: str
         + simulation_description: str
-        + folder: Path
+        + base_folder: Path
 
+        + folder: Path
         + runs_folder: Path
-        + config_folder: Path
+        + config_path: Path
         + figures_folder: Path
 
         + get_run_folder(run_nr: int): Path
