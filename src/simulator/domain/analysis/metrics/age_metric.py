@@ -9,7 +9,6 @@ from ...modules import HealthModule
 from ...simulation_state import SimulationState
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================

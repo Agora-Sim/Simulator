@@ -9,7 +9,6 @@ from .modules import NodeModule
 M = TypeVar("M", bound=NodeModule)
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
