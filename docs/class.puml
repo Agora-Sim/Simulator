@@ -208,15 +208,18 @@ package "Model Domain Layer" #FFF8E1 {
             + compute(state: SimulationState): float
         }
 
+
         class GDPMetric <<planned>> {
             + compute(state: SimulationState): float
         }
         GDPMetric ..|> Metric
 
+
         class AgeMetric <<implemented>> {
             + compute(state: SimulationState): float
         }
         AgeMetric ..|> Metric
+
 
         class MetricSeries <<implemented>> {
             + name: str
@@ -226,10 +229,12 @@ package "Model Domain Layer" #FFF8E1 {
             + std: NDArray
         }
 
+
         class MetricExtractor <<planned>> {
             + extract(history: list[SimulationState], metric: Metric): NDArray
         }
         MetricExtractor ..> Metric
+
 
         class RunAggregator <<planned>> {
             - _extractor: MetricExtractor
@@ -239,12 +244,14 @@ package "Model Domain Layer" #FFF8E1 {
         RunAggregator --> MetricExtractor
         RunAggregator ..> MetricSeries
 
-        class NodeColorSpec <<planned>> {
+
+        class NodeColorSpec <<implemented>> {
             + node_type: str
             + module_name: str
             + variable: str
             + colormap: str
         }
+
 
         class NodeColorMapper <<planned>> {
             + spec: NodeColorSpec
