@@ -198,7 +198,7 @@ package "Model Domain Layer" #FFF8E1 {
 
 
     package "Analysis"{
-        abstract class Metric <<planned>> {
+        abstract class Metric <<implemented>> {
             + name: ClassVar[str]
             + unit: str
 
@@ -210,7 +210,7 @@ package "Model Domain Layer" #FFF8E1 {
         }
         GDPMetric ..|> Metric
 
-        class PopulationMetric <<planned>> {
+        class AgeMetric <<partial>> {
             + compute(state: SimulationState): float
         }
         PopulationMetric ..|> Metric
