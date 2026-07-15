@@ -62,3 +62,6 @@ class SimulationIO:
 
     def load_run(self, run_nr: int) -> SimulationRun:
         return self._loader.load_run(run_nr)
+
+    def load_all_runs(self) -> list[SimulationRun]:
+        return self._loader.load_all_runs()
