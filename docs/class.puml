@@ -50,10 +50,12 @@ package "Service Layer" #E8F5E9 {
 
         - _source: Source
         - _io: SimulationIO
+        - _visualizer: Visualizer
 
         + init_simulation(): Path
         + run_simulations(): None
     }
+    Simulation --> Visualizer
 
 
     class Visualizer <<planned>> {
