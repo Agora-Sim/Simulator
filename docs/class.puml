@@ -174,7 +174,7 @@ package "Model Domain Layer" #FFF8E1 {
     SimulationRun o-- SimulationState
 
 
-    class SimulationEngine <<partial>> {
+    class SimulationEngine <<implemented>> {
         + nodes: list[Node]
         + connectivity_matrix: ConnectivityMatrix
         + simulation_specs: SimulationSpecs
@@ -247,7 +247,7 @@ package "Model Domain Layer" #FFF8E1 {
         RunAggregator ..> MetricSeries
 
 
-        class NodeColorSpec <<implemented>> {
+        class NodeColorSpec <<planned>> {
             + node_type: str
             + module_name: str
             + variable: str
