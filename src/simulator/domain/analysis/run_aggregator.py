@@ -13,7 +13,6 @@ from ...service.simulation_run import SimulationRun
 from ..instantiation.simulation_specs import SimulationSpecs
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
@@ -21,7 +20,9 @@ from ..instantiation.simulation_specs import SimulationSpecs
 class RunAggregator:
     _extractor: MetricExtractor
 
-    def aggregate(self, runs_histories: list[SimulationRun], metric: Metric) -> MetricSeries:
+    def aggregate(
+        self, runs_histories: list[SimulationRun], metric: Metric
+    ) -> MetricSeries:
         simulation_specs = runs_histories[0].engine.simulation_specs
         timepoints = _compute_timepoints(simulation_specs)
 
@@ -41,6 +42,7 @@ class RunAggregator:
             std=std,
         )
         return metric_series
+
 
 def _compute_timepoints(simulation_specs: SimulationSpecs) -> NDArray:
     max_duration = simulation_specs.max_duration
