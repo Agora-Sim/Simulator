@@ -221,7 +221,7 @@ package "Model Domain Layer" #FFF8E1 {
         AgeMetric ..|> Metric
 
 
-        class MetricSeries <<planned>> {
+        class MetricSeries <<implemented>> {
             + name: str
             + unit: str
             + timepoints: NDArray
