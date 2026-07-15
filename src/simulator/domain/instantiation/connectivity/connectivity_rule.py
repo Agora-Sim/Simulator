@@ -1,12 +1,13 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-
 import numpy as np
 
+from numpy.typing import NDArray
 from typing import ClassVar, Any
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
+
 
 
 # ================================================================
@@ -23,5 +24,5 @@ class ConnectivityRule(ABC):
         node_id: int,
         connection_dict: dict[str, list],
         rng: np.random.Generator,
-    ) -> np.ndarray:
+    ) -> NDArray:
         pass
