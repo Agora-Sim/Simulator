@@ -32,8 +32,6 @@ endlegend
 !$SHOW_DEPENDENCIES = 0
 
 
-class Figure <<external>>
-class Matplotlib <<external>>
 class Plotly <<external>>
 class NetworkX <<external>>
 class Graph <<external>>
@@ -479,6 +477,7 @@ package "Adapter Layer" #E3F2FD {
             + render(): Figure
         }
 
+
         class SummaryGrid <<planned>> {
             + plots: list[MetricPlot]
             + ncols: int
@@ -487,9 +486,11 @@ package "Adapter Layer" #E3F2FD {
         }
         SummaryGrid o-- MetricPlot
 
+
         class NetworkGraphBuilder <<planned>> {
             + build(state: SimulationState): Graph
         }
+
 
         class NetworkRenderer <<planned>> {
             - _builder: NetworkGraphBuilder
@@ -498,7 +499,8 @@ package "Adapter Layer" #E3F2FD {
         }
         NetworkRenderer --> NetworkGraphBuilder
 
-        class FigureExporter <<planned>> {
+
+        class FigureExporter <<partial>> {
             + source: Source
 
             + export(figure: Figure, name: str, formats: list[str]): list[Path]
@@ -535,19 +537,13 @@ MetricExtractor ..> SimulationState
 NodeColorMapper ..> SimulationState
 
 MetricPlot --> MetricSeries
-MetricPlot ..> Figure
-MetricPlot ..> Matplotlib
-SummaryGrid ..> Figure
-SummaryGrid ..> Matplotlib
 NetworkGraphBuilder ..> SimulationState
 NetworkGraphBuilder ..> Graph
 NetworkGraphBuilder ..> NetworkX
 NetworkRenderer ..> NodeColorSpec
 NetworkRenderer ..> NodeColorMapper
-NetworkRenderer ..> Figure
 NetworkRenderer ..> Plotly
 FigureExporter --> Source
-FigureExporter ..> Figure
 Graph ..> NetworkX
 
 SimulationEngine ..> Effect
