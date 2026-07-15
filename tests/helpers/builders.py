@@ -19,7 +19,7 @@ from simulator.domain.simulation_state import SimulationState
 from simulator.domain.simulation_engine import SimulationEngine
 from simulator.domain.instantiation import SimulationSpecs
 from simulator.domain.modules import HealthModule, MoneyModule
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 
 
 # ──────────────────────────────────────────────────────

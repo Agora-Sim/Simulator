@@ -17,7 +17,7 @@ from simulator.adapters.loader import Loader
 from simulator.adapters.source import Source
 from simulator.domain import SimulationEngine, SimulationState
 from simulator.domain.modules import HealthModule, MoneyModule
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 
 
 # ================================================================

@@ -1,6 +1,6 @@
-"""Contract tests for the Simulation service.
+"""Contract tests for the SimulationRun domain object.
 
-Simulation drives a SimulationEngine, calling step() until the engine's
+SimulationRun drives a SimulationEngine, calling step() until the engine's
 configured max_duration is reached and collecting each returned state into its
 history. We use a RecordingEngine fake so the test is fast and independent of
 the real engine step logic.
@@ -15,7 +15,7 @@ import numpy as np
 import pytest
 
 from simulator.domain.simulation_engine import SimulationEngine
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 from tests.helpers.fakes import RecordingEngine
 
 # A shared throwaway generator; these tests use a no-op RecordingEngine

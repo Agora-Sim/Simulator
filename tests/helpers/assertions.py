@@ -14,7 +14,7 @@ from simulator.domain.connectivity_matrix import ConnectivityMatrix
 from simulator.domain.node import Node
 from simulator.domain.simulation_engine import SimulationEngine
 from simulator.domain.simulation_state import SimulationState
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 
 
 def assert_connectivity_equal(
