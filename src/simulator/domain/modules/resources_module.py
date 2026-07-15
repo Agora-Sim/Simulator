@@ -25,4 +25,4 @@ class ResourcesModule(NodeModule):
     resources: list[Resource]
 
     def apply(self, previous_state: SimulationState, rng: np.random.Generator) -> list:
-        return []
+        raise NotImplementedError()
