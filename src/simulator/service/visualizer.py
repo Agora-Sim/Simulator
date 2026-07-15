@@ -16,7 +16,7 @@ from ..domain.analysis.metrics import Metric
 class Visualizer:
     simulation_name: str
     simulation_description: str
-    base_folder: Path
+    base_folder: Path = Path("data")
 
     _aggregator: RunAggregator = field(default_factory=RunAggregator)
 
