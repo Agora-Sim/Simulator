@@ -9,7 +9,6 @@ from ..domain.analysis import RunAggregator
 from ..domain.analysis.metrics import Metric
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
@@ -32,8 +31,6 @@ class Visualizer:
     @property
     def _io(self) -> SimulationIO:
         return SimulationIO(self._source)
-
-
 
     # ================================================================
     # 2. Section: Methods
