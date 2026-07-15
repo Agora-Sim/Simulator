@@ -216,7 +216,7 @@ package "Model Domain Layer" #FFF8E1 {
         class AgeMetric <<implemented>> {
             + compute(state: SimulationState): float
         }
-        PopulationMetric ..|> Metric
+        AgeMetric ..|> Metric
 
         class MetricSeries <<planned>> {
             + name: str
