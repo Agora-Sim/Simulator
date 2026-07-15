@@ -4,7 +4,7 @@
 import numpy as np
 
 from numpy.typing import NDArray
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from .metrics import Metric
 from .metric_series import MetricSeries
@@ -18,7 +18,7 @@ from ..instantiation.simulation_specs import SimulationSpecs
 # ================================================================
 @dataclass
 class RunAggregator:
-    _extractor: MetricExtractor
+    _extractor: MetricExtractor = field(default_factory=MetricExtractor)
 
     def aggregate(
         self, runs_histories: list[SimulationRun], metric: Metric
