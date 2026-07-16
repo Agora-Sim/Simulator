@@ -217,4 +217,5 @@ logs/
 figures/
 claude/
 .claude/
+CLAUDE.md
 data/
