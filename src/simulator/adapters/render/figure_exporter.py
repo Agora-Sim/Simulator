@@ -8,7 +8,6 @@ from matplotlib.figure import Figure
 from ..source import Source
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================

@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
 
-
 # ================================================================
 # 1. Section: Abstract Connectivity Rule
 # ================================================================
