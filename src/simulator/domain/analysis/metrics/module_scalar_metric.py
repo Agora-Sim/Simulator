@@ -1,7 +1,7 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from typing import ClassVar, cast
+from typing import ClassVar
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
@@ -25,7 +25,7 @@ class ModuleScalarMetric(Metric, ABC):
             if not node.status:
                 continue
             if node.has_module(self.module):
-                selcted_module = cast(self.module, node.get_module(self.module))
-                ages.append(getattr(selcted_module, self.attribute))
+                selected_module = node.get_module(self.module)
+                ages.append(getattr(selected_module, self.attribute))
 
         return sum(ages) / len(ages) if ages else 0.0
