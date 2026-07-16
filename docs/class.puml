@@ -205,12 +205,37 @@ package "Model Domain Layer" #FFF8E1 {
 
 
     package "Analysis"{
-        abstract class Metric <<implemented>> {
+        class Axis <<planned>> {
+            + values: NDArray
+            + label: str
+            + unit: str
+        }
+
+
+        abstract class Metric <<partial>> {
             + name: ClassVar[str]
             + unit: str
+            + plot_kind: ClassVar[str]
 
             + calculate(state: SimulationState): float
+            + x_axis(specs: SimulationSpecs): Axis
         }
+
+
+        abstract class NodeAggregateMetric <<planned>> {
+            + calculate(state: SimulationState): float
+
+            # _include(node: Node): bool
+            # _aggregate(values: list[float]): float
+        }
+        NodeAggregateMetric ..|> Metric
+
+
+        abstract class ModuleScalarMetric <<planned>> {
+            + module: ClassVar[type[NodeModule]]
+            + attribute: ClassVar[str]
+        }
+        ModuleScalarMetric ..|> NodeAggregateMetric
 
 
         class GDPMetric <<planned>> {
@@ -219,19 +244,40 @@ package "Model Domain Layer" #FFF8E1 {
         GDPMetric ..|> Metric
 
 
-        class AgeMetric <<implemented>> {
-            + calculate(state: SimulationState): float
+        class AgeMetric <<partial>> {
+            + name: ClassVar[str]
+            + module: ClassVar[type[NodeModule]]
+            + attribute: ClassVar[str]
         }
-        AgeMetric ..|> Metric
+        AgeMetric ..|> ModuleScalarMetric
 
 
-        class MetricSeries <<implemented>> {
+        class HealthMetric <<partial>> {
+            + name: ClassVar[str]
+            + module: ClassVar[type[NodeModule]]
+            + attribute: ClassVar[str]
+        }
+        HealthMetric ..|> ModuleScalarMetric
+
+
+        class MetricSeries <<partial>> {
             + name: str
-            + unit: str
-            + timepoints: NDArray
-            + mean: NDArray
+            + x: Axis
+            + y: Axis
             + std: NDArray
+            + plot_kind: str
         }
+        MetricSeries o-- Axis
+
+
+        class MetricField <<planned>> {
+            + name: str
+            + x: Axis
+            + y: Axis
+            + values: NDArray
+            + plot_kind: str
+        }
+        MetricField o-- Axis
 
 
         class MetricExtractor <<implemented>> {
@@ -250,6 +296,7 @@ package "Model Domain Layer" #FFF8E1 {
         RunAggregator --> MetricExtractor
         !if ($SHOW_DEPENDENCIES == 1)
         RunAggregator ..> MetricSeries
+        RunAggregator ..> Axis
         !endif
 
 
@@ -492,12 +539,37 @@ package "Adapter Layer" #E3F2FD {
 
 
     package "Rendering"{
-        class MetricPlot <<implemented>> {
+        abstract class MetricRenderer <<planned>> {
+            + draw(axes: Axes, series: MetricSeries): None
+        }
+
+
+        class LinePlot <<planned>> {
+            + draw(axes: Axes, series: MetricSeries): None
+        }
+        LinePlot ..|> MetricRenderer
+
+
+        class BarPlot <<planned>> {
+            + draw(axes: Axes, series: MetricSeries): None
+        }
+        BarPlot ..|> MetricRenderer
+
+
+        class Heatmap <<planned>> {
+            + draw(axes: Axes, field: MetricField): None
+        }
+        Heatmap ..|> MetricRenderer
+
+
+        class MetricPlot <<partial>> {
             + series: MetricSeries
+            + renderer: MetricRenderer
 
             + render(): Figure
             + draw(axes: Axes, show_xlabel: bool, show_ylabel: bool): None
         }
+        MetricPlot --> MetricRenderer
 
 
         class SummaryGrid <<implemented>> {
@@ -559,6 +631,9 @@ Visualizer ..> NodeColorMapper
 Visualizer ..> NetworkRenderer
 
 Metric ..> SimulationState
+Metric ..> SimulationSpecs
+NodeAggregateMetric ..> Node
+ModuleScalarMetric ..> NodeModule
 MetricExtractor ..> SimulationState
 NodeColorMapper ..> SimulationState
 !endif
@@ -566,6 +641,8 @@ NodeColorMapper ..> SimulationState
 MetricPlot --> MetricSeries
 SummaryGrid --> MetricSeries
 !if ($SHOW_DEPENDENCIES == 1)
+MetricRenderer ..> MetricSeries
+Heatmap ..> MetricField
 NetworkGraphBuilder ..> SimulationState
 NetworkGraphBuilder ..> Graph
 NetworkGraphBuilder ..> NetworkX
