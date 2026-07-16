@@ -66,7 +66,7 @@ package "Service Layer" #E8F5E9 {
         - _exporter: FigureExporter
 
         + render_metrics(metrics: list[Metric], formats: list[str]): list[Path]
-        + render_summary(metrics: list[Metric], formats: list[str]): Path
+        + render_summary_grid(metrics: list[Metric], formats: list[str], name: str, ncols: int): list[Path]
         + render_network(spec: NodeColorSpec, formats: list[str]): Path
     }
 }
@@ -478,16 +478,18 @@ package "Adapter Layer" #E3F2FD {
             + series: MetricSeries
 
             + render(): Figure
+            + draw(axes: Axes, show_xlabel: bool, show_ylabel: bool): None
         }
 
 
-        class SummaryGrid <<planned>> {
-            + plots: list[MetricPlot]
+        class SummaryGrid <<implemented>> {
+            + series: list[MetricSeries]
             + ncols: int
+            + cell_size: tuple[float, float]
 
             + render(): Figure
         }
-        SummaryGrid o-- MetricPlot
+        SummaryGrid ..> MetricPlot
 
 
         class NetworkGraphBuilder <<planned>> {
@@ -540,6 +542,7 @@ MetricExtractor ..> SimulationState
 NodeColorMapper ..> SimulationState
 
 MetricPlot --> MetricSeries
+SummaryGrid --> MetricSeries
 NetworkGraphBuilder ..> SimulationState
 NetworkGraphBuilder ..> Graph
 NetworkGraphBuilder ..> NetworkX
