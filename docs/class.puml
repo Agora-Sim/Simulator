@@ -183,7 +183,9 @@ package "Model Domain Layer" #FFF8E1 {
     }
     SimulationEngine o-- Node
     SimulationEngine --> ConnectivityMatrix
+    !if ($SHOW_DEPENDENCIES == 1)
     SimulationEngine ..> SimulationState
+    !endif
 
 
     class ConnectivityMatrix <<partial>> {
@@ -235,7 +237,9 @@ package "Model Domain Layer" #FFF8E1 {
         class MetricExtractor <<implemented>> {
             + extract(history: list[SimulationState], metric: Metric): NDArray
         }
+        !if ($SHOW_DEPENDENCIES == 1)
         MetricExtractor ..> Metric
+        !endif
 
 
         class RunAggregator <<implemented>> {
@@ -244,7 +248,9 @@ package "Model Domain Layer" #FFF8E1 {
             + aggregate(histories: list, metric: Metric): MetricSeries
         }
         RunAggregator --> MetricExtractor
+        !if ($SHOW_DEPENDENCIES == 1)
         RunAggregator ..> MetricSeries
+        !endif
 
 
         class NodeColorSpec <<planned>> {
@@ -283,7 +289,9 @@ package "Model Domain Layer" #FFF8E1 {
 
             + get_node_type_properties(name: str): NodeProperty
         }
+        !if ($SHOW_DEPENDENCIES == 1)
         NodeBlueprint ..> NodeProperty
+        !endif
 
 
         class SimulationSpecs <<implemented>> {
@@ -378,17 +386,21 @@ package "Model Domain Layer" #FFF8E1 {
             + build_simulation(blueprint: SimulationBlueprint, rng: Generator): Simulation
         }
         SimulationFactory --> NodeFactory
+        !if ($SHOW_DEPENDENCIES == 1)
         SimulationFactory ..> SimulationBlueprint
         SimulationFactory ..> SimulationEngine
         SimulationFactory ..> Simulation
+        !endif
 
         class NodeFactory <<implemented>> {
             + build_nodes(node_blueprint: NodeBlueprint, rng: Generator): list[Node]
             + build_connectivity_matrix(node_blueprint: NodeBlueprint, rng: Generator): ConnectivityMatrix
         }
+        !if ($SHOW_DEPENDENCIES == 1)
         NodeFactory ..> NodeBlueprint
         NodeFactory ..> Node
         NodeFactory ..> ConnectivityMatrix
+        !endif
     }
 
 }
@@ -429,7 +441,9 @@ package "Adapter Layer" #E3F2FD {
 
         + load_config(): SimulationBlueprint
     }
+    !if ($SHOW_DEPENDENCIES == 1)
     ConfigLoader ..> SimulationBlueprint
+    !endif
 
 
     class Downloader <<implemented>> {
@@ -447,7 +461,9 @@ package "Adapter Layer" #E3F2FD {
         + load_all_runs(out_file_type: str): list[SimulationRun]
     }
     Loader --> Source
+    !if ($SHOW_DEPENDENCIES == 1)
     Loader ..> SimulationRun
+    !endif
 
 
     class SimulationIO <<implemented>> {
@@ -469,8 +485,10 @@ package "Adapter Layer" #E3F2FD {
     SimulationIO --> Downloader
     SimulationIO --> Repository
     SimulationIO --> Loader
+    !if ($SHOW_DEPENDENCIES == 1)
     SimulationIO ..> Simulation
     SimulationIO ..> SimulationBlueprint
+    !endif
 
 
     package "Rendering"{
@@ -489,7 +507,9 @@ package "Adapter Layer" #E3F2FD {
 
             + render(): Figure
         }
+        !if ($SHOW_DEPENDENCIES == 1)
         SummaryGrid ..> MetricPlot
+        !endif
 
 
         class NetworkGraphBuilder <<planned>> {
@@ -530,6 +550,7 @@ Visualizer --> Source
 Visualizer --> Loader
 Visualizer --> RunAggregator
 Visualizer --> FigureExporter
+!if ($SHOW_DEPENDENCIES == 1)
 Visualizer ..> Metric
 Visualizer ..> MetricPlot
 Visualizer ..> SummaryGrid
@@ -540,25 +561,26 @@ Visualizer ..> NetworkRenderer
 Metric ..> SimulationState
 MetricExtractor ..> SimulationState
 NodeColorMapper ..> SimulationState
+!endif
 
 MetricPlot --> MetricSeries
 SummaryGrid --> MetricSeries
+!if ($SHOW_DEPENDENCIES == 1)
 NetworkGraphBuilder ..> SimulationState
 NetworkGraphBuilder ..> Graph
 NetworkGraphBuilder ..> NetworkX
 NetworkRenderer ..> NodeColorSpec
 NetworkRenderer ..> NodeColorMapper
 NetworkRenderer ..> Plotly
+!endif
 FigureExporter --> Source
+!if ($SHOW_DEPENDENCIES == 1)
 Graph ..> NetworkX
 
 SimulationEngine ..> Effect
 Effect ..> SimulationState
 NodeModule ..> Effect
+!endif
 
 
 @enduml
-
-
-
-'!if ($SHOW_DEPENDENCIES == 1)'
