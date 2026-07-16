@@ -89,8 +89,10 @@ def test_build_state_snapshots_engine_before_any_step() -> None:
 
     state = engine.build_state()
 
-    assert state.nodes is engine.nodes
-    assert state.connectivity_matrix is engine.connectivity_matrix
+    # Snapshot holds equal values but independent objects (not aliased).
+    assert state.nodes == engine.nodes
+    assert state.nodes is not engine.nodes
+    assert state.connectivity_matrix is not engine.connectivity_matrix
     assert state.time_idx == -1
     assert state.time_step == engine.simulation_specs.step_size
 
@@ -142,6 +144,21 @@ def test_step_advances_module_state() -> None:
     engine.step(0.0, engine.build_state(), _RNG)
 
     assert health.age == age_before + engine.simulation_specs.step_size.factor
+
+
+@pytest.mark.unit
+def test_step_snapshots_are_not_aliased_across_history() -> None:
+    # Regression: history entries must freeze per-step values; a shared
+    # reference makes every state show the final age (a flat metric).
+    engine = build_engine()
+    factor = engine.simulation_specs.step_size.factor
+
+    first = engine.step(0.0, engine.build_state(), _RNG)
+    second = engine.step(1.0, first, _RNG)
+
+    first_age = first.nodes[0].modules[0].age
+    second_age = second.nodes[0].modules[0].age
+    assert second_age == first_age + factor
 
 
 # ──────────────────────────────────────────────────────
