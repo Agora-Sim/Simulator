@@ -19,6 +19,8 @@ class HealthMetric(Metric):
     def calculate(self, state: SimulationState) -> float:
         ages = []
         for node in state.nodes:
+            if not node.status:
+                continue
             if node.has_module(HealthModule):
                 health_module = cast(HealthModule, node.get_module(HealthModule))
                 ages.append(health_module.health)

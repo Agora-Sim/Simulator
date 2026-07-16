@@ -17,8 +17,6 @@ class MetricPlot:
     series: MetricSeries
 
     def render(self) -> Figure:
-
-        print(self.series.std)
         plt.figure()
         plt.plot(self.series.timepoints, self.series.mean)
         plt.fill_between(
