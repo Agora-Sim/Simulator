@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from ..adapters import Source, SimulationIO
 from ..domain.analysis import RunAggregator
 from ..domain.analysis.metrics import Metric
-from ..adapters.render import MetricPlot, FigureExporter
+from ..adapters.render import MetricPlot, SummaryGrid, FigureExporter
 
 
 # ================================================================
@@ -54,3 +54,19 @@ class Visualizer:
             paths.extend(path_list)
 
         return paths
+
+    def render_summary_grid(
+        self,
+        metrics: list[Metric],
+        formats: list[str],
+        name: str = "summary",
+        ncols: int | None = None,
+    ) -> list[Path]:
+        runs = self._io.load_all_runs()
+
+        series = [
+            self._aggregator.aggregate(runs_histories=runs, metric=metric)
+            for metric in metrics
+        ]
+        figure = SummaryGrid(series, ncols=ncols).render()
+        return self._figure_exporter.export(figure, name, formats)

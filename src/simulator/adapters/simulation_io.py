@@ -55,7 +55,6 @@ class SimulationIO:
 
         return figures_folder
 
-
     def load_config(self) -> SimulationBlueprint:
         blueprint = self._config_loader.load_config()
         return blueprint

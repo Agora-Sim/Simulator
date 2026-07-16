@@ -4,6 +4,7 @@
 from matplotlib import pyplot as plt
 
 from dataclasses import dataclass
+from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
 from ...domain.analysis import MetricSeries
@@ -17,15 +18,23 @@ class MetricPlot:
     series: MetricSeries
 
     def render(self) -> Figure:
-        plt.figure()
-        plt.plot(self.series.timepoints, self.series.mean)
-        plt.fill_between(
+        figure, axes = plt.subplots()
+        self.draw(axes)
+        return figure
+
+    def draw(
+        self, axes: Axes, show_xlabel: bool = True, show_ylabel: bool = True
+    ) -> None:
+        """Draw the series onto an existing Axes (used by grids too)."""
+        axes.plot(self.series.timepoints, self.series.mean)
+        axes.fill_between(
             self.series.timepoints,
             self.series.mean - self.series.std,
             self.series.mean + self.series.std,
             alpha=0.2,
         )
-        plt.xlabel(f"Time ({self.series.time_unit})")
-        plt.ylabel(f"{self.series.name} ({self.series.unit})")
-        plt.title(self.series.name)
-        return plt.gcf()
+        axes.set_title(self.series.name)
+        if show_xlabel:
+            axes.set_xlabel(f"Time ({self.series.time_unit})")
+        if show_ylabel:
+            axes.set_ylabel(f"{self.series.name} ({self.series.unit})")
