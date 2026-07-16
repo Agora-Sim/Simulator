@@ -214,6 +214,7 @@ package "Model Domain Layer" #FFF8E1 {
 
         class MetricSeries <<partial>> {
             + name: str
+            + title: str
             + x: Axis
             + y: Axis
             + std: NDArray
@@ -272,6 +273,7 @@ package "Model Domain Layer" #FFF8E1 {
                 + name: ClassVar[str]
                 + unit: str
                 + plot_kind: ClassVar[str]
+                + title: ClassVar[str]
 
                 + calculate(state: SimulationState): float
                 + x_axis(specs: SimulationSpecs): Axis
@@ -293,7 +295,7 @@ package "Model Domain Layer" #FFF8E1 {
             GDPMetric ..|> Metric
 
 
-            class AgeMetric <<partial>> {
+            class AgeMetric <<implemented>> {
                 + name: ClassVar[str]
                 + module: ClassVar[type[NodeModule]]
                 + attribute: ClassVar[str]
@@ -301,7 +303,7 @@ package "Model Domain Layer" #FFF8E1 {
             AgeMetric ..|> ModuleScalarMetric
 
 
-            class HealthMetric <<partial>> {
+            class HealthMetric <<implemented>> {
                 + name: ClassVar[str]
                 + module: ClassVar[type[NodeModule]]
                 + attribute: ClassVar[str]
