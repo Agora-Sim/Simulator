@@ -15,7 +15,7 @@ import pytest
 
 from simulator.adapters.downloader import Downloader
 from simulator.adapters.source import Source
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 
 
 # ================================================================

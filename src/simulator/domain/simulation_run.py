@@ -1,6 +1,6 @@
 """Simulation runner for executing a full simulation.
 
-This module defines SimulationRun, the service-layer entry point that drives a
+This module defines SimulationRun, the domain-layer object that drives a
 simulation run to completion. It is used by client code to execute a
 configured SimulationEngine and collect the resulting history.
 
@@ -15,8 +15,8 @@ import numpy as np
 
 from dataclasses import dataclass, field
 
-from ..domain.simulation_engine import SimulationEngine
-from ..domain.simulation_state import SimulationState
+from .simulation_engine import SimulationEngine
+from .simulation_state import SimulationState
 
 
 # ================================================================

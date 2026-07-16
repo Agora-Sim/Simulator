@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 from simulator.adapters.source import Source
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 from tests.helpers import builders
 
 

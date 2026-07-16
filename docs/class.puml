@@ -32,8 +32,6 @@ endlegend
 !$SHOW_DEPENDENCIES = 0
 
 
-class Figure <<external>>
-class Matplotlib <<external>>
 class Plotly <<external>>
 class NetworkX <<external>>
 class Graph <<external>>
@@ -43,15 +41,6 @@ class Graph <<external>>
 'Service Layer'
 '=============================================================================='
 package "Service Layer" #E8F5E9 {
-    class SimulationRun <<implemented>> {
-        + engine: SimulationEngine
-        + current_step: int
-        + history: list[SimulationState]
-
-        + run_simulation(rng: Generator):
-    }
-
-
     class Simulation <<partial>> {
         + simulation_name: str
         + simulation_description: str
@@ -59,13 +48,15 @@ package "Service Layer" #E8F5E9 {
 
         - _source: Source
         - _io: SimulationIO
+        - _visualizer: Visualizer
 
         + init_simulation(): Path
         + run_simulations(): None
     }
+    Simulation --> Visualizer
 
 
-    class Visualizer <<planned>> {
+    class Visualizer <<partial>> {
         + simulation_name: str
         + base_folder: Path
 
@@ -75,7 +66,7 @@ package "Service Layer" #E8F5E9 {
         - _exporter: FigureExporter
 
         + render_metrics(metrics: list[Metric], formats: list[str]): list[Path]
-        + render_summary(metrics: list[Metric], formats: list[str]): Path
+        + render_summary_grid(metrics: list[Metric], formats: list[str], name: str, ncols: int): list[Path]
         + render_network(spec: NodeColorSpec, formats: list[str]): Path
     }
 }
@@ -97,7 +88,7 @@ package "Model Domain Layer" #FFF8E1 {
         class HealthModule <<implemented>> {
             + health: float
             + age: float
-            + decay_rate: float
+            + decay_factor: float
             + max_age: float
         }
         HealthModule ..|> NodeModule
@@ -165,11 +156,25 @@ package "Model Domain Layer" #FFF8E1 {
         + node_type: str
         + modules: dict[str, NodeModule]
         + status: bool
+
+        + has_module(module_type: type[NodeModule]) -> bool
+        + get_module(module_type: type[NodeModule]) -> NodeModule
     }
     Node o-- NodeModule
 
 
-    class SimulationEngine <<partial>> {
+    class SimulationRun <<implemented>> {
+        + engine: SimulationEngine
+        + current_step: int
+        + history: list[SimulationState]
+
+        + run_simulation(rng: Generator):
+    }
+    SimulationRun --> SimulationEngine
+    SimulationRun o-- SimulationState
+
+
+    class SimulationEngine <<implemented>> {
         + nodes: list[Node]
         + connectivity_matrix: ConnectivityMatrix
         + simulation_specs: SimulationSpecs
@@ -198,24 +203,27 @@ package "Model Domain Layer" #FFF8E1 {
 
 
     package "Analysis"{
-        abstract class Metric <<planned>> {
+        abstract class Metric <<implemented>> {
             + name: ClassVar[str]
             + unit: str
 
-            + compute(state: SimulationState): float
+            + calculate(state: SimulationState): float
         }
 
+
         class GDPMetric <<planned>> {
-            + compute(state: SimulationState): float
+            + calculate(state: SimulationState): float
         }
         GDPMetric ..|> Metric
 
-        class PopulationMetric <<planned>> {
-            + compute(state: SimulationState): float
-        }
-        PopulationMetric ..|> Metric
 
-        class MetricSeries <<planned>> {
+        class AgeMetric <<implemented>> {
+            + calculate(state: SimulationState): float
+        }
+        AgeMetric ..|> Metric
+
+
+        class MetricSeries <<implemented>> {
             + name: str
             + unit: str
             + timepoints: NDArray
@@ -223,12 +231,14 @@ package "Model Domain Layer" #FFF8E1 {
             + std: NDArray
         }
 
-        class MetricExtractor <<planned>> {
+
+        class MetricExtractor <<implemented>> {
             + extract(history: list[SimulationState], metric: Metric): NDArray
         }
         MetricExtractor ..> Metric
 
-        class RunAggregator <<planned>> {
+
+        class RunAggregator <<implemented>> {
             - _extractor: MetricExtractor
 
             + aggregate(histories: list, metric: Metric): MetricSeries
@@ -236,12 +246,14 @@ package "Model Domain Layer" #FFF8E1 {
         RunAggregator --> MetricExtractor
         RunAggregator ..> MetricSeries
 
+
         class NodeColorSpec <<planned>> {
             + node_type: str
             + module_name: str
             + variable: str
             + colormap: str
         }
+
 
         class NodeColorMapper <<planned>> {
             + spec: NodeColorSpec
@@ -336,18 +348,20 @@ package "Model Domain Layer" #FFF8E1 {
 
 
             class NormalDistribution <<implemented>> {
-                + min: float
-                + max: float
+                + mean: float
+                + std: float
+
+                + sample(rng: Generator): float
             }
             NormalDistribution ..|> PropertyDistribution
         }
 
 
         abstract class ConnectivityRule <<implemented>> {
-            + name: ClassVar[str]
+            + type: ClassVar[str]
             + data: dict
 
-            + build(id: int, node_row: NDArray, rng: Generator): NDArray
+            + build(node_id: int, connection_dict: dict, rng: Generator): NDArray
         }
 
 
@@ -370,7 +384,7 @@ package "Model Domain Layer" #FFF8E1 {
 
         class NodeFactory <<implemented>> {
             + build_nodes(node_blueprint: NodeBlueprint, rng: Generator): list[Node]
-            + build_connectivity(node_blueprint: NodeBlueprint, rng: Generator): ConnectivityMatrix
+            + build_connectivity_matrix(node_blueprint: NodeBlueprint, rng: Generator): ConnectivityMatrix
         }
         NodeFactory ..> NodeBlueprint
         NodeFactory ..> Node
@@ -397,10 +411,11 @@ package "Adapter Layer" #E3F2FD {
     class Source <<implemented>> {
         + simulation_name: str
         + simulation_description: str
-        + folder: Path
+        + base_folder: Path
 
+        + folder: Path
         + runs_folder: Path
-        + config_folder: Path
+        + config_path: Path
         + figures_folder: Path
 
         + get_run_folder(run_nr: int): Path
@@ -428,14 +443,14 @@ package "Adapter Layer" #E3F2FD {
     class Loader <<implemented>> {
         + source: Source
 
-        + load_run(run_nr: int, out_file_type: str): Simulation
+        + load_run(run_nr: int, out_file_type: str): SimulationRun
         + load_all_runs(out_file_type: str): list[SimulationRun]
     }
     Loader --> Source
-    Loader ..> Simulation
+    Loader ..> SimulationRun
 
 
-    class SimulationIO <<partial>> {
+    class SimulationIO <<implemented>> {
         + source: Source
 
         - _config_loader: ConfigLoader
@@ -459,23 +474,28 @@ package "Adapter Layer" #E3F2FD {
 
 
     package "Rendering"{
-        class MetricPlot <<planned>> {
+        class MetricPlot <<implemented>> {
             + series: MetricSeries
 
             + render(): Figure
+            + draw(axes: Axes, show_xlabel: bool, show_ylabel: bool): None
         }
 
-        class SummaryGrid <<planned>> {
-            + plots: list[MetricPlot]
+
+        class SummaryGrid <<implemented>> {
+            + series: list[MetricSeries]
             + ncols: int
+            + cell_size: tuple[float, float]
 
             + render(): Figure
         }
-        SummaryGrid o-- MetricPlot
+        SummaryGrid ..> MetricPlot
+
 
         class NetworkGraphBuilder <<planned>> {
             + build(state: SimulationState): Graph
         }
+
 
         class NetworkRenderer <<planned>> {
             - _builder: NetworkGraphBuilder
@@ -484,7 +504,8 @@ package "Adapter Layer" #E3F2FD {
         }
         NetworkRenderer --> NetworkGraphBuilder
 
-        class FigureExporter <<planned>> {
+
+        class FigureExporter <<implemented>> {
             + source: Source
 
             + export(figure: Figure, name: str, formats: list[str]): list[Path]
@@ -499,9 +520,6 @@ package "Adapter Layer" #E3F2FD {
 'Broken Links'
 '=============================================================================='
 SimulationEngine --> SimulationSpecs
-
-SimulationRun --> SimulationEngine
-SimulationRun o-- SimulationState
 
 Simulation --> SimulationIO
 Simulation --> Source
@@ -524,19 +542,14 @@ MetricExtractor ..> SimulationState
 NodeColorMapper ..> SimulationState
 
 MetricPlot --> MetricSeries
-MetricPlot ..> Figure
-MetricPlot ..> Matplotlib
-SummaryGrid ..> Figure
-SummaryGrid ..> Matplotlib
+SummaryGrid --> MetricSeries
 NetworkGraphBuilder ..> SimulationState
 NetworkGraphBuilder ..> Graph
 NetworkGraphBuilder ..> NetworkX
 NetworkRenderer ..> NodeColorSpec
 NetworkRenderer ..> NodeColorMapper
-NetworkRenderer ..> Figure
 NetworkRenderer ..> Plotly
 FigureExporter --> Source
-FigureExporter ..> Figure
 Graph ..> NetworkX
 
 SimulationEngine ..> Effect

@@ -1,6 +1,7 @@
 .PHONY: format diagram lint dev coverage-badge install-hooks
 
 diagram:
+	classpy sync
 	PLANTUML_LIMIT_SIZE=16384 plantuml -tpng docs/*.puml
 
 format:

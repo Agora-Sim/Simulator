@@ -1,3 +1,3 @@
-from .service import Simulation
+from .service import Simulation, Visualizer
 
-__all__ = ["Simulation"]
+__all__ = ["Simulation", "Visualizer"]

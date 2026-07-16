@@ -5,7 +5,7 @@ from pathlib import Path
 from dataclasses import dataclass
 
 from simulator.domain.instantiation.simulation_blueprint import SimulationBlueprint
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 
 from .source import Source
 from .loader import Loader
@@ -50,6 +50,11 @@ class SimulationIO:
 
         return run_folder, run_id
 
+    def init_figures(self) -> Path:
+        figures_folder = self._repository.init_figures()
+
+        return figures_folder
+
     def load_config(self) -> SimulationBlueprint:
         blueprint = self._config_loader.load_config()
         return blueprint
@@ -62,3 +67,6 @@ class SimulationIO:
 
     def load_run(self, run_nr: int) -> SimulationRun:
         return self._loader.load_run(run_nr)
+
+    def load_all_runs(self) -> list[SimulationRun]:
+        return self._loader.load_all_runs()

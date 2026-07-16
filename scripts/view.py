@@ -1,7 +1,9 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from simulator import Simulation
+from simulator import Visualizer
+
+from simulator.domain.analysis.metrics import AgeMetric, HealthMetric
 
 
 # ================================================================
@@ -20,13 +22,15 @@ from simulator import Simulation
 # 3. Section: MAIN
 # ================================================================
 if __name__ == '__main__':
-    sim = Simulation(
-        simulation_name="test_simulation",
+    view = Visualizer(
+        simulation_name="test_simulation_3",
         simulation_description="the simulation to test",
     )
 
-    sim.init_simulation()
-
-    input("Update the config file")
-
-    sim.run_simulation()
+    view.render_summary_grid(
+        metrics = [
+            HealthMetric("months"),
+            AgeMetric("months"),
+        ],
+        formats = ["png"],
+    )

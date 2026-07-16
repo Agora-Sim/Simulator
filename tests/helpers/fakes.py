@@ -1,8 +1,8 @@
-"""Fake collaborators for service-layer tests.
+"""Fake collaborators for SimulationRun tests.
 
-The service layer (Simulation) orchestrates a SimulationEngine. We drive it with
-a lightweight recording fake rather than a real engine so the test stays fast,
-deterministic and independent of the (not-yet-implemented) engine internals.
+SimulationRun drives a SimulationEngine. We drive it with a lightweight
+recording fake rather than a real engine so the test stays fast, deterministic
+and independent of the (not-yet-implemented) engine internals.
 """
 
 # ================================================================

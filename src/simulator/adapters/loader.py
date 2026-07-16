@@ -8,7 +8,7 @@ from typing import Any
 from dataclasses import dataclass
 
 from .source import Source
-from ..service.simulation_run import SimulationRun
+from ..domain.simulation_run import SimulationRun
 from ..domain import Node, ConnectivityMatrix, SimulationState, SimulationEngine
 from ..domain.instantiation import SimulationSpecs
 from ..domain.instantiation.step_type import StepType
@@ -59,7 +59,7 @@ class Loader:
 
         return simulation
 
-    def load_all_runs(self, out_file_type: str) -> list[SimulationRun]:
+    def load_all_runs(self, out_file_type: str = "hdf5") -> list[SimulationRun]:
         runs = []
         for run_nr in range(1, self.source.get_nr_runs_present() + 1):
             runs.append(self.load_run(run_nr, out_file_type))

@@ -9,7 +9,7 @@ from pathlib import Path
 from dataclasses import dataclass, is_dataclass, fields
 
 from .source import Source
-from ..service.simulation_run import SimulationRun
+from ..domain.simulation_run import SimulationRun
 
 
 # ================================================================

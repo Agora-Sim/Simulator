@@ -9,11 +9,10 @@ from dataclasses import dataclass
 # 1. Section: Functions
 # ================================================================
 @dataclass
-class ConnectivityMatrix:
-    data: NDArray
-
-    def copy(self) -> "ConnectivityMatrix":
-        return ConnectivityMatrix(data=self.data.copy())
-
-    def get_most_connected(self):
-        pass
+class MetricSeries:
+    name: str
+    unit: str
+    timepoints: NDArray
+    mean: NDArray
+    std: NDArray
+    time_unit: str

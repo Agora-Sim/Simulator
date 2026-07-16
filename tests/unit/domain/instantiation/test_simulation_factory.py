@@ -14,7 +14,7 @@ from typing import cast
 import numpy as np
 import pytest
 
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 from simulator.domain.node import Node
 from simulator.domain.connectivity_matrix import ConnectivityMatrix
 from simulator.domain.instantiation.simulation_specs import SimulationSpecs

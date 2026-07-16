@@ -1,27 +1,20 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-import numpy as np
-
-from numpy.typing import NDArray
-from typing import ClassVar, Any
+from typing import ClassVar
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
+from ...simulation_state import SimulationState
+
 
 # ================================================================
-# 1. Section: Abstract Connectivity Rule
+# 1. Section: Functions
 # ================================================================
 @dataclass
-class ConnectivityRule(ABC):
-    data: dict[str, Any]
-    type: ClassVar[str]
+class Metric(ABC):
+    name: ClassVar[str]
+    unit: str
 
     @abstractmethod
-    def build(
-        self,
-        node_id: int,
-        connection_dict: dict[str, list],
-        rng: np.random.Generator,
-    ) -> NDArray:
-        pass
+    def calculate(self, state: SimulationState) -> float: ...

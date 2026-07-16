@@ -20,7 +20,7 @@ import pytest
 from simulator.adapters import simulation_io as simulation_io_module
 from simulator.adapters.simulation_io import SimulationIO
 from simulator.adapters.source import Source
-from simulator.service.simulation_run import SimulationRun
+from simulator.domain.simulation_run import SimulationRun
 
 
 # ================================================================

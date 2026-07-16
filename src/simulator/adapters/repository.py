@@ -50,3 +50,9 @@ class Repository:
         run_folder.mkdir(parents=True, exist_ok=True)
 
         return run_folder, run_id
+
+    def init_figures(self) -> Path:
+        figures_folder = self.source.figures_folder
+        figures_folder.mkdir(parents=True, exist_ok=True)
+
+        return figures_folder

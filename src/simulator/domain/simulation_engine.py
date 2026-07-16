@@ -11,6 +11,8 @@ Main components:
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import copy
+
 import numpy as np
 
 from dataclasses import dataclass
@@ -68,7 +70,8 @@ class SimulationEngine:
         self.reduce(simulation_state, effects)
         self.update_from_state(simulation_state)
 
-        return simulation_state
+        # Freeze an independent copy so history is not aliased to live nodes.
+        return self._snapshot(simulation_state)
 
     # ──────────────────────────────────────────────────────
     # 1.1 Subsection: Helper Functions
@@ -97,11 +100,22 @@ class SimulationEngine:
     # 1.1 Subsection: Helper Functions
     # ──────────────────────────────────────────────────────
     def build_state(self) -> SimulationState:
-        return SimulationState(
+        state = SimulationState(
             nodes=self.nodes,
             connectivity_matrix=self.connectivity_matrix,
             time_idx=-1,
             time_step=self.simulation_specs.step_size,
+        )
+        # Freeze an independent copy so history is not aliased to live nodes.
+        return self._snapshot(state)
+
+    def _snapshot(self, state: SimulationState) -> SimulationState:
+        # Deep-copy nodes/modules so each history entry keeps its own values.
+        return SimulationState(
+            nodes=copy.deepcopy(state.nodes),
+            connectivity_matrix=state.connectivity_matrix.copy(),
+            time_idx=state.time_idx,
+            time_step=state.time_step,
         )
 
     # ──────────────────────────────────────────────────────
@@ -112,5 +126,5 @@ class SimulationEngine:
             effect.apply(state)
 
     def update_from_state(self, state: SimulationState) -> None:
-        self.nodes = state.nodes
-        self.connectivity_matrix = state.connectivity_matrix
+        self.nodes = state.nodes.copy()
+        self.connectivity_matrix = state.connectivity_matrix.copy()

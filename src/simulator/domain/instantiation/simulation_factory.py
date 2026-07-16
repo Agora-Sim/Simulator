@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from .node_factory import NodeFactory
 from .simulation_blueprint import SimulationBlueprint
 from ..simulation_engine import SimulationEngine
-from ...service.simulation_run import SimulationRun
+from ..simulation_run import SimulationRun
 
 
 # ================================================================
