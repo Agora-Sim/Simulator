@@ -15,6 +15,7 @@ from ...simulation_state import SimulationState
 class Metric(ABC):
     name: ClassVar[str]
     unit: str
+    title: ClassVar[str]
 
     @abstractmethod
     def calculate(self, state: SimulationState) -> float: ...

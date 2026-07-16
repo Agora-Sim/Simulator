@@ -11,6 +11,7 @@ from dataclasses import dataclass
 @dataclass
 class MetricSeries:
     name: str
+    title: str
     unit: str
     timepoints: NDArray
     mean: NDArray

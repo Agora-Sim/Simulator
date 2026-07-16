@@ -36,6 +36,7 @@ class RunAggregator:
 
         metric_series = MetricSeries(
             name=metric.name,
+            title=metric.title,
             unit=metric.unit,
             timepoints=timepoints,
             mean=mean,

@@ -33,8 +33,8 @@ class MetricPlot:
             self.series.mean + self.series.std,
             alpha=0.2,
         )
-        axes.set_title(self.series.name)
+        axes.set_title(self.series.title)
         if show_xlabel:
             axes.set_xlabel(f"Time ({self.series.time_unit})")
         if show_ylabel:
-            axes.set_ylabel(f"{self.series.name} ({self.series.unit})")
+            axes.set_ylabel(f"{self.series.title} ({self.series.unit})")
