@@ -9,10 +9,10 @@ nodes:
     modules:
       health:
         age:
-          range: [20, 60]
+          range: [240, 720]
           distribution:
             type: normal
-            mean: 50
+            mean: 600
             std: 2
         health:
           range: [50, 100]
@@ -20,16 +20,26 @@ nodes:
             type: normal
             mean: 80
             std: 10
-        decay_factor:
-          range: [100_000, 100_000]
+        baseline_hazard:
+          range: [8.0e-6, 8.0e-6]
           distribution:
             type: constant
-            value: 100_000
+            value: 8.0e-6
+        rate_of_aging:
+          range: [0.0080, 0.0080]
+          distribution:
+            type: constant
+            value: 0.0080
+        ind_background_hazard:
+          range: [6.0e-5, 6.0e-5]
+          distribution:
+            type: constant
+            value: 6.0e-5
         max_age:
-          range: [100, 100]
+          range: [1200, 1200]
           distribution:
             type: constant
-            value: 100
+            value: 1200
   governament:
     initial_numbers: 1
     connectivity:
