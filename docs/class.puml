@@ -212,7 +212,7 @@ package "Model Domain Layer" #FFF8E1 {
         }
 
 
-        class MetricSeries <<partial>> {
+        class MetricSeries <<implemented>> {
             + name: str
             + title: str
             + x: Axis
@@ -223,8 +223,9 @@ package "Model Domain Layer" #FFF8E1 {
         MetricSeries o-- Axis
 
 
-        class MetricField <<planned>> {
+        class MetricField <<implemented>> {
             + name: str
+            + title: str
             + x: Axis
             + y: Axis
             + values: NDArray
@@ -269,7 +270,7 @@ package "Model Domain Layer" #FFF8E1 {
         NodeColorMapper --> NodeColorSpec
 
         package "Metrics"{
-            abstract class Metric <<partial>> {
+            abstract class Metric <<implemented>> {
                 + name: ClassVar[str]
                 + unit: str
                 + plot_kind: ClassVar[str]
