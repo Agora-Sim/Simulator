@@ -16,7 +16,7 @@
     <img src="https://shields.io/badge/code_style-black-black?&style=flat" alt="Formatter">
     <img src="https://shields.io/badge/linting-pylint-yellow?&style=flat" alt="Linter">
     <!-- coverage-badge:start -->
-    <img src="https://shields.io/badge/coverage-97%25-brightgreen?style=flat" alt="Coverage">
+    <img src="https://shields.io/badge/coverage-98%25-brightgreen?style=flat" alt="Coverage">
     <!-- coverage-badge:end -->
 </div>
 

@@ -5,7 +5,6 @@ from typing import ClassVar
 from dataclasses import dataclass
 
 from ...modules import HealthModule, NodeModule
-from ...simulation_state import SimulationState
 from .module_scalar_metric import ModuleScalarMetric
 
 
@@ -18,6 +17,3 @@ class AgeMetric(ModuleScalarMetric):
     module: ClassVar[type[NodeModule]] = HealthModule
     attribute: ClassVar[str] = "age"
     title: ClassVar[str] = "Age Metric"
-
-    def calculate(self, state: SimulationState) -> float:
-        return super().calculate(state)
