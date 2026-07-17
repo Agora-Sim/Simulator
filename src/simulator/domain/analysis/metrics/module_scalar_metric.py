@@ -1,9 +1,9 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+from abc import ABC
 from typing import ClassVar
 from dataclasses import dataclass
-from abc import ABC
 
 from .metric import Metric
 from ...modules import NodeModule

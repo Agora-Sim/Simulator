@@ -5,7 +5,6 @@ from numpy.typing import NDArray
 from dataclasses import dataclass
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
