@@ -3,8 +3,8 @@
 ModuleScalarMetric factors out the shared per-node loop for scalar metrics:
 given a `module` type and an `attribute` name, `calculate(state)` reads that
 attribute off every living node carrying the module and returns their mean,
-or 0.0 when no node qualifies. It is abstract — concrete metrics supply the
-config and delegate to `super().calculate`.
+or 0.0 when no node qualifies. Concrete metrics only supply the ClassVars;
+the base itself refuses to instantiate.
 """
 
 # ================================================================
@@ -16,7 +16,6 @@ from dataclasses import dataclass
 import pytest
 
 from simulator.domain.modules import HealthModule, NodeModule
-from simulator.domain.simulation_state import SimulationState
 from simulator.domain.analysis.metrics.module_scalar_metric import ModuleScalarMetric
 
 
@@ -32,9 +31,6 @@ class _AgeProbe(ModuleScalarMetric):
     attribute: ClassVar[str] = "age"
     title: ClassVar[str] = "Age Probe"
 
-    def calculate(self, state: SimulationState) -> float:
-        return super().calculate(state)
-
 
 # ================================================================
 # 2. Section: Unit Tests
@@ -42,7 +38,18 @@ class _AgeProbe(ModuleScalarMetric):
 @pytest.mark.unit
 def test_base_class_cannot_be_instantiated() -> None:
     with pytest.raises(TypeError):
-        ModuleScalarMetric(unit="u")  # type: ignore[abstract]
+        ModuleScalarMetric(unit="u")
+
+
+@pytest.mark.unit
+def test_subclass_without_config_cannot_be_instantiated() -> None:
+    @dataclass
+    class _Undeclared(ModuleScalarMetric):
+        name: ClassVar[str] = "undeclared"
+        title: ClassVar[str] = "Undeclared"
+
+    with pytest.raises(TypeError):
+        _Undeclared(unit="u")
 
 
 @pytest.mark.unit
