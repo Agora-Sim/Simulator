@@ -1,8 +1,9 @@
 """Unit tests for MetricPlot labelling.
 
-MetricPlot draws one MetricSeries onto an Axes. The labels come from the
-series' human-readable `title` (not its machine `name`): the axes title is the
-title, and the y-label is "title (unit)". Matplotlib runs headless (Agg).
+MetricPlot draws one MetricSeries onto an Axes. The axes title is the series'
+human-readable `title` (not its machine `name`), while each axis label is
+built from that Axis' own label and unit as "label (unit)". Matplotlib runs
+headless (Agg).
 """
 
 # ================================================================
@@ -16,7 +17,7 @@ import numpy as np
 import pytest
 from matplotlib import pyplot as plt
 
-from simulator.domain.analysis import MetricSeries
+from simulator.domain.analysis import Axis, MetricSeries
 from simulator.adapters.render import MetricPlot
 
 
@@ -28,11 +29,10 @@ def _series() -> MetricSeries:
     return MetricSeries(
         name="age_metric",
         title="Age Metric",
-        unit="years",
-        timepoints=timepoints,
-        mean=timepoints,
+        x=Axis(values=timepoints, label="Time", unit="days"),
+        y=Axis(values=timepoints, label="Age Metric", unit="years"),
         std=np.zeros(5),
-        time_unit="days",
+        plot_kind="line",
     )
 
 

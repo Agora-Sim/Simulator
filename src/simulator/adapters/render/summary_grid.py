@@ -68,7 +68,7 @@ class SummaryGrid:
         """True per column when all its plots share the same x unit."""
         shared = []
         for col in range(ncols):
-            units = [s.time_unit for s in self._column_series(col, nrows, ncols)]
+            units = [s.x.unit for s in self._column_series(col, nrows, ncols)]
             shared.append(_all_equal(units))
         return shared
 
@@ -76,7 +76,7 @@ class SummaryGrid:
         """True per row when all its plots share the same y unit."""
         shared = []
         for row in range(nrows):
-            units = [s.unit for s in self._row_series(row, ncols)]
+            units = [s.y.unit for s in self._row_series(row, ncols)]
             shared.append(_all_equal(units))
         return shared
 

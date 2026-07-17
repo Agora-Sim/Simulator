@@ -23,7 +23,7 @@ from simulator.domain.analysis.metrics import AgeMetric, HealthMetric, AliveMetr
 # ================================================================
 if __name__ == '__main__':
     view = Visualizer(
-        simulation_name="test_simulation_3",
+        simulation_name="test_simulation_4",
         simulation_description="the simulation to test",
     )
 

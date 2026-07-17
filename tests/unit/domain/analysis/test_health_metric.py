@@ -24,6 +24,7 @@ def test_health_metric_config_is_class_level() -> None:
     assert HealthMetric.title == "Health Metric"
     assert HealthMetric.module is HealthModule
     assert HealthMetric.attribute == "health"
+    assert HealthMetric.plot_kind == "line"
 
 
 @pytest.mark.unit

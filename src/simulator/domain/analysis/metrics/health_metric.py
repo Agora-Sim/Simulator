@@ -18,3 +18,4 @@ class HealthMetric(ModuleScalarMetric):
     attribute: ClassVar[str] = "health"
     unit: str = "%"
     title: ClassVar[str] = "Health Metric"
+    plot_kind: ClassVar[str] = "line"

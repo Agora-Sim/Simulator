@@ -2,8 +2,8 @@
 
 AgeMetric is config-only over ModuleScalarMetric: it reads HealthModule.age
 and averages it across living nodes. Its identity (name, module, attribute,
-title) lives in ClassVars; `unit` is the sole instance field and has no
-default, so a unit must be supplied at construction.
+title, plot_kind) lives in ClassVars; `unit` is the sole instance field and
+has no default, so a unit must be supplied at construction.
 """
 
 # ================================================================
@@ -28,6 +28,7 @@ def test_age_metric_config_is_class_level() -> None:
     assert AgeMetric.title == "Age Metric"
     assert AgeMetric.module is HealthModule
     assert AgeMetric.attribute == "age"
+    assert AgeMetric.plot_kind == "line"
 
 
 @pytest.mark.unit

@@ -30,9 +30,9 @@ def _module_data():
             "range": [0, 100],
             "distribution": {"type": "normal", "mean": 30, "std": 2},
         },
-        "decay_factor": {
-            "range": [100_000, 100_000],
-            "distribution": {"type": "normal", "mean": 100_000, "std": 0.0},
+        "rate_of_aging": {
+            "range": [0.08, 0.08],
+            "distribution": {"type": "normal", "mean": 0.08, "std": 0.0},
         },
         "max_age": {
             "range": [100, 100],
@@ -56,7 +56,7 @@ def test_stores_name_and_data() -> None:
 def test_variables_keys_match_variable_names() -> None:
     prop = ModuleProperty(name="health", data=_module_data())
 
-    assert set(prop.variables.keys()) == {"health", "age", "decay_factor", "max_age"}
+    assert set(prop.variables.keys()) == {"health", "age", "rate_of_aging", "max_age"}
 
 
 @pytest.mark.unit

@@ -22,6 +22,7 @@ def test_alive_metric_config_is_class_level() -> None:
     assert not issubclass(AliveMetric, ModuleScalarMetric)
     assert AliveMetric.name == "alive_metric"
     assert AliveMetric.title == "Alive Metric"
+    assert AliveMetric.plot_kind == "line"
 
 
 @pytest.mark.unit

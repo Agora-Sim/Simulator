@@ -21,6 +21,15 @@ from simulator.domain.instantiation import SimulationSpecs
 from simulator.domain.modules import HealthModule, MoneyModule
 from simulator.domain.simulation_run import SimulationRun
 
+# Canonical Gompertz-Makeham parameters, on a years scale (max_age 100), so
+# tests keep the readable ages they had before the hazard model landed.
+HEALTH_PARAMS: dict[str, float] = {
+    "baseline_hazard": 8.0e-6,
+    "rate_of_aging": 0.08,
+    "ind_background_hazard": 6.0e-5,
+    "max_age": 100.0,
+}
+
 
 # ──────────────────────────────────────────────────────
 # Raw config-dict builders (what the user file would contain)
@@ -51,8 +60,16 @@ def build_health_node_type_data(
             "health": {
                 "health": build_variable_data(mean=50.0, std=5.0),
                 "age": build_variable_data(mean=30.0, std=2.0),
-                "decay_factor": build_variable_data(mean=100_000.0, std=0.0),
-                "max_age": build_variable_data(mean=100.0, std=0.0),
+                "baseline_hazard": build_variable_data(
+                    mean=HEALTH_PARAMS["baseline_hazard"], std=0.0
+                ),
+                "rate_of_aging": build_variable_data(
+                    mean=HEALTH_PARAMS["rate_of_aging"], std=0.0
+                ),
+                "ind_background_hazard": build_variable_data(
+                    mean=HEALTH_PARAMS["ind_background_hazard"], std=0.0
+                ),
+                "max_age": build_variable_data(mean=HEALTH_PARAMS["max_age"], std=0.0),
             }
         },
     }
@@ -119,15 +136,29 @@ def build_blueprint_data() -> dict[str, Any]:
 # ──────────────────────────────────────────────────────
 # Concrete domain-object builders
 # ──────────────────────────────────────────────────────
+def build_health_module(
+    health: float = 50.0, age: float = 30.0, **overrides: float
+) -> HealthModule:
+    """A HealthModule on the canonical HEALTH_PARAMS hazard parameters.
+
+    Args:
+        health: Seeded health; apply() overwrites it from age on the first step.
+        age: Starting age.
+        **overrides: Any HEALTH_PARAMS entry to replace for this module.
+
+    Returns:
+        The built HealthModule.
+    """
+    return HealthModule(health=health, age=age, **{**HEALTH_PARAMS, **overrides})
+
+
 def build_node(
     node_id: int = 0,
     node_type: str = "citizen",
     modules: list | None = None,
 ) -> Node:
     if modules is None:
-        modules = [
-            HealthModule(health=50.0, age=30.0, decay_factor=100_000, max_age=100.0)
-        ]
+        modules = [build_health_module()]
     return Node(id=node_id, node_type=node_type, modules=modules)
 
 
@@ -157,11 +188,7 @@ def build_engine(
             Node(
                 id=0,
                 node_type="citizen",
-                modules=[
-                    HealthModule(
-                        health=80.0, age=25.0, decay_factor=100_000, max_age=100.0
-                    )
-                ],
+                modules=[build_health_module(health=80.0, age=25.0)],
             ),
             Node(
                 id=1,

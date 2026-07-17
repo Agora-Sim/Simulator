@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
-from ...domain.analysis import MetricSeries
+from ...domain.analysis import Axis, MetricSeries
 
 
 # ================================================================
@@ -26,15 +26,23 @@ class MetricPlot:
         self, axes: Axes, show_xlabel: bool = True, show_ylabel: bool = True
     ) -> None:
         """Draw the series onto an existing Axes (used by grids too)."""
-        axes.plot(self.series.timepoints, self.series.mean)
+        x, y = self.series.x, self.series.y
+        axes.plot(x.values, y.values)
         axes.fill_between(
-            self.series.timepoints,
-            self.series.mean - self.series.std,
-            self.series.mean + self.series.std,
+            x.values,
+            y.values - self.series.std,
+            y.values + self.series.std,
             alpha=0.2,
         )
         axes.set_title(self.series.title)
         if show_xlabel:
-            axes.set_xlabel(f"Time ({self.series.time_unit})")
+            axes.set_xlabel(_axis_label(x))
         if show_ylabel:
-            axes.set_ylabel(f"{self.series.title} ({self.series.unit})")
+            axes.set_ylabel(_axis_label(y))
+
+
+# ================================================================
+# 2. Section: Functions — labelling
+# ================================================================
+def _axis_label(axis: Axis) -> str:
+    return f"{axis.label} ({axis.unit})"

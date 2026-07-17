@@ -3,14 +3,14 @@
 # ================================================================
 import numpy as np
 
-from numpy.typing import NDArray
 from dataclasses import dataclass, field
+
+from simulator.domain.analysis.axis import Axis
 
 from .metrics import Metric
 from .metric_series import MetricSeries
-from .metric_extractor import MetricExtractor
 from ..simulation_run import SimulationRun
-from ..instantiation.simulation_specs import SimulationSpecs
+from .metric_extractor import MetricExtractor
 
 
 # ================================================================
@@ -24,30 +24,28 @@ class RunAggregator:
         self, runs_histories: list[SimulationRun], metric: Metric
     ) -> MetricSeries:
         simulation_specs = runs_histories[0].engine.simulation_specs
-        timepoints = _compute_timepoints(simulation_specs)
+        x_axis = metric.x_axis(simulation_specs)
 
         run_values = []
         for run in runs_histories:
             values = self._extractor.extract(run.history, metric)
             run_values.append(values)
 
-        mean = np.mean(run_values, axis=0)
+        y_axis = Axis(
+            values=np.mean(run_values, axis=0),
+            label=metric.title,
+            unit=metric.unit,
+        )
+
         std = np.std(run_values, axis=0)
 
         metric_series = MetricSeries(
             name=metric.name,
             title=metric.title,
-            unit=metric.unit,
-            timepoints=timepoints,
-            mean=mean,
+            x=x_axis,
+            y=y_axis,
             std=std,
-            time_unit=simulation_specs.step_size.unit,
+            plot_kind=metric.plot_kind,
         )
+
         return metric_series
-
-
-def _compute_timepoints(simulation_specs: SimulationSpecs) -> NDArray:
-    max_duration = simulation_specs.max_duration
-    step_type = simulation_specs.step_size
-
-    return np.arange(max_duration + 1) * step_type.factor

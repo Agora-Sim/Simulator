@@ -17,3 +17,4 @@ class AgeMetric(ModuleScalarMetric):
     module: ClassVar[type[NodeModule]] = HealthModule
     attribute: ClassVar[str] = "age"
     title: ClassVar[str] = "Age Metric"
+    plot_kind: ClassVar[str] = "line"

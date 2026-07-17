@@ -1,10 +1,10 @@
 """Contract tests for HealthModule.
 
 HealthModule owns a node's ageing: apply() advances age by the step factor,
-recomputes health from the decay curve and emits a DeathEffect when the death
-draw fires. The death draw is pinned deterministically with stub generators:
-random()=1.0 can never be below a probability <= 1 (never dies), random()=0.0
-is below any positive probability (always dies).
+recomputes health from the Gompertz-Makeham hazard and emits a DeathEffect
+when the death draw fires. The death draw is pinned deterministically with
+stub generators: random()=1.0 can never be below a probability <= 1 (never
+dies), random()=0.0 is below any positive probability (always dies).
 """
 
 # ================================================================
@@ -17,8 +17,13 @@ import pytest
 
 from simulator.domain.effects import DeathEffect
 from simulator.domain.modules import HealthModule
-from simulator.domain.modules.health_module import decay_curve
+from simulator.domain.modules.health_module import (
+    gompertz_curve,
+    hazard,
+    health_from_hazard,
+)
 from simulator.domain.simulation_state import SimulationState
+from tests.helpers.builders import HEALTH_PARAMS, build_health_module
 from tests.helpers.fakes import FakeStepType
 
 
@@ -60,7 +65,7 @@ def _luckiest_real_draw_rng() -> np.random.Generator:
 
 
 def _module(age: float = 30.0) -> HealthModule:
-    return HealthModule(health=50.0, age=age, decay_factor=100_000, max_age=100.0)
+    return build_health_module(health=50.0, age=age)
 
 
 # ================================================================
@@ -73,12 +78,14 @@ def test_health_module_name_is_class_level() -> None:
 
 @pytest.mark.unit
 def test_health_module_stores_fields() -> None:
-    module = HealthModule(health=90.0, age=42.0, decay_factor=100_000, max_age=100.0)
+    module = build_health_module(health=90.0, age=42.0)
 
     assert module.health == 90.0
     assert module.age == 42.0
-    assert module.decay_factor == 100_000
-    assert module.max_age == 100.0
+    assert module.baseline_hazard == HEALTH_PARAMS["baseline_hazard"]
+    assert module.rate_of_aging == HEALTH_PARAMS["rate_of_aging"]
+    assert module.ind_background_hazard == HEALTH_PARAMS["ind_background_hazard"]
+    assert module.max_age == HEALTH_PARAMS["max_age"]
 
 
 # ──────────────────────────────────────────────────────
@@ -94,12 +101,22 @@ def test_apply_advances_age_by_step_factor() -> None:
 
 
 @pytest.mark.unit
-def test_apply_recomputes_health_from_decay_curve() -> None:
+def test_apply_recomputes_health_from_the_hazard() -> None:
     module = _module(age=30.0)
 
     module.apply(_state(factor=1.0), _never_die_rng())
 
-    assert module.health == pytest.approx(decay_curve(31.0, 100_000, 100.0))
+    assert module.health == pytest.approx(health_from_hazard(31.0, **HEALTH_PARAMS))
+
+
+@pytest.mark.unit
+def test_apply_overwrites_the_seeded_health() -> None:
+    # health is derived from age, so the configured value cannot survive a step.
+    module = build_health_module(health=50.0, age=30.0)
+
+    module.apply(_state(), _never_die_rng())
+
+    assert module.health != 50.0
 
 
 @pytest.mark.unit
@@ -123,8 +140,8 @@ def test_apply_returns_death_effect_carrying_the_node_id() -> None:
 
 @pytest.mark.unit
 def test_node_past_max_age_always_emits_death_effect() -> None:
-    # At max_age health is 0, so the death probability is 1 and even the
-    # most favourable draw (just below 1) cannot save the node.
+    # Past max_age health clamps to 0, so the death probability is 1 and even
+    # the most favourable draw (just below 1) cannot save the node.
     module = _module(age=200.0)
 
     effects = module.apply(_state(), _luckiest_real_draw_rng())
@@ -132,32 +149,87 @@ def test_node_past_max_age_always_emits_death_effect() -> None:
     assert effects == [DeathEffect(node_id=module.node_id)]
 
 
+@pytest.mark.unit
+def test_health_decreases_as_the_node_ages() -> None:
+    module = _module(age=30.0)
+
+    module.apply(_state(factor=10.0), _never_die_rng())
+    younger = module.health
+    module.apply(_state(factor=10.0), _never_die_rng())
+
+    assert module.health < younger
+
+
 # ──────────────────────────────────────────────────────
-# 2.2 Subsection: decay_curve()
+# 2.2 Subsection: the hazard model
 # ──────────────────────────────────────────────────────
 @pytest.mark.unit
-def test_decay_curve_is_full_health_at_age_zero() -> None:
-    assert decay_curve(0.0, 100_000, 100.0) == pytest.approx(100.0)
+def test_gompertz_curve_is_the_baseline_hazard_at_age_zero() -> None:
+    assert gompertz_curve(0.0, 8.0e-6, 0.08) == pytest.approx(8.0e-6)
 
 
 @pytest.mark.unit
-def test_decay_curve_is_zero_at_max_age() -> None:
-    assert decay_curve(100.0, 100_000, 100.0) == pytest.approx(0.0)
+def test_gompertz_curve_grows_exponentially_with_age() -> None:
+    # A fixed age gap multiplies the hazard by the same factor wherever it sits.
+    ratio_low = gompertz_curve(10.0, 8.0e-6, 0.08) / gompertz_curve(0.0, 8.0e-6, 0.08)
+    ratio_high = gompertz_curve(60.0, 8.0e-6, 0.08) / gompertz_curve(50.0, 8.0e-6, 0.08)
+
+    assert ratio_low == pytest.approx(ratio_high)
 
 
 @pytest.mark.unit
-def test_decay_curve_clamps_past_max_age() -> None:
-    assert decay_curve(150.0, 100_000, 100.0) == pytest.approx(0.0)
+def test_hazard_adds_the_age_independent_floor() -> None:
+    gompertz = gompertz_curve(30.0, 8.0e-6, 0.08)
+
+    assert hazard(30.0, 8.0e-6, 0.08, 6.0e-5) == pytest.approx(gompertz + 6.0e-5)
 
 
 @pytest.mark.unit
-def test_decay_curve_clamps_negative_age_to_full_health() -> None:
-    assert decay_curve(-5.0, 100_000, 100.0) == pytest.approx(100.0)
+def test_hazard_is_never_below_the_floor() -> None:
+    assert hazard(0.0, 8.0e-6, 0.08, 6.0e-5) > 6.0e-5
 
 
 @pytest.mark.unit
-def test_decay_curve_decreases_with_age() -> None:
-    young = decay_curve(30.0, 100_000, 100.0)
-    old = decay_curve(60.0, 100_000, 100.0)
+def test_health_from_hazard_is_near_full_at_age_zero() -> None:
+    # Not exactly 100: the age-0 hazard is small against max_age, not absent.
+    assert health_from_hazard(0.0, **HEALTH_PARAMS) > 99.0
+
+
+@pytest.mark.unit
+def test_health_from_hazard_is_zero_at_max_age() -> None:
+    assert health_from_hazard(100.0, **HEALTH_PARAMS) == pytest.approx(0.0)
+
+
+@pytest.mark.unit
+def test_health_from_hazard_clamps_past_max_age() -> None:
+    assert health_from_hazard(150.0, **HEALTH_PARAMS) == pytest.approx(0.0)
+
+
+@pytest.mark.unit
+def test_health_from_hazard_decreases_with_age() -> None:
+    young = health_from_hazard(30.0, **HEALTH_PARAMS)
+    old = health_from_hazard(60.0, **HEALTH_PARAMS)
 
     assert young > old
+
+
+@pytest.mark.unit
+def test_death_probability_is_the_normalised_hazard_ratio() -> None:
+    # health is defined so that 1 - health/100 is exactly the hazard ratio the
+    # death draw compares against; this pins that identity.
+    age = 70.0
+    health = health_from_hazard(age, **HEALTH_PARAMS)
+    mu = hazard(
+        age,
+        HEALTH_PARAMS["baseline_hazard"],
+        HEALTH_PARAMS["rate_of_aging"],
+        HEALTH_PARAMS["ind_background_hazard"],
+    )
+    mu_max = hazard(
+        HEALTH_PARAMS["max_age"],
+        HEALTH_PARAMS["baseline_hazard"],
+        HEALTH_PARAMS["rate_of_aging"],
+        HEALTH_PARAMS["ind_background_hazard"],
+    )
+
+    assert 1 - health / 100 == pytest.approx(mu / mu_max)

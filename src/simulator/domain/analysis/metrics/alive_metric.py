@@ -18,6 +18,7 @@ class AliveMetric(Metric):
     name: ClassVar[str] = "alive_metric"
     unit: str = "%"
     title: ClassVar[str] = "Alive Metric"
+    plot_kind: ClassVar[str] = "line"
 
     def calculate(self, state: SimulationState) -> float:
         if not state.nodes:

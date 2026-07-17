@@ -3,7 +3,7 @@
 SimulationEngine advances the population one step at a time in two phases:
 it gathers effects from every module (all reading the same previous state),
 then reduces them into the new state sorted by priority. Death is pinned
-deterministically: a node past max_age has health 0, so its death
+deterministically: a node past max_age has health clamped to 0, so its death
 probability is 1 and any real rng draw kills it.
 """
 
@@ -22,7 +22,12 @@ from simulator.domain.modules import HealthModule, MoneyModule
 from simulator.domain.simulation_engine import SimulationEngine
 from simulator.domain.connectivity_matrix import ConnectivityMatrix
 from simulator.domain.instantiation.simulation_specs import SimulationSpecs
-from tests.helpers.builders import build_node, build_engine, build_simulation_data
+from tests.helpers.builders import (
+    build_node,
+    build_engine,
+    build_health_module,
+    build_simulation_data,
+)
 
 _RNG = np.random.default_rng(0)
 
@@ -51,12 +56,10 @@ class _LateRecordingEffect(_RecordingEffect):
 
 
 def _elderly_citizen(node_id: int) -> Node:
-    """A node past max_age: health decays to 0, so death is guaranteed."""
+    """A node past max_age: health clamps to 0, so death is guaranteed."""
     return build_node(
         node_id=node_id,
-        modules=[
-            HealthModule(health=0.0, age=200.0, decay_factor=100_000, max_age=100.0)
-        ],
+        modules=[build_health_module(health=0.0, age=200.0)],
     )
 
 

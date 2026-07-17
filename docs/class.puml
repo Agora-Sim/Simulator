@@ -88,7 +88,9 @@ package "Model Domain Layer" #FFF8E1 {
         class HealthModule <<implemented>> {
             + health: float
             + age: float
-            + decay_factor: float
+            + baseline_hazard: float
+            + rate_of_aging: float
+            + ind_background_hazard: float
             + max_age: float
         }
         HealthModule ..|> NodeModule
@@ -205,14 +207,14 @@ package "Model Domain Layer" #FFF8E1 {
 
 
     package "Analysis"{
-        class Axis <<planned>> {
+        class Axis <<implemented>> {
             + values: NDArray
             + label: str
             + unit: str
         }
 
 
-        class MetricSeries <<partial>> {
+        class MetricSeries <<implemented>> {
             + name: str
             + title: str
             + x: Axis
@@ -223,8 +225,9 @@ package "Model Domain Layer" #FFF8E1 {
         MetricSeries o-- Axis
 
 
-        class MetricField <<planned>> {
+        class MetricField <<implemented>> {
             + name: str
+            + title: str
             + x: Axis
             + y: Axis
             + values: NDArray
@@ -269,7 +272,7 @@ package "Model Domain Layer" #FFF8E1 {
         NodeColorMapper --> NodeColorSpec
 
         package "Metrics"{
-            abstract class Metric <<partial>> {
+            abstract class Metric <<implemented>> {
                 + name: ClassVar[str]
                 + unit: str
                 + plot_kind: ClassVar[str]

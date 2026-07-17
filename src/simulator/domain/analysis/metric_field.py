@@ -11,10 +11,10 @@ from .axis import Axis
 # 1. Section: Functions
 # ================================================================
 @dataclass
-class MetricSeries:
+class MetricField:
     name: str
     title: str
     x: Axis
     y: Axis
-    std: NDArray
+    values: NDArray
     plot_kind: str

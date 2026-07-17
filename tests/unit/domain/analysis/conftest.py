@@ -5,9 +5,9 @@ import pytest
 
 from simulator.domain.node import Node
 from simulator.domain.simulation_state import SimulationState
-from simulator.domain.modules import HealthModule, MoneyModule
+from simulator.domain.modules import MoneyModule
 
-from tests.helpers.builders import build_engine
+from tests.helpers.builders import build_engine, build_health_module
 
 
 # ================================================================
@@ -23,9 +23,7 @@ def _health_node(
     node = Node(
         id=node_id,
         node_type="citizen",
-        modules=[
-            HealthModule(health=health, age=age, decay_factor=100_000, max_age=100.0)
-        ],
+        modules=[build_health_module(health=health, age=age)],
     )
     node.status = status
     return node

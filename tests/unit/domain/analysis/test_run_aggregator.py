@@ -1,8 +1,9 @@
 """Contract tests for RunAggregator metadata propagation.
 
 RunAggregator turns per-run histories into one MetricSeries. Beyond the mean/
-std maths it must copy the metric's descriptive fields — name, title and unit
-— onto the series, since downstream rendering labels plots from `title`.
+std maths it must carry the metric's descriptive fields onto the series: name
+and title directly, and unit/label onto the y Axis, since downstream rendering
+labels each plot from its Axis.
 """
 
 # ================================================================
@@ -27,7 +28,10 @@ def test_aggregate_copies_metric_metadata_onto_series() -> None:
 
     assert series.name == "age_metric"
     assert series.title == "Age Metric"
-    assert series.unit == "years"
+    assert series.y.unit == "years"
+    assert series.y.label == "Age Metric"
+    assert series.x.label == "Time"
+    assert series.plot_kind == "line"
 
 
 @pytest.mark.unit
@@ -36,5 +40,5 @@ def test_aggregate_averages_metric_over_runs() -> None:
     series = RunAggregator().aggregate([run], AgeMetric(unit="years"))
 
     # The default engine's sole living HealthModule node is aged 25.
-    np.testing.assert_array_equal(series.mean, np.array([25.0]))
+    np.testing.assert_array_equal(series.y.values, np.array([25.0]))
     np.testing.assert_array_equal(series.std, np.array([0.0]))

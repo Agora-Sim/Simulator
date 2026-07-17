@@ -17,24 +17,28 @@ matplotlib.use("Agg")
 import numpy as np
 import pytest
 
-from simulator.domain.analysis import MetricSeries
+from simulator.domain.analysis import Axis, MetricSeries
 from simulator.adapters.render import SummaryGrid
 
 
 # ================================================================
 # 1. Section: Builders
 # ================================================================
-def _series(name: str, unit: str = "u", scale: float = 1.0) -> MetricSeries:
-    timepoints = np.arange(5, dtype=float)
-    mean = timepoints * scale
+def _series(
+    name: str,
+    unit: str = "u",
+    scale: float = 1.0,
+    time_unit: str = "days",
+    length: int = 5,
+) -> MetricSeries:
+    timepoints = np.arange(length, dtype=float)
     return MetricSeries(
         name=name,
         title=name.title(),
-        unit=unit,
-        timepoints=timepoints,
-        mean=mean,
-        std=np.zeros(5),
-        time_unit="days",
+        x=Axis(values=timepoints, label="Time", unit=time_unit),
+        y=Axis(values=timepoints * scale, label=name.title(), unit=unit),
+        std=np.zeros(length),
+        plot_kind="line",
     )
 
 
@@ -97,15 +101,7 @@ def test_shared_x_column_labels_only_bottom_edge() -> None:
 @pytest.mark.unit
 def test_different_x_unit_keeps_labels_on_every_plot() -> None:
     top = _series("top")
-    bottom = MetricSeries(
-        name="bottom",
-        title="Bottom",
-        unit="u",
-        timepoints=np.arange(5, dtype=float),
-        mean=np.arange(5, dtype=float),
-        std=np.zeros(5),
-        time_unit="years",
-    )
+    bottom = _series("bottom", time_unit="years")
     figure = SummaryGrid([top, bottom], ncols=1).render()
 
     top_ax, bottom_ax = figure.axes
@@ -117,15 +113,7 @@ def test_different_x_unit_keeps_labels_on_every_plot() -> None:
 def test_same_x_unit_different_range_gets_unified_xlim() -> None:
     # Same time unit but different lengths -> both share the wider x range.
     short = _series("top")
-    longer = MetricSeries(
-        name="bottom",
-        title="Bottom",
-        unit="u",
-        timepoints=np.arange(9, dtype=float),
-        mean=np.arange(9, dtype=float),
-        std=np.zeros(9),
-        time_unit="days",
-    )
+    longer = _series("bottom", length=9)
     figure = SummaryGrid([short, longer], ncols=1).render()
 
     top_ax, bottom_ax = figure.axes
