@@ -205,7 +205,7 @@ package "Model Domain Layer" #FFF8E1 {
 
 
     package "Analysis"{
-        class Axis <<planned>> {
+        class Axis <<implemented>> {
             + values: NDArray
             + label: str
             + unit: str
