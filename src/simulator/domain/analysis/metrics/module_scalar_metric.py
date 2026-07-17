@@ -17,8 +17,8 @@ from ...simulation_state import SimulationState
 class ModuleScalarMetric(Metric, ABC):
     """Averages one module attribute over every living node carrying it.
 
-    Concrete metrics declare `module` and `attribute` as ClassVars and
-    inherit `calculate` unchanged.
+    Concrete metrics declare `module` and `attribute` as ClassVars and inherit
+    `calculate` unchanged.
     """
 
     module: ClassVar[type[NodeModule]]
