@@ -3,7 +3,7 @@
 # ================================================================
 from simulator import Visualizer
 
-from simulator.domain.analysis.metrics import AgeMetric, HealthMetric
+from simulator.domain.analysis.metrics import AgeMetric, HealthMetric, AliveMetric
 
 
 # ================================================================
@@ -31,6 +31,16 @@ if __name__ == '__main__':
         metrics = [
             HealthMetric(),
             AgeMetric("months"),
+            AliveMetric(),
+        ],
+        formats = ["png"],
+    )
+
+    view.render_metrics(
+        metrics = [
+            HealthMetric(),
+            AgeMetric("months"),
+            AliveMetric(),
         ],
         formats = ["png"],
     )
