@@ -1,15 +1,19 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from numpy.typing import NDArray
 from dataclasses import dataclass
+from abc import ABC
 
-from .base_aggregator import BaseAggregator
+from .axis import Axis
 
 
 # ================================================================
 # 1. Section: Functions
 # ================================================================
 @dataclass
-class MetricField(BaseAggregator):
-    values: NDArray
+class BaseAggregator(ABC):
+    name: str
+    title: str
+    plot_kind: str
+    x: Axis
+    y: Axis

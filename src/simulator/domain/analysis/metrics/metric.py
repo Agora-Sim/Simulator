@@ -9,6 +9,8 @@ from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
 from ..axis import Axis
+from ..metric_series import MetricSeries
+from ..base_aggregator import BaseAggregator
 from ...instantiation import SimulationSpecs
 from ...simulation_state import SimulationState
 
@@ -24,12 +26,22 @@ class Metric(ABC):
     plot_kind: ClassVar[str]
 
     @abstractmethod
-    def calculate(self, state: SimulationState) -> float: ...
+    def calculate(self, state: SimulationState) -> float | NDArray: ...
 
     def x_axis(self, specs: SimulationSpecs) -> Axis:
 
         return Axis(
             values=_compute_timepoints(specs), label="Time", unit=specs.step_size.unit
+        )
+
+    def build_result(self, x_axis: Axis, mean: NDArray, std: NDArray) -> BaseAggregator:
+        return MetricSeries(
+            name=self.name,
+            title=self.title,
+            x=x_axis,
+            y=Axis(values=mean, label=self.title, unit=self.unit),
+            std=std,
+            plot_kind=self.plot_kind,
         )
 
 

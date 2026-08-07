@@ -3,11 +3,12 @@
 # ================================================================
 from matplotlib import pyplot as plt
 
-from dataclasses import dataclass
 from matplotlib.axes import Axes
+from dataclasses import dataclass
 from matplotlib.figure import Figure
 
-from ...domain.analysis import Axis, MetricSeries
+from .metric_renders import renderer_for
+from ...domain.analysis import Axis, BaseAggregator
 
 
 # ================================================================
@@ -15,7 +16,11 @@ from ...domain.analysis import Axis, MetricSeries
 # ================================================================
 @dataclass
 class MetricPlot:
-    series: MetricSeries
+    series: BaseAggregator
+
+    @property
+    def renderer(self):
+        return renderer_for(self.series.plot_kind)
 
     def render(self) -> Figure:
         figure, axes = plt.subplots()
@@ -25,20 +30,13 @@ class MetricPlot:
     def draw(
         self, axes: Axes, show_xlabel: bool = True, show_ylabel: bool = True
     ) -> None:
-        """Draw the series onto an existing Axes (used by grids too)."""
-        x, y = self.series.x, self.series.y
-        axes.plot(x.values, y.values)
-        axes.fill_between(
-            x.values,
-            y.values - self.series.std,
-            y.values + self.series.std,
-            alpha=0.2,
-        )
+        self.renderer.draw(axes, self.series)  # type: ignore
+
         axes.set_title(self.series.title)
         if show_xlabel:
-            axes.set_xlabel(_axis_label(x))
+            axes.set_xlabel(_axis_label(self.series.x))
         if show_ylabel:
-            axes.set_ylabel(_axis_label(y))
+            axes.set_ylabel(_axis_label(self.series.y))
 
 
 # ================================================================

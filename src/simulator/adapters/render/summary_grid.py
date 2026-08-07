@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from matplotlib.figure import Figure
 
 from .metric_plot import MetricPlot
-from ...domain.analysis import MetricSeries
+from ...domain.analysis import BaseAggregator
 
 
 # ================================================================
@@ -17,15 +17,7 @@ from ...domain.analysis import MetricSeries
 # ================================================================
 @dataclass
 class SummaryGrid:
-    """Arrange several MetricSeries as a grid of subplots.
-
-    The grid shape adapts to the number of series. When every plot in a column shares
-    the same x unit, they are given a common x range so their ticks align and the x
-    label and ticks are drawn only on the bottom edge of that column; the same holds
-    row-wise for the y axis. Otherwise each plot keeps its own labels and ticks.
-    """
-
-    series: list[MetricSeries]
+    series: list[BaseAggregator]
     ncols: int | None = None
     cell_size: tuple[float, float] = (4.0, 3.0)
 
@@ -99,11 +91,11 @@ class SummaryGrid:
             for cell in cells:
                 cell.set_ylim(limits)
 
-    def _column_series(self, col: int, nrows: int, ncols: int) -> list[MetricSeries]:
+    def _column_series(self, col: int, nrows: int, ncols: int) -> list[BaseAggregator]:
         indices = [row * ncols + col for row in range(nrows)]
         return [self.series[i] for i in indices if i < len(self.series)]
 
-    def _row_series(self, row: int, ncols: int) -> list[MetricSeries]:
+    def _row_series(self, row: int, ncols: int) -> list[BaseAggregator]:
         start = row * ncols
         return self.series[start : start + ncols]
 
@@ -124,7 +116,7 @@ class SummaryGrid:
 # ================================================================
 # 3. Section: Functions — cell drawing
 # ================================================================
-def _draw_cell(axes, series: MetricSeries, show_x: bool, show_y: bool) -> None:
+def _draw_cell(axes, series: BaseAggregator, show_x: bool, show_y: bool) -> None:
     MetricPlot(series).draw(axes, show_xlabel=show_x, show_ylabel=show_y)
     if not show_x:
         axes.tick_params(labelbottom=False)

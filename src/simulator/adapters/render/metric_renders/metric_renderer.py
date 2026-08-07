@@ -1,15 +1,17 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-from numpy.typing import NDArray
+from matplotlib.axes import Axes
 from dataclasses import dataclass
+from abc import ABC, abstractmethod
 
-from .base_aggregator import BaseAggregator
+from ....domain.analysis import BaseAggregator
 
 
 # ================================================================
 # 1. Section: Functions
 # ================================================================
 @dataclass
-class MetricField(BaseAggregator):
-    values: NDArray
+class MetricRenderer[AggregatorT: BaseAggregator](ABC):
+    @abstractmethod
+    def draw(self, axes: Axes, series: AggregatorT) -> None: ...

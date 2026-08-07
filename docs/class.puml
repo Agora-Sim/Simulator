@@ -214,26 +214,26 @@ package "Model Domain Layer" #FFF8E1 {
         }
 
 
-        class MetricSeries <<implemented>> {
+        abstract class BaseAggregator <<implemented>> {
             + name: str
             + title: str
+            + plot_kind: str
             + x: Axis
             + y: Axis
-            + std: NDArray
-            + plot_kind: str
         }
-        MetricSeries o-- Axis
+        BaseAggregator o-- Axis
+
+
+        class MetricSeries <<implemented>> {
+            + std: NDArray
+        }
+        MetricSeries ..|> BaseAggregator
 
 
         class MetricField <<implemented>> {
-            + name: str
-            + title: str
-            + x: Axis
-            + y: Axis
             + values: NDArray
-            + plot_kind: str
         }
-        MetricField o-- Axis
+        MetricField ..|> BaseAggregator
 
 
         class MetricExtractor <<implemented>> {
@@ -247,11 +247,11 @@ package "Model Domain Layer" #FFF8E1 {
         class RunAggregator <<implemented>> {
             - _extractor: MetricExtractor
 
-            + aggregate(histories: list, metric: Metric): MetricSeries
+            + aggregate(histories: list, metric: Metric): BaseAggregator
         }
         RunAggregator --> MetricExtractor
         !if ($SHOW_DEPENDENCIES == 1)
-        RunAggregator ..> MetricSeries
+        RunAggregator ..> BaseAggregator
         RunAggregator ..> Axis
         !endif
 
@@ -278,8 +278,9 @@ package "Model Domain Layer" #FFF8E1 {
                 + plot_kind: ClassVar[str]
                 + title: ClassVar[str]
 
-                + calculate(state: SimulationState): float
+                + calculate(state: SimulationState): float | NDArray
                 + x_axis(specs: SimulationSpecs): Axis
+                + build_result(x_axis: Axis, mean: NDArray, std: NDArray): BaseAggregator
             }
 
 
@@ -312,6 +313,30 @@ package "Model Domain Layer" #FFF8E1 {
                 + attribute: ClassVar[str]
             }
             HealthMetric ..|> ModuleScalarMetric
+
+
+            abstract class DistributionMetric <<implemented>> {
+                + module: ClassVar[type[NodeModule]]
+                + attribute: ClassVar[str]
+                + bin_min: float
+                + bin_max: float
+                + nr_bins: int
+
+                + calculate(state: SimulationState): NDArray
+                + build_result(x_axis: Axis, mean: NDArray, std: NDArray): MetricField
+                + bin_centres(): NDArray
+            }
+            DistributionMetric ..|> Metric
+
+
+            class AgeDistributionMetric <<implemented>> {
+                + name: ClassVar[str]
+                + module: ClassVar[type[NodeModule]]
+                + attribute: ClassVar[str]
+                + title: ClassVar[str]
+                + plot_kind: ClassVar[str]
+            }
+            AgeDistributionMetric ..|> DistributionMetric
             }
     }
 
@@ -538,41 +563,17 @@ package "Adapter Layer" #E3F2FD {
 
 
     package "Rendering"{
-        abstract class MetricRenderer <<planned>> {
-            + draw(axes: Axes, series: MetricSeries): None
-        }
-
-
-        class LinePlot <<planned>> {
-            + draw(axes: Axes, series: MetricSeries): None
-        }
-        LinePlot ..|> MetricRenderer
-
-
-        class BarPlot <<planned>> {
-            + draw(axes: Axes, series: MetricSeries): None
-        }
-        BarPlot ..|> MetricRenderer
-
-
-        class Heatmap <<planned>> {
-            + draw(axes: Axes, field: MetricField): None
-        }
-        Heatmap ..|> MetricRenderer
-
-
-        class MetricPlot <<partial>> {
-            + series: MetricSeries
+        class MetricPlot <<implemented>> {
+            + series: BaseAggregator
             + renderer: MetricRenderer
 
             + render(): Figure
             + draw(axes: Axes, show_xlabel: bool, show_ylabel: bool): None
         }
-        MetricPlot --> MetricRenderer
 
 
         class SummaryGrid <<implemented>> {
-            + series: list[MetricSeries]
+            + series: list[BaseAggregator]
             + ncols: int
             + cell_size: tuple[float, float]
 
@@ -581,6 +582,34 @@ package "Adapter Layer" #E3F2FD {
         !if ($SHOW_DEPENDENCIES == 1)
         SummaryGrid ..> MetricPlot
         !endif
+
+
+        package "Metric Renders"{
+            abstract class MetricRenderer <<implemented>> {
+                + draw(axes: Axes, series: MetricSeries | MetricField): None
+            }
+
+
+            class LinePlot <<implemented>> {
+                + draw(axes: Axes, series: MetricSeries): None
+            }
+            LinePlot ..|> MetricRenderer
+
+
+            class BarPlot <<planned>> {
+                + draw(axes: Axes, series: MetricSeries): None
+            }
+            BarPlot ..|> MetricRenderer
+
+
+            class HeatmapPlot <<implemented>> {
+                + cmap: str
+                + colorbar: bool
+
+                + draw(axes: Axes, series: MetricField): None
+            }
+            HeatmapPlot ..|> MetricRenderer
+        }
 
 
         class NetworkGraphBuilder <<planned>> {
@@ -631,16 +660,20 @@ Visualizer ..> NetworkRenderer
 
 Metric ..> SimulationState
 Metric ..> SimulationSpecs
+Metric ..> BaseAggregator
 ModuleScalarMetric ..> NodeModule
+DistributionMetric ..> NodeModule
+DistributionMetric ..> MetricField
 MetricExtractor ..> SimulationState
 NodeColorMapper ..> SimulationState
 !endif
 
-MetricPlot --> MetricSeries
-SummaryGrid --> MetricSeries
+MetricPlot --> BaseAggregator
+SummaryGrid --> BaseAggregator
 !if ($SHOW_DEPENDENCIES == 1)
 MetricRenderer ..> MetricSeries
-Heatmap ..> MetricField
+MetricRenderer ..> MetricField
+HeatmapPlot ..> MetricField
 NetworkGraphBuilder ..> SimulationState
 NetworkGraphBuilder ..> Graph
 NetworkGraphBuilder ..> NetworkX
@@ -656,6 +689,8 @@ SimulationEngine ..> Effect
 Effect ..> SimulationState
 NodeModule ..> Effect
 !endif
+
+MetricPlot --> MetricRenderer
 
 
 @enduml

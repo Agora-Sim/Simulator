@@ -3,7 +3,9 @@
 # ================================================================
 from simulator import Visualizer
 
-from simulator.domain.analysis.metrics import AgeMetric, HealthMetric, AliveMetric
+from simulator.domain.analysis.metrics import (
+    AgeMetric, HealthMetric, AliveMetric, AgeDistributionMetric
+)
 
 
 # ================================================================
@@ -23,7 +25,7 @@ from simulator.domain.analysis.metrics import AgeMetric, HealthMetric, AliveMetr
 # ================================================================
 if __name__ == '__main__':
     view = Visualizer(
-        simulation_name="test_simulation_4",
+        simulation_name="test_simulation_6",
         simulation_description="the simulation to test",
     )
 
@@ -32,6 +34,7 @@ if __name__ == '__main__':
             HealthMetric(),
             AgeMetric("months"),
             AliveMetric(),
+            AgeDistributionMetric("months"),
         ],
         formats = ["png"],
     )
@@ -41,6 +44,7 @@ if __name__ == '__main__':
             HealthMetric(),
             AgeMetric("months"),
             AliveMetric(),
+            AgeDistributionMetric("months"),
         ],
         formats = ["png"],
     )

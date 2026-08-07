@@ -9,11 +9,11 @@ nodes:
     modules:
       health:
         age:
-          range: [240, 720]
+          range: [360, 720]
           distribution:
             type: normal
-            mean: 600
-            std: 2
+            mean: 450
+            std: 100
         health:
           range: [50, 100]
           distribution:
