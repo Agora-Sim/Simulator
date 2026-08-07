@@ -8,7 +8,6 @@ from abc import ABC, abstractmethod
 from ....domain.analysis import BaseAggregator
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
