@@ -32,7 +32,8 @@ dev = [
     "coverage (>=7.15.0,<8.0.0)",
     "pytest-cov (>=7.1.0,<8.0.0)",
     "docformatter (>=1.7.8,<2.0.0)",
-    "classpy @ git+https://github.com/GuilhermeCosta-Ferreira/ClassyPython.git"
+    "classpy @ git+https://github.com/GuilhermeCosta-Ferreira/ClassyPython.git",
+    "ruff (>=0.16.1,<0.17.0)"
 ]
 
 [tool.pytest.ini_options]

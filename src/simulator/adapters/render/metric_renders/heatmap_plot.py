@@ -2,10 +2,11 @@
 # 0. Section: IMPORTS
 # ================================================================
 from dataclasses import dataclass
+
 from matplotlib.axes import Axes
 
-from .metric_renderer import MetricRenderer
 from ....domain.analysis import MetricField
+from .metric_renderer import MetricRenderer
 
 
 # ================================================================
@@ -42,6 +43,7 @@ def _extent(x_values, y_values) -> tuple[float, float, float, float]:
         float(y_values[0]) - half,
         float(y_values[-1]) + half,
     )
+
 
 def _half_step(values) -> float:
     if len(values) < 2:
