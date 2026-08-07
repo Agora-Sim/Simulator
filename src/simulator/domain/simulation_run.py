@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Simulation runner for executing a full simulation.
 
 This module defines SimulationRun, the domain-layer object that drives a

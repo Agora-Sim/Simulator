@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Simulation engine for advancing simulation state.
 
 This module defines SimulationEngine, the core computational unit of a
