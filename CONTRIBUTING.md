@@ -34,10 +34,6 @@ poetry run pytest -m "not slow" -q      # tests (pre-push default)
 
 Always use `poetry run`: this project's dependencies (numpy, h5py, ...) only exist inside the poetry virtualenv.
 
-## Code style
-
-This repo follows a specific set of conventions: architecture layering (Service / Domain / Adapter), comment discipline, docstring templates, and file banner structure. Read [CLAUDE.md](CLAUDE.md) before making non-trivial changes; it's the source of truth for how code here is structured and reviewed.
-
 ## Opening a pull request
 
 Use the repo's [PR template](.github/pull_request_template.md): describe what the change does and why, and how to use any new feature. Link the issue it closes if there is one.
