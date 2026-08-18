@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Run the test suite under coverage and refresh the coverage badge in README.md."""
 
 from __future__ import annotations
