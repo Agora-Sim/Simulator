@@ -32,10 +32,6 @@ endlegend
 !$SHOW_DEPENDENCIES = 0
 
 
-class Plotly <<external>>
-class NetworkX <<external>>
-class Graph <<external>>
-
 
 '=============================================================================='
 'Service Layer'
@@ -679,15 +675,11 @@ MetricRenderer ..> MetricSeries
 MetricRenderer ..> MetricField
 HeatmapPlot ..> MetricField
 NetworkGraphBuilder ..> SimulationState
-NetworkGraphBuilder ..> Graph
-NetworkGraphBuilder ..> NetworkX
 NetworkRenderer ..> NodeColorSpec
 NetworkRenderer ..> NodeColorMapper
-NetworkRenderer ..> Plotly
 !endif
 FigureExporter --> Source
 !if ($SHOW_DEPENDENCIES == 1)
-Graph ..> NetworkX
 
 SimulationEngine ..> Effect
 Effect ..> SimulationState
