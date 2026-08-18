@@ -219,3 +219,4 @@ claude/
 .claude/
 CLAUDE.md
 data/
+docs/*.png
