@@ -19,7 +19,7 @@ class NetworkGraphBuilder:
         for node in state.nodes:
             graph.add_node(node.id, node_type=node.node_type, status=node.status)
 
-        # upper triangle only: the matrix is symmetric, edges are undirected
+        # 1. Upper triangle only: the matrix is symmetric, edges are undirected
         matrix = state.connectivity_matrix.data
         rows, cols = np.nonzero(np.triu(matrix, k=1))
         for i, j in zip(rows, cols):

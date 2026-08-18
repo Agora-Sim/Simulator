@@ -28,6 +28,10 @@ class NodeColorMapper:
             result[node.id] = float(getattr(module, self.spec.variable))
         return result
 
+
+    # ──────────────────────────────────────────────────────
+    # 1.1 Subsection: Helper Functions
+    # ──────────────────────────────────────────────────────
     def _find_module(self, node: Node) -> NodeModule | None:
         # 1. Module identity is the ClassVar name, not the dataclass fields
         return next((m for m in node.modules if m.name == self.spec.module_name), None)
