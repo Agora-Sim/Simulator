@@ -56,14 +56,15 @@ package "Service Layer" #E8F5E9 {
     Simulation --> Visualizer
 
 
-    class Visualizer <<partial>> {
+    class Visualizer <<implemented>> {
         + simulation_name: str
+        + simulation_description: str
         + base_folder: Path
 
         - _source: Source
-        - _loader: Loader
+        - _io: SimulationIO
         - _aggregator: RunAggregator
-        - _exporter: FigureExporter
+        - _figure_exporter: FigureExporter
 
         + render_metrics(metrics: list[Metric], formats: list[str]): list[Path]
         + render_summary_grid(metrics: list[Metric], formats: list[str], name: str, ncols: int): list[Path]
@@ -650,7 +651,7 @@ Simulation --> Source
 NodeProperty --> ModuleProperty
 
 Visualizer --> Source
-Visualizer --> Loader
+Visualizer --> SimulationIO
 Visualizer --> RunAggregator
 Visualizer --> FigureExporter
 !if ($SHOW_DEPENDENCIES == 1)
