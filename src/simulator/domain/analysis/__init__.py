@@ -6,5 +6,15 @@ from .run_aggregator import RunAggregator
 from .metric_field import MetricField
 from .metric_series import MetricSeries
 from .base_aggregator import BaseAggregator
+from .node_color_mapper import NodeColorMapper
+from .node_color_spec import NodeColorSpec
 
-__all__ = ["Axis", "RunAggregator", "MetricField", "MetricSeries", "BaseAggregator"]
+__all__ = [
+    "Axis",
+    "RunAggregator",
+    "MetricField",
+    "MetricSeries",
+    "BaseAggregator",
+    "NodeColorMapper",
+    "NodeColorSpec",
+]
