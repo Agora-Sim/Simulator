@@ -617,7 +617,9 @@ package "Adapter Layer" #E3F2FD {
         }
 
 
-        class NetworkRenderer <<planned>> {
+        class NetworkRenderer <<implemented>> {
+            + layout_seed: int
+            + missing_color: str
             - _builder: NetworkGraphBuilder
 
             + render(history: list, spec: NodeColorSpec, mapper: NodeColorMapper): Figure
