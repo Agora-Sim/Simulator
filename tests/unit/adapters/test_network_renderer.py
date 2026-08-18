@@ -244,12 +244,12 @@ def test_colorbar_and_colorscale_come_from_the_spec() -> None:
 def test_render_is_reproducible_for_a_fixed_layout_seed() -> None:
     history = _history()
 
-    first = _node_trace(NetworkRenderer(layout_seed=7).render(
-        history, SPEC, NodeColorMapper(spec=SPEC)
-    ))
-    second = _node_trace(NetworkRenderer(layout_seed=7).render(
-        history, SPEC, NodeColorMapper(spec=SPEC)
-    ))
+    first = _node_trace(
+        NetworkRenderer(layout_seed=7).render(history, SPEC, NodeColorMapper(spec=SPEC))
+    )
+    second = _node_trace(
+        NetworkRenderer(layout_seed=7).render(history, SPEC, NodeColorMapper(spec=SPEC))
+    )
 
     assert _values(first.x) == _values(second.x)
     assert _values(first.y) == _values(second.y)

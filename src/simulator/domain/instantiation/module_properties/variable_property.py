@@ -38,4 +38,5 @@ class VariableProperty:
         raise ValueError(f"Unknown distribution type: {dist_type}")
 
     def sample(self, rng: np.random.Generator) -> float:
-        return self.distribution.sample(rng)
+        value = self.distribution.sample(rng)
+        return np.clip(value, self.range.min, self.range.max)

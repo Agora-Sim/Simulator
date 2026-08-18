@@ -17,6 +17,11 @@ class Source:
     simulation_description: str
     base_folder: Path = Path("data")
 
+    def __post_init__(self) -> None:
+        # 1. Pin to an absolute path now, so output does not silently follow the
+        # CWD or shift if the process later chdir's.
+        self.base_folder = Path(self.base_folder).resolve()
+
     @property
     def folder(self):
         return self.base_folder / self.simulation_name

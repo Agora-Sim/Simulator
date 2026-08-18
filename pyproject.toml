@@ -1,23 +1,37 @@
 [project]
-name = "simulator"
-version = "0.2.0"
-description = ""
+name = "agorasimulator"
+version = "1.0.0"
+description = "Simulate complex systems as networks of interacting nodes: societal contexts, organizational hierarchies, and other network problems."
 authors = [
-    {name = "GuilhermeCF",email = "guicostaferreira.2003@gmail.com"}
+    {name = "GuilhermeCF",email = "simulator@agorasimlab.com"}
 ]
 license = "AGPL-3.0-or-later"
 readme = "README.md"
-requires-python = ">=3.13, <3.14"
-dependencies = [
-    "numpy (>=2.3.5,<3.0.0)",
-    "ipykernel (>=7.1.0,<8.0.0)",
-    "matplotlib (>=3.10.7,<4.0.0)",
-    "ruamel-yaml (>=0.19.1,<0.20.0)",
-    "h5py (>=3.16.0,<4.0.0)",
-    "tqdm (>=4.68.4,<5.0.0)",
-    "networkx (>=3.6.1,<4.0.0)",
-    "plotly (>=6.9.0,<7.0.0)"
+keywords = ["simulation", "agent-based", "networks", "complex-systems"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
 ]
+# 3.14.1 is excluded: networkx refuses that one broken CPython patch.
+requires-python = ">=3.13, <3.15, !=3.14.1"
+dependencies = [
+    "numpy (>=2.3.5)",
+    "matplotlib (>=3.10.7)",
+    "ruamel-yaml (>=0.19.1)",
+    "h5py (>=3.16.0)",
+    "tqdm (>=4.68.4)",
+    "networkx (>=3.6.1)",
+    "plotly (>=6.9.0)"
+]
+
+[project.urls]
+Homepage = "https://github.com/Agora-Sim/Simulator"
+Repository = "https://github.com/Agora-Sim/Simulator"
 
 [tool.poetry]
 packages = [{include = "simulator", from = "src"}]
@@ -36,7 +50,8 @@ dev = [
     "pytest-cov (>=7.1.0,<8.0.0)",
     "docformatter (>=1.7.8,<2.0.0)",
     "classpy @ git+https://github.com/GuilhermeCosta-Ferreira/ClassyPython.git",
-    "ruff (>=0.16.1,<0.17.0)"
+    "ruff (>=0.16.1,<0.17.0)",
+    "twine (>=7.0.0,<8.0.0)"
 ]
 
 [tool.pytest.ini_options]

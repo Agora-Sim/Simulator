@@ -83,6 +83,10 @@ class SimulationEngine:
         self, node: Node, previous_state: SimulationState, rng: np.random.Generator
     ) -> list:
         node_effects = []
+
+        if not node.status:
+            return node_effects
+
         for module in node.modules:
             effects = self.step_module(module, previous_state, rng)
             node_effects.extend(effects)

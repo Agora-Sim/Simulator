@@ -11,12 +11,12 @@
 
 <div align="center">
     <img src="https://shields.io/badge/python-3.13-blue?logo=python&style=flat" alt="Python">
-    <img src="https://shields.io/badge/latest-v0.2.0-blue?&style=flat" alt="Version">
+    <img src="https://shields.io/badge/latest-v1.0.0-blue?&style=flat" alt="Version">
     <img src="https://shields.io/badge/Package_Manager-poetry-green?logo=poetry&style=flat" alt="Poetry">
     <img src="https://shields.io/badge/code_style-black-black?&style=flat" alt="Formatter">
     <img src="https://shields.io/badge/linting-pylint-yellow?&style=flat" alt="Linter">
     <!-- coverage-badge:start -->
-    <img src="https://shields.io/badge/coverage-98%25-brightgreen?style=flat" alt="Coverage">
+    <img src="https://shields.io/badge/coverage-97%25-brightgreen?style=flat" alt="Coverage">
     <!-- coverage-badge:end -->
     <a href="LICENSE"><img src="https://shields.io/badge/license-AGPL--3.0-blue?style=flat" alt="License"></a>
 </div>

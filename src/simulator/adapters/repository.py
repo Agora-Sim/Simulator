@@ -18,7 +18,8 @@ from .source import Source
 class Repository:
     source: Source
 
-    _config_path: Path = Path("src/simulator/adapters/configs/config.yaml")
+    # Resolve from the module, not the CWD, so it works once installed.
+    _config_path: Path = Path(__file__).parent / "configs" / "config.yaml"
 
     def init_simulation(self) -> Path:
         self.source.base_folder.mkdir(parents=True, exist_ok=True)
