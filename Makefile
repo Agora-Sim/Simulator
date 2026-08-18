@@ -1,4 +1,4 @@
-.PHONY: format diagram lint dev coverage-badge install-hooks license license-check
+.PHONY: format diagram lint typecheck dev coverage-badge install-hooks license license-check
 
 license:
 	poetry run python scripts/license_headers.py
@@ -18,7 +18,11 @@ format:
 lint:
 	poetry run pylint --disable=C src/
 
-dev: diagram license format lint
+# pyright ships as a node package; --pythonpath points it at the poetry venv
+typecheck:
+	npx --yes pyright@1.1.406 --pythonpath "$$(poetry env info --executable)"
+
+dev: diagram license format lint typecheck
 
 coverage-badge:
 	poetry run python scripts/update_coverage_badge.py
