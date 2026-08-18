@@ -517,7 +517,7 @@ package "Adapter Layer" #E3F2FD {
     class Downloader <<implemented>> {
         + source: Source
 
-        + download_run(run_nr: int, out_file_type: str): Path
+        + download_run(run_nr: int, out_file_type: str, overwrite: bool | None): Path
     }
     Downloader --> Source
 
