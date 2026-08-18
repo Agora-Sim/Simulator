@@ -631,6 +631,7 @@ package "Adapter Layer" #E3F2FD {
             + source: Source
 
             + export(figure: Figure, name: str, formats: list[str]): list[Path]
+            + export_graph_interactive(figure: go.Figure, name: str): Path
         }
     }
 
