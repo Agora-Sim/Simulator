@@ -18,6 +18,7 @@ from .network_graph_builder import NetworkGraphBuilder
 # ================================================================
 @dataclass
 class NetworkRenderer:
+    layout_seed: int = 42
     missing_color: str = "#c6ccd6"
 
     _builder: NetworkGraphBuilder = field(default_factory=NetworkGraphBuilder)
@@ -33,21 +34,27 @@ class NetworkRenderer:
         value_maps = [mapper.values(state) for state in history]
         cmin, cmax = self._value_range(value_maps)
 
+        node_traces = [
+            self._node_trace(graph, positions, values, spec, cmin, cmax)
+            for graph, values in zip(graphs, value_maps)
+        ]
         frames = [
-            go.Frame(
-                name=str(state.time_idx),
-                data=[self._node_trace(graph, positions, values, spec, cmin, cmax)],
-                traces=[1],
-            )
-            for state, graph, values in zip(history, graphs, value_maps)
+            # traces=[1] targets the node trace's index in `data` below
+            go.Frame(name=str(state.time_idx), data=[trace], traces=[1])
+            for state, trace in zip(history, node_traces)
         ]
 
-        first = frames[0].data[0]
         figure = go.Figure(
-            data=[self._edge_trace(graphs[0], positions), first],
+            data=[self._edge_trace(graphs[0], positions), node_traces[0]],
             frames=frames,
         )
-        figure.update_layout(sliders=[self._slider(history)], ...)
+        # axes carry no meaning here: the layout coordinates are arbitrary
+        figure.update_layout(
+            sliders=[self._slider(history)],
+            xaxis={"visible": False},
+            yaxis={"visible": False, "scaleanchor": "x"},
+            margin={"l": 20, "r": 20, "t": 40, "b": 20},
+        )
         return figure
 
 
@@ -57,7 +64,9 @@ class NetworkRenderer:
     def _layout(self, graphs: list[nx.Graph]) -> dict[int, tuple[float, float]]:
         union = nx.compose_all(graphs)
         # seed fixes the spring layout so re-exports are reproducible
-        return nx.spring_layout(union, seed=self.layout_seed)
+        positions = nx.spring_layout(union, seed=self.layout_seed)
+        # spring_layout hands back numpy arrays; plain tuples travel better
+        return {int(i): (float(xy[0]), float(xy[1])) for i, xy in positions.items()}
 
     def _value_range(
         self, value_maps: list[dict[int, float]]
