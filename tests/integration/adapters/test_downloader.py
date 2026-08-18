@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Integration tests for Downloader.
 
 Downloader serializes a Simulation to an HDF5 file under the run folder. These

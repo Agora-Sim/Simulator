@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for SimulationIO.
 
 SimulationIO is a thin facade: it owns a Source and, on each access, builds a

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Integration tests for ConfigLoader.
 
 ConfigLoader reads the YAML config at source.config_path and wraps its payload in

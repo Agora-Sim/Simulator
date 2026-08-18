@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Integration tests for Repository.
 
 Repository owns the on-disk lifecycle of a simulation: init_simulation lays

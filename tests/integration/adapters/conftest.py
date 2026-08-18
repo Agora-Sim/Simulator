@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Shared fixtures for adapter integration tests.
 
 Every adapter reads or writes through a Source. These fixtures pin the Source to

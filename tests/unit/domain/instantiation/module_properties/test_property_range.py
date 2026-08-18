@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for PropertyRange.
 
 PropertyRange is a frozen value object holding a [min, max] pair. It can be built

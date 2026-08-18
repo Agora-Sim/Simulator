@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Seed and random-event grounding tests.
 
 Every random event in the simulator must draw from the single per-run NumPy

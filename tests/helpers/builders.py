@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Builders for domain test data.
 
 These helpers produce the raw config dictionaries the domain instantiation

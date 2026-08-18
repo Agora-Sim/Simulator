@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for the NodeModule abstract base.
 
 NodeModule is an abstract dataclass: it declares a `name` class variable, a

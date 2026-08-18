@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for the x axis Metric derives from the simulation specs.
 
 Every Metric builds its own x axis from SimulationSpecs rather than letting

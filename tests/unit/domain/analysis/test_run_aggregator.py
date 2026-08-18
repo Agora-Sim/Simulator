@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for RunAggregator metadata propagation.
 
 RunAggregator turns per-run histories into one BaseAggregator, dispatching

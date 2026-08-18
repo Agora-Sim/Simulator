@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for the Effect abstract base.
 
 Effect is the command object modules emit to mutate the world: it declares

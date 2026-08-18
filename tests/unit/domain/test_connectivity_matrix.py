@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for ConnectivityMatrix.
 
 ConnectivityMatrix wraps a numpy array of pairwise connectivity. Its

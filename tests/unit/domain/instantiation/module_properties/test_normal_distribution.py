@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for NormalDistribution.
 
 NormalDistribution exposes the mean/std of its config dict and samples from a

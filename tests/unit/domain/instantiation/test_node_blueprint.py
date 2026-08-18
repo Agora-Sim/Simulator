@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for NodeBlueprint.
 
 NodeBlueprint is a view over the "nodes" config dict. It lists the node type

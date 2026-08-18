@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for NodeFactory.
 
 NodeFactory turns a NodeBlueprint into a list of Node objects and a
