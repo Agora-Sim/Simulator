@@ -33,4 +33,7 @@ class ConstantConnectivity(ConnectivityRule):
         # 1. Extract the data from the connection_dict
         candidates = np.asarray(connection_dict["candidates"])
 
-        return candidates
+        # 2. value is binary: 1 wires all candidates, 0 wires none
+        if self.value == 1:
+            return candidates
+        return np.asarray([])
