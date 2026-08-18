@@ -7,7 +7,8 @@ authors = [
 ]
 license = "AGPL-3.0-or-later"
 readme = "README.md"
-requires-python = ">=3.13, <3.14"
+# 3.14.1 is excluded: networkx refuses that one broken CPython patch.
+requires-python = ">=3.13, <3.15, !=3.14.1"
 dependencies = [
     "numpy (>=2.3.5,<3.0.0)",
     "matplotlib (>=3.10.7,<4.0.0)",
