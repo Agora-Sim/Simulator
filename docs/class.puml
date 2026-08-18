@@ -615,7 +615,8 @@ package "Adapter Layer" #E3F2FD {
 
 
         class NetworkRenderer <<implemented>> {
-            + layout_seed: int
+            + layout_seed: interface
+            + node_size: int
             + missing_color: str
             - _builder: NetworkGraphBuilder
 
