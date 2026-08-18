@@ -5,6 +5,7 @@
 # 0. Section: IMPORTS
 # ================================================================
 import plotly.graph_objects as go
+from matplotlib import pyplot as plt
 
 from pathlib import Path
 from dataclasses import dataclass
@@ -25,6 +26,7 @@ class FigureExporter:
 
         for fmt in formats:
             figure.savefig(figures_path / f"{name}.{fmt}", format=fmt)
+            plt.close(figure)
         return [figures_path / f"{name}.{fmt}" for fmt in formats]
 
     def export_graph_interactive(self, figure: go.Figure, name: str) -> Path:
