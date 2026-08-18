@@ -12,7 +12,6 @@ from ...domain.analysis import NodeColorSpec
 from .network_graph_builder import NetworkGraphBuilder
 
 
-
 # ================================================================
 # 1. Section: Functions
 # ================================================================
@@ -57,7 +56,6 @@ class NetworkRenderer:
         )
         return figure
 
-
     # ──────────────────────────────────────────────────────
     # 1.1 Subsection: Helper Functions
     # ──────────────────────────────────────────────────────
@@ -68,14 +66,11 @@ class NetworkRenderer:
         # 2. Spring_layout hands back numpy arrays; plain tuples travel better
         return {int(i): (float(xy[0]), float(xy[1])) for i, xy in positions.items()}
 
-    def _value_range(
-        self, value_maps: list[dict[int, float]]
-    ) -> tuple[float, float]:
+    def _value_range(self, value_maps: list[dict[int, float]]) -> tuple[float, float]:
         values = [v for mapping in value_maps for v in mapping.values()]
         if not values:
             return 0.0, 1.0
         return min(values), max(values)
-
 
     # ──────────────────────────────────────────────────────
     # 1.2 Subsection: Traces
@@ -112,7 +107,12 @@ class NetworkRenderer:
         # 1. Unmatched nodes get the neutral grey and say so on hover
         colors = [values.get(i, self.missing_color) for i in ids]
         labels = [
-            f"node {i} {spec.variable}: {values[i]:.2f}" if i in values else f"node {i} no {spec.variable}" for i in ids
+            (
+                f"node {i} {spec.variable}: {values[i]:.2f}"
+                if i in values
+                else f"node {i} no {spec.variable}"
+            )
+            for i in ids
         ]
 
         return go.Scatter(

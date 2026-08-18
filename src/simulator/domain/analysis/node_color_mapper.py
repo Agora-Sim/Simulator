@@ -28,7 +28,6 @@ class NodeColorMapper:
             result[node.id] = float(getattr(module, self.spec.variable))
         return result
 
-
     # ──────────────────────────────────────────────────────
     # 1.1 Subsection: Helper Functions
     # ──────────────────────────────────────────────────────
