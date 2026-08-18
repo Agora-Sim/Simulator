@@ -3,7 +3,7 @@ name = "simulator"
 version = "1.0.0"
 description = "Simulate complex systems as networks of interacting nodes: societal contexts, organizational hierarchies, and other network problems."
 authors = [
-    {name = "GuilhermeCF",email = "guicostaferreira.2003@gmail.com"}
+    {name = "GuilhermeCF",email = "simulator@agorasimlab.com"}
 ]
 license = "AGPL-3.0-or-later"
 readme = "README.md"
