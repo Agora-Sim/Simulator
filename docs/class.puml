@@ -612,7 +612,7 @@ package "Adapter Layer" #E3F2FD {
         }
 
 
-        class NetworkGraphBuilder <<planned>> {
+        class NetworkGraphBuilder <<implemented>> {
             + build(state: SimulationState): Graph
         }
 
