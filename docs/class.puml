@@ -256,7 +256,7 @@ package "Model Domain Layer" #FFF8E1 {
         !endif
 
 
-        class NodeColorSpec <<planned>> {
+        class NodeColorSpec <<implemented>> {
             + node_type: str
             + module_name: str
             + variable: str
