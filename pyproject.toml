@@ -20,13 +20,13 @@ classifiers = [
 # 3.14.1 is excluded: networkx refuses that one broken CPython patch.
 requires-python = ">=3.13, <3.15, !=3.14.1"
 dependencies = [
-    "numpy (>=2.3.5,<3.0.0)",
-    "matplotlib (>=3.10.7,<4.0.0)",
-    "ruamel-yaml (>=0.19.1,<0.20.0)",
-    "h5py (>=3.16.0,<4.0.0)",
-    "tqdm (>=4.68.4,<5.0.0)",
-    "networkx (>=3.6.1,<4.0.0)",
-    "plotly (>=6.9.0,<7.0.0)"
+    "numpy (>=2.3.5)",
+    "matplotlib (>=3.10.7)",
+    "ruamel-yaml (>=0.19.1)",
+    "h5py (>=3.16.0)",
+    "tqdm (>=4.68.4)",
+    "networkx (>=3.6.1)",
+    "plotly (>=6.9.0)"
 ]
 
 [project.urls]

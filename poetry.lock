@@ -1651,4 +1651,4 @@ shellingham = ">=1.3.0"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13, <3.15, !=3.14.1"
-content-hash = "d4148687e23b1205a8d3fe851a79ccb42e8d3ca1e507d9284f6c60b4e3913dad"
+content-hash = "44eedbfaf83d41d883420ce6d7183071b88a4daafe01616fd00c4960e9081cc9"
