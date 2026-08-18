@@ -39,7 +39,7 @@ class NetworkRenderer:
             for graph, values in zip(graphs, value_maps)
         ]
         frames = [
-            # traces=[1] targets the node trace's index in `data` below
+            # 1. Traces=[1] targets the node trace's index in `data` below
             go.Frame(name=str(state.time_idx), data=[trace], traces=[1])
             for state, trace in zip(history, node_traces)
         ]
@@ -48,7 +48,7 @@ class NetworkRenderer:
             data=[self._edge_trace(graphs[0], positions), node_traces[0]],
             frames=frames,
         )
-        # axes carry no meaning here: the layout coordinates are arbitrary
+        # 2. Axes carry no meaning here: the layout coordinates are arbitrary
         figure.update_layout(
             sliders=[self._slider(history)],
             xaxis={"visible": False},
@@ -63,9 +63,9 @@ class NetworkRenderer:
     # ──────────────────────────────────────────────────────
     def _layout(self, graphs: list[nx.Graph]) -> dict[int, tuple[float, float]]:
         union = nx.compose_all(graphs)
-        # seed fixes the spring layout so re-exports are reproducible
+        # 1. Seed fixes the spring layout so re-exports are reproducible
         positions = nx.spring_layout(union, seed=self.layout_seed)
-        # spring_layout hands back numpy arrays; plain tuples travel better
+        # 2. Spring_layout hands back numpy arrays; plain tuples travel better
         return {int(i): (float(xy[0]), float(xy[1])) for i, xy in positions.items()}
 
     def _value_range(
