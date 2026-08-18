@@ -6,6 +6,7 @@ from simulator import Visualizer
 from simulator.domain.analysis.metrics import (
     AgeMetric, HealthMetric, AliveMetric, AgeDistributionMetric
 )
+from simulator.domain.analysis.node_color_spec import NodeColorSpec
 
 
 # ================================================================
@@ -47,4 +48,13 @@ if __name__ == '__main__':
             AgeDistributionMetric("months"),
         ],
         formats = ["png"],
+    )
+
+    view.render_network(
+        spec = NodeColorSpec(
+            node_type="citizen",
+            module_name="health",
+            variable="age",
+        ),
+        run_nr = 1,
     )
