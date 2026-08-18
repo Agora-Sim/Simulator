@@ -18,6 +18,7 @@ from .network_graph_builder import NetworkGraphBuilder
 @dataclass
 class NetworkRenderer:
     layout_seed: int = 42
+    node_size: int = 16
     missing_color: str = "#c6ccd6"
 
     _builder: NetworkGraphBuilder = field(default_factory=NetworkGraphBuilder)
@@ -120,7 +121,7 @@ class NetworkRenderer:
             y=[positions[i][1] for i in ids],
             mode="markers",
             marker={
-                "size": 9,
+                "size": self.node_size,
                 "color": colors,
                 "colorscale": spec.colormap,
                 "cmin": cmin,

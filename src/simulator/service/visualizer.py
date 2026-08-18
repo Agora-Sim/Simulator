@@ -77,4 +77,5 @@ class Visualizer:
     def render_network(self, spec: NodeColorSpec, run_nr: int = 0) -> Path:
         history = self._io.load_run(run_nr).history
         figure = NetworkRenderer().render(history, spec, NodeColorMapper(spec))
-        return self._figure_exporter.export_graph_interactive(figure, "network")
+        name = f"network_{run_nr}"
+        return self._figure_exporter.export_graph_interactive(figure, name)
