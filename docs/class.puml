@@ -264,7 +264,7 @@ package "Model Domain Layer" #FFF8E1 {
         }
 
 
-        class NodeColorMapper <<planned>> {
+        class NodeColorMapper <<implemented>> {
             + spec: NodeColorSpec
 
             + values(state: SimulationState): dict[int, float]
