@@ -4,6 +4,8 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
+import plotly.graph_objects as go
+
 from pathlib import Path
 from dataclasses import dataclass
 from matplotlib.figure import Figure
@@ -24,3 +26,8 @@ class FigureExporter:
         for fmt in formats:
             figure.savefig(figures_path / f"{name}.{fmt}", format=fmt)
         return [figures_path / f"{name}.{fmt}" for fmt in formats]
+
+    def export_graph_interactive(self, figure: go.Figure, name: str) -> Path:
+        path = self.source.get_figure_path(name, "html")
+        figure.write_html(path, include_plotlyjs="inline", full_html=True)
+        return path
