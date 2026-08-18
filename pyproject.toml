@@ -1,5 +1,5 @@
 [project]
-name = "simulator"
+name = "agorasimulator"
 version = "1.0.0"
 description = "Simulate complex systems as networks of interacting nodes: societal contexts, organizational hierarchies, and other network problems."
 authors = [
@@ -50,7 +50,8 @@ dev = [
     "pytest-cov (>=7.1.0,<8.0.0)",
     "docformatter (>=1.7.8,<2.0.0)",
     "classpy @ git+https://github.com/GuilhermeCosta-Ferreira/ClassyPython.git",
-    "ruff (>=0.16.1,<0.17.0)"
+    "ruff (>=0.16.1,<0.17.0)",
+    "twine (>=7.0.0,<8.0.0)"
 ]
 
 [tool.pytest.ini_options]
