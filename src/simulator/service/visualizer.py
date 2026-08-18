@@ -8,9 +8,9 @@ from pathlib import Path
 from dataclasses import dataclass, field
 
 from ..adapters import Source, SimulationIO
-from ..domain.analysis import RunAggregator
 from ..domain.analysis.metrics import Metric
-from ..adapters.render import MetricPlot, SummaryGrid, FigureExporter
+from ..domain.analysis import RunAggregator, NodeColorSpec, NodeColorMapper
+from ..adapters.render import MetricPlot, SummaryGrid, FigureExporter, NetworkRenderer
 
 
 # ================================================================
@@ -73,3 +73,8 @@ class Visualizer:
         ]
         figure = SummaryGrid(series, ncols=ncols).render()
         return self._figure_exporter.export(figure, name, formats)
+
+    def render_network(self, spec: NodeColorSpec, run_nr: int = 0) -> Path:
+        history = self._io.load_run(run_nr).history
+        figure = NetworkRenderer().render(history, spec, NodeColorMapper(spec))
+        return self._figure_exporter.export_graph_interactive(figure, "network")
