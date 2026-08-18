@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for the Simulation service.
 
 Simulation is a thin facade over a Source and a SimulationIO. Its one job in

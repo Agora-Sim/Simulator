@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Unit tests for renderer selection.
 
 MetricPlot delegates the marks to a MetricRenderer resolved from the series'
@@ -14,7 +17,7 @@ matplotlib.use("Agg")
 
 import numpy as np
 import pytest
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from matplotlib import pyplot as plt
 from matplotlib.axes import Axes
 
@@ -47,10 +50,7 @@ def _series(plot_kind: str = "line") -> MetricSeries:
 class _SpyRenderer(MetricRenderer):
     """Records the (axes, series) pairs it was asked to draw."""
 
-    drawn: list = None
-
-    def __post_init__(self) -> None:
-        self.drawn = []
+    drawn: list = field(default_factory=list)
 
     def draw(self, axes: Axes, series: MetricSeries) -> None:
         self.drawn.append((axes, series))

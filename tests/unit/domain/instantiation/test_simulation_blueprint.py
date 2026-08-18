@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for SimulationBlueprint.
 
 SimulationBlueprint is the top-level view over the whole config dict. It exposes

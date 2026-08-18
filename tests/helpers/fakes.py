@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Fake collaborators for SimulationRun tests.
 
 SimulationRun drives a SimulationEngine. We drive it with a lightweight

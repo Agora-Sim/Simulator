@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for RunAggregator metadata propagation.
 
 RunAggregator turns per-run histories into one BaseAggregator, dispatching
@@ -14,7 +17,7 @@ onto the y Axis, since downstream rendering picks its renderer from
 import numpy as np
 import pytest
 
-from simulator.domain.analysis import RunAggregator, MetricField
+from simulator.domain.analysis import RunAggregator, MetricField, MetricSeries
 from simulator.domain.analysis.metrics import AgeMetric, AgeDistributionMetric
 
 from tests.helpers.builders import (
@@ -60,6 +63,8 @@ def test_aggregate_averages_metric_over_runs() -> None:
     run = build_simulation(engine=build_engine())
     series = RunAggregator().aggregate([run], AgeMetric(unit="years"))
 
+    # a scalar metric must aggregate to a series, not a field
+    assert isinstance(series, MetricSeries)
     # The default engine's sole living HealthModule node is aged 25.
     np.testing.assert_array_equal(series.y.values, np.array([25.0]))
     np.testing.assert_array_equal(series.std, np.array([0.0]))

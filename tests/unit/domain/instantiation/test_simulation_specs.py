@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for SimulationSpecs.
 
 SimulationSpecs is a typed read-only view over the raw "simulation" config dict.

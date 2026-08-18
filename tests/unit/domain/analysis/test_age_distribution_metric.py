@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Unit tests for AgeDistributionMetric.
 
 Where AgeMetric averages age over survivors, this bins it: `calculate`

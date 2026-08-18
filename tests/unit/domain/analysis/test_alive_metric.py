@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for AliveMetric.
 
 AliveMetric reads node status rather than a module attribute, so it extends

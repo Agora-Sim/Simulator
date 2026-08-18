@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Unit tests for HeatmapPlot.
 
 HeatmapPlot draws a MetricField's (steps, bins) values as an image with time
@@ -52,8 +55,11 @@ def test_draw_puts_bins_on_rows_and_time_on_columns() -> None:
 
     HeatmapPlot(colorbar=False).draw(axes, _field())
 
+    image = axes.images[0].get_array()
+
     # values are (3 steps, 4 bins); the image must be (4 rows, 3 cols).
-    assert axes.images[0].get_array().shape == (4, 3)
+    assert image is not None
+    assert image.shape == (4, 3)
     plt.close("all")
 
 

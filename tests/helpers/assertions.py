@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Custom assertions for adapter tests.
 
 Domain dataclasses hold NumPy arrays (ConnectivityMatrix.data), so plain `==`

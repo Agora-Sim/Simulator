@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Round-trip integration tests for Downloader + Loader.
 
 The two adapters are inverses: encoding a Simulation to HDF5 and decoding it back

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for NodeProperty.
 
 NodeProperty is a view over a single node type's config. It exposes the initial

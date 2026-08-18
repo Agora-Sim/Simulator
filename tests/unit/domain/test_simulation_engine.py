@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for SimulationEngine.
 
 SimulationEngine advances the population one step at a time in two phases:
@@ -159,9 +162,11 @@ def test_step_snapshots_are_not_aliased_across_history() -> None:
     first = engine.step(0.0, engine.build_state(), _RNG)
     second = engine.step(1.0, first, _RNG)
 
-    first_age = first.nodes[0].modules[0].age
-    second_age = second.nodes[0].modules[0].age
-    assert second_age == first_age + factor
+    first_health = first.nodes[0].modules[0]
+    second_health = second.nodes[0].modules[0]
+    assert isinstance(first_health, HealthModule)
+    assert isinstance(second_health, HealthModule)
+    assert second_health.age == first_health.age + factor
 
 
 # ──────────────────────────────────────────────────────

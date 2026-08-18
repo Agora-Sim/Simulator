@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for StepType.
 
 StepType parses a "<factor> <unit>" string into a numeric factor and a unit

@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for SimulationState.
 
 SimulationState is a snapshot value object: the nodes, their connectivity and

@@ -32,10 +32,6 @@ endlegend
 !$SHOW_DEPENDENCIES = 0
 
 
-class Plotly <<external>>
-class NetworkX <<external>>
-class Graph <<external>>
-
 
 '=============================================================================='
 'Service Layer'
@@ -56,14 +52,15 @@ package "Service Layer" #E8F5E9 {
     Simulation --> Visualizer
 
 
-    class Visualizer <<partial>> {
+    class Visualizer <<implemented>> {
         + simulation_name: str
+        + simulation_description: str
         + base_folder: Path
 
         - _source: Source
-        - _loader: Loader
+        - _io: SimulationIO
         - _aggregator: RunAggregator
-        - _exporter: FigureExporter
+        - _figure_exporter: FigureExporter
 
         + render_metrics(metrics: list[Metric], formats: list[str]): list[Path]
         + render_summary_grid(metrics: list[Metric], formats: list[str], name: str, ncols: int): list[Path]
@@ -256,7 +253,7 @@ package "Model Domain Layer" #FFF8E1 {
         !endif
 
 
-        class NodeColorSpec <<planned>> {
+        class NodeColorSpec <<implemented>> {
             + node_type: str
             + module_name: str
             + variable: str
@@ -264,7 +261,7 @@ package "Model Domain Layer" #FFF8E1 {
         }
 
 
-        class NodeColorMapper <<planned>> {
+        class NodeColorMapper <<implemented>> {
             + spec: NodeColorSpec
 
             + values(state: SimulationState): dict[int, float]
@@ -612,12 +609,15 @@ package "Adapter Layer" #E3F2FD {
         }
 
 
-        class NetworkGraphBuilder <<planned>> {
+        class NetworkGraphBuilder <<implemented>> {
             + build(state: SimulationState): Graph
         }
 
 
-        class NetworkRenderer <<planned>> {
+        class NetworkRenderer <<implemented>> {
+            + layout_seed: interface
+            + node_size: int
+            + missing_color: str
             - _builder: NetworkGraphBuilder
 
             + render(history: list, spec: NodeColorSpec, mapper: NodeColorMapper): Figure
@@ -629,6 +629,7 @@ package "Adapter Layer" #E3F2FD {
             + source: Source
 
             + export(figure: Figure, name: str, formats: list[str]): list[Path]
+            + export_graph_interactive(figure: go.Figure, name: str): Path
         }
     }
 
@@ -647,7 +648,7 @@ Simulation --> Source
 NodeProperty --> ModuleProperty
 
 Visualizer --> Source
-Visualizer --> Loader
+Visualizer --> SimulationIO
 Visualizer --> RunAggregator
 Visualizer --> FigureExporter
 !if ($SHOW_DEPENDENCIES == 1)
@@ -675,15 +676,11 @@ MetricRenderer ..> MetricSeries
 MetricRenderer ..> MetricField
 HeatmapPlot ..> MetricField
 NetworkGraphBuilder ..> SimulationState
-NetworkGraphBuilder ..> Graph
-NetworkGraphBuilder ..> NetworkX
 NetworkRenderer ..> NodeColorSpec
 NetworkRenderer ..> NodeColorMapper
-NetworkRenderer ..> Plotly
 !endif
 FigureExporter --> Source
 !if ($SHOW_DEPENDENCIES == 1)
-Graph ..> NetworkX
 
 SimulationEngine ..> Effect
 Effect ..> SimulationState

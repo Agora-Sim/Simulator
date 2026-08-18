@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Shared fixtures for the test suite.
 
 Fixtures here are intentionally thin wrappers around the builders in

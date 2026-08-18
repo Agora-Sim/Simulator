@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Contract tests for DeathEffect.
 
 DeathEffect targets a single node by id and flips its status to False. It

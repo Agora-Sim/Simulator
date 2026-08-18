@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 GuilhermeCF
+
 """Unit tests for MetricPlot labelling.
 
 MetricPlot draws one MetricSeries onto an Axes. The axes title is the series'

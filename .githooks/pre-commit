@@ -1,10 +1,17 @@
 #!/bin/sh
-# Refreshes the coverage badge in README.md before each commit and
-# re-stages the file if it changed. Installed via `make install-hooks`.
+# Verifies every .py file carries the SPDX header and refreshes the coverage
+# badge in README.md before each commit, re-staging the badge if it changed.
+# Installed via `make install-hooks`.
 
 set -e
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# check, not fix: fixing here would stage files the commit did not intend
+if ! poetry run python "$REPO_ROOT/scripts/license_headers.py" --check; then
+    echo "run \`make license\` and stage the result" >&2
+    exit 1
+fi
 
 poetry run python "$REPO_ROOT/scripts/update_coverage_badge.py"
 
