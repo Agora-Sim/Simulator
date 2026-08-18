@@ -7,7 +7,6 @@ from .figure_exporter import FigureExporter
 from .metric_renders import renderer_for
 from .network_renderer import NetworkRenderer
 
-
 __all__ = [
     "MetricPlot",
     "SummaryGrid",
