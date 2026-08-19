@@ -1,6 +1,6 @@
 [project]
 name = "agorasimulator"
-version = "1.0.0"
+version = "1.0.1"
 description = "Simulate complex systems as networks of interacting nodes: societal contexts, organizational hierarchies, and other network problems."
 authors = [
     {name = "GuilhermeCF",email = "simulator@agorasimlab.com"}
