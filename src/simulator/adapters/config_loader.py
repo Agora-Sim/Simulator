@@ -4,7 +4,7 @@
 # ================================================================
 # 0. Section: IMPORTS
 # ================================================================
-import yaml
+from ruamel.yaml import YAML
 
 from dataclasses import dataclass
 
@@ -22,7 +22,9 @@ class ConfigLoader:
     def load_config(self) -> SimulationBlueprint:
         path = self.source.config_path
 
+        # typ="safe" loads plain dict/list, like PyYAML's safe_load.
+        yaml = YAML(typ="safe")
         with open(path, "r", encoding="utf-8") as f:
-            payload = yaml.safe_load(f)
+            payload = yaml.load(f)
 
         return SimulationBlueprint(payload)
