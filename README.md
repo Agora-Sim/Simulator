@@ -5,6 +5,10 @@
 </h1>
 
 <p align="center">
+    <a href="https://www.agorasimlab.com">Official Website</a>
+</p>
+
+<p align="center">
     Contrubitors:
   <a href="https://github.com/GuilhermeCosta-Ferreira">Guilherme Costa Ferreira</a>
 </p>
@@ -19,6 +23,7 @@
     <img src="https://shields.io/badge/coverage-97%25-brightgreen?style=flat" alt="Coverage">
     <!-- coverage-badge:end -->
     <a href="LICENSE"><img src="https://shields.io/badge/license-AGPL--3.0-blue?style=flat" alt="License"></a>
+    <a href="https://www.agorasimlab.com"><img src="https://shields.io/badge/website-agorasimlab.com-blue?style=flat&logo=googlechrome&logoColor=white" alt="Website"></a>
 </div>
 
 ---
@@ -29,4 +34,4 @@ The Simulator is a tool to help tackle complex systems problems. With the easy o
 ## License
 Licensed under the [GNU Affero General Public License v3.0 or later](LICENSE) (AGPL-3.0-or-later). Copyright (C) 2026 GuilhermeCF.
 
-If you run a modified version of this software as a network service, the AGPL requires you to make the corresponding source available to users of that service — see [LICENSE](LICENSE) §13 for the exact terms.
+If you run a modified version of this software as a network service, the AGPL requires you to make the corresponding source available to users of that service: see [LICENSE](LICENSE) §13 for the exact terms.
